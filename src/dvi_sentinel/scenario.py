@@ -4,6 +4,7 @@ from typing import Annotated, Literal
 
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, field_validator
 
+from dvi_sentinel.harness_models import FixtureHarnessConfig, RuleHarnessConfig
 from dvi_sentinel.models import Identifier, NonEmpty, Timestamp, ValueModel
 
 
@@ -85,6 +86,7 @@ class Scenario(ValueModel):
     metadata: ScenarioMetadata
     inputs: Annotated[tuple[FixtureInput, ...], Field(min_length=1, max_length=16)]
     expected: DetectionExpectation
+    harness: Annotated[FixtureHarnessConfig | RuleHarnessConfig, Field(discriminator="kind")]
     variations: VariationPolicy = Field(default_factory=VariationPolicy)
     scoring: ScoringConfig = Field(default_factory=ScoringConfig)
     reporting: ReportingConfig = Field(default_factory=ReportingConfig)

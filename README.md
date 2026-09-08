@@ -6,7 +6,8 @@ The intended V1 scope is local, synthetic, fixture-based defensive telemetry.
 The current package provides CLI help/version and a validated
 [canonical event model](docs/event_model.md), and strict
 [scenario validation](docs/scenario_dsl.md) with a [safety policy](docs/safety_model.md).
-Detection experiments are not implemented yet.
+Two [local detector harnesses](docs/detector_harness.md) evaluate explicit result
+fixtures or small declarative rules. The end-to-end experiment workflow is not implemented yet.
 
 ## Development
 

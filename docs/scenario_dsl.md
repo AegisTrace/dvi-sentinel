@@ -20,6 +20,7 @@ uv run python -c "from pathlib import Path; from dvi_sentinel.scenario_io import
 | metadata | Required id, title, description |
 | inputs | 1..16 entries: relative path, format, provenance |
 | expected | Required detector; optional signature/title containment and evidence constraints |
+| harness | Required `rule_logic` rules or `fixture` result-file path |
 | variations | Allowed families and finite bounds; defaults to baseline-only |
 | scoring | Minimum detection rate (1.0), maximum unknown rate (0.0), both in 0..1 |
 | reporting | Plain report title; no template paths or executable expressions |
@@ -27,7 +28,8 @@ uv run python -c "from pathlib import Path; from dvi_sentinel.scenario_io import
 
 Input formats are `jsonl`, `csv`, and `suricata_eve`. Provenance is `synthetic`
 or `documentation`. Paths resolve beneath the scenario directory. Input fixture
-parsing and detector evaluation are implemented in their own later phases.
+parsing belongs to adapters. Local detector evaluation is defined by the
+[harness contract](detector_harness.md); no external detector is launched.
 
 Expected fields: detector identity, signature, title_contains, min_severity
 (DVI integer 0..5), labels, tags, techniques, event_ids, correlation_id,

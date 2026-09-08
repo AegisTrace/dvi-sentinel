@@ -69,3 +69,22 @@ modules. Content remains inert; there is no scenario-sourced execution or networ
 client. The documentation distinguishes declared fixture provenance from a
 sandbox guarantee. An LF formatter setting was necessary to make formatting
 consistent across Windows edits and Linux CI; it changes no runtime behavior.
+
+## Phase 3 — Local detector harness
+
+Acceptance: FixtureHarness and RuleLogicHarness behind a justified Protocol,
+typed requests/results, deterministic observations, explicit unknown/unsupported
+states, no external execution, and real fixture/rule tests.
+
+`uv run pytest tests/test_harness.py`: 37 targeted cases in the final suite.
+`uv run pytest` and `.venv312/Scripts/python.exe -m pytest`: 149 passed and the
+one documented Windows symlink privilege skip. Ruff/format/mypy passed (11 source
+files). Wheel/sdist builds passed. Tests verify an actual declared scenario rule
+produces the expected signature, rather than mocking a detector response.
+
+Review added strict JSON parsing for detector-result fixtures, rejecting duplicate
+keys and non-finite constants. Reused policy preflight on fixture outputs so
+rejections cannot silently become empty observations. Output timestamp overflow
+and unsafe output are tested unknowns. The scenario now requires a concrete
+harness declaration because detector selection is an implemented behavior.
+Phase 2 Linux CI passed all 113 tests before harness implementation began.

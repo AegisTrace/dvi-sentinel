@@ -85,6 +85,8 @@ def load_scenario(path: Path) -> tuple[Scenario, tuple[PolicyDecision, ...]]:
         raise reject("DVI-POL-001", str(path), "scenario must be UTF-8") from exc
     for fixture in scenario.inputs:
         read_fixture(path.parent, fixture.path)
+    if scenario.harness.kind == "fixture":
+        read_fixture(path.parent, scenario.harness.path)
     decisions = [
         PolicyDecision(
             rule_id="DVI-POL-000",

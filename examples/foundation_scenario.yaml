@@ -10,6 +10,17 @@ inputs:
 expected:
   detector: fixture-lab
   signature: synthetic-flow
+harness:
+  kind: rule_logic
+  rules:
+    - id: flow-rule
+      detector: fixture-lab
+      signature: synthetic-flow
+      title: Synthetic flow observation
+      conditions:
+        - field: category
+          operator: eq
+          value: flow
 variations:
   families: [timing, metadata]
   max_jitter_ms: 25
