@@ -1,0 +1,2 @@
+{"event_id":"probe:original:1","timestamp":"2026-01-01T00:00:00.000000Z","category":"flow","action":"observed","src_ip":"192.0.2.10","severity":4,"sensor":"lab-sensor","vendor":"synthetic","labels":["lab"],"tags":["fixture"],"correlation_id":"123"}
+{"event_id":"probe:original:2","timestamp":"2026-01-01T00:00:01.000000Z","category":"flow","action":"observed","src_ip":"192.0.2.10","severity":4,"sensor":"lab-sensor","vendor":"synthetic","labels":["lab"],"tags":["fixture"],"correlation_id":"123"}

@@ -1,0 +1,16 @@
+{"kind":"rule_logic","rules":[
+{"id":"precision","detector":"lab","signature":"precision","title":"Exact fraction assumption","conditions":[{"field":"timestamp_text","operator":"contains","value":".000000"}]},
+{"id":"timezone","detector":"lab","signature":"timezone","title":"UTC spelling assumption","conditions":[{"field":"timestamp_text","operator":"contains","value":"Z"}]},
+{"id":"ordering","detector":"lab","signature":"ordering","title":"Input order assumption","conditions":[{"field":"action","operator":"eq","value":"observed"}],"require_time_order":true},
+{"id":"optional","detector":"lab","signature":"optional","title":"Optional sensor assumption","conditions":[{"field":"sensor","operator":"exists"}]},
+{"id":"alias","detector":"lab","signature":"alias","title":"Raw field name assumption","conditions":[{"field":"raw.src_ip","operator":"exists"}]},
+{"id":"severity","detector":"lab","signature":"severity","title":"Raw numeric severity assumption","conditions":[{"field":"raw.severity","operator":"eq","value":4}]},
+{"id":"naming","detector":"lab","signature":"naming","title":"Sensor spelling assumption","conditions":[{"field":"sensor","operator":"eq","value":"lab-sensor"}]},
+{"id":"correlation","detector":"lab","signature":"correlation","title":"Optional correlation assumption","conditions":[{"field":"correlation_id","operator":"eq","value":"123"}]},
+{"id":"labels","detector":"lab","signature":"labels","title":"Optional label assumption","conditions":[{"field":"labels","operator":"contains","value":"lab"}]},
+{"id":"tags","detector":"lab","signature":"tags","title":"Optional tag assumption","conditions":[{"field":"tags","operator":"contains","value":"fixture"}]},
+{"id":"duplicates","detector":"lab","signature":"duplicates","title":"Exact count assumption","conditions":[{"field":"action","operator":"eq","value":"observed"}],"max_count":2},
+{"id":"noise","detector":"lab","signature":"noise","title":"Total input count assumption","conditions":[{"field":"action","operator":"eq","value":"observed"}],"max_total_events":2},
+{"id":"volume","detector":"lab","signature":"volume","title":"Volume threshold assumption","conditions":[{"field":"action","operator":"eq","value":"observed"}],"max_count":3},
+{"id":"robust","detector":"lab","signature":"robust","title":"Normalized meaning control","conditions":[{"field":"action","operator":"eq","value":"observed"},{"field":"severity","operator":"gte","value":4}],"min_count":2}
+]}

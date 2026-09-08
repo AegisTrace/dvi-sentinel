@@ -129,3 +129,27 @@ independently rejected protected-field edits, and explicit overflow/event-budget
 omissions. Distances and limitations are documented; no universal equivalence,
 adaptive search, or live detector behavior is claimed. Valid planned cases execute
 through real local rules. Phase 4 CI passed before implementation began.
+
+## Phase 6 — Assumption probe engine
+
+Acceptance: every requested assumption family has an explicit bounded probe,
+independent invariants, local observations, class/rationale/evidence, deterministic
+JSONL and report section, fragile fixtures, and a robust negative control.
+
+`uv run pytest`: 236 passed, one documented Windows symlink privilege skip.
+`uv run pytest tests/test_probes.py` and
+`.venv312/Scripts/python.exe -m pytest tests/test_probes.py`: 32 passed each.
+Ruff check, format check, strict mypy (20 source files), and wheel/sdist build
+passed. Both Python versions ran `examples/probe_assumptions.py` and produced
+the same sixteen probe IDs: thirteen fragile observations, two robust, one
+not applicable for absent confidence. Individual-rule tests isolate each
+dependency; the robust control loses no detection identity in any valid probe.
+
+Proof outputs: `runs/assumption-proof/assumption_probes.jsonl` and
+`assumption_probes.md`. Source spelling probes use real independent adapter
+parsing, preserve exact timestamps and all normalized meaning, and retain fresh
+raw evidence. Review checked ambiguity, missing fixtures, resource exhaustion,
+identity collisions, unsafe baselines, and normalized metadata loss: none become
+fragility claims. The current comparison deliberately measures detector/signature
+identity survival; expected-detection matching remains Phase 8. Phase 5 remote
+CI passed at `9db251f` before this phase began.
