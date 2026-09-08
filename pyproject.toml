@@ -30,6 +30,9 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.format]
+line-ending = "lf"
+
 [tool.mypy]
 python_version = "3.12"
 strict = true

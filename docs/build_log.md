@@ -50,3 +50,22 @@ cannot mutate stored evidence; hash verification rejects tampered snapshots.
 The model does not claim policy safety or standards compliance. Detection
 evaluation remains outside this phase. Phase 0 remote CI was green on both
 versions at commit `a8aa584` before this phase began.
+
+## Phase 2 — Scenario DSL and safety policy
+
+Acceptance: strict bounded YAML, explicit local/synthetic/no-execution
+declarations, safe relative fixture paths, stable allow/reject/warn decisions,
+documented rule IDs, and negative tests for each prohibited capability class.
+
+`uv run pytest` and `.venv312/Scripts/python.exe -m pytest`: 112 passed and one
+documented Windows symlink privilege skip on each version. The actual symlink
+test is required to pass in Linux CI before phase completion. Ruff check,
+format check, strict mypy (9 source files), and wheel/sdist build passed.
+The exact scenario proof command in `docs/scenario_dsl.md` printed
+`example-flow` and `['DVI-POL-000']`.
+
+Review separated file access, parsing, and pure policy decisions into cohesive
+modules. Content remains inert; there is no scenario-sourced execution or network
+client. The documentation distinguishes declared fixture provenance from a
+sandbox guarantee. An LF formatter setting was necessary to make formatting
+consistent across Windows edits and Linux CI; it changes no runtime behavior.
