@@ -107,3 +107,25 @@ fields remain validated. Relative HTTP resource paths are allowed because EVE
 uses them; protocol-relative external URLs remain rejected. Existing canonical
 raw snapshots are policy-checked before wrapping new source evidence. All changes
 stay within inert local fixture parsing. Phase 3 CI was green at `11daf36`.
+
+## Phase 5 — Deterministic variation planner and invariants
+
+Acceptance: typed strategies/parameters/constraints/cases, explicit lineage,
+all six safe families, independent semantic checks, post-transform policy,
+stable seed/config/input identities, bounded planning, and meaningful properties.
+
+`uv run pytest tests/test_variations.py`: 18 tests (including deterministic
+Hypothesis cases). Full Python 3.12 and 3.13 suites: 204 passed with the documented
+Windows symlink privilege skip. Ruff, format check, strict mypy (16 source files),
+and `uv run python -m build --installer uv` passed. Combined coverage was 97%.
+
+`uv run python examples/plan_variations.py` and
+`.venv312/Scripts/python.exe examples/plan_variations.py` produced the same
+16 valid cases, all six families, no omissions, and plan digest
+`447ddbaac2707566b14abac98a5e454478a44fe3c1cc77fed63ed9a52a8c5b1a`.
+
+Review verified immutable source payloads, local RNG isolation, unique lineage,
+independently rejected protected-field edits, and explicit overflow/event-budget
+omissions. Distances and limitations are documented; no universal equivalence,
+adaptive search, or live detector behavior is claimed. Valid planned cases execute
+through real local rules. Phase 4 CI passed before implementation began.
