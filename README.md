@@ -3,8 +3,8 @@
 AegisTrace's detection resilience engineering project, under development.
 The intended V1 scope is local, synthetic, fixture-based defensive telemetry.
 
-The current foundation provides an installable Python package and CLI
-help/version. Detection experiments are not implemented yet.
+The current package provides CLI help/version and a validated
+[canonical event model](docs/event_model.md). Detection experiments are not implemented yet.
 
 ## Development
 

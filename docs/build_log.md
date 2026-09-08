@@ -32,3 +32,21 @@ Source review: the only runtime behavior is help/version presentation, with no
 scenario ingestion, network operations, subprocess calls, or telemetry changes.
 These checks establish the foundation only; they do not establish V1 readiness.
 Remote CI status and phase completion are recorded on Trello after verification.
+
+## Phase 1 — Canonical security event model
+
+Acceptance: typed telemetry/detection/entity/endpoint/semantics boundaries,
+explicit optional metadata, UTC normalization, immutable raw snapshots, stable
+digests, meaningful unit/property tests, and field/tradeoff documentation.
+
+`uv run pytest tests/test_models.py`: 35 passed. Full `uv run python -m coverage
+run -m pytest` and `.venv312/Scripts/python.exe -m pytest`: 39 passed on each
+version. Ruff check, format check, strict mypy (5 source files), and package
+build passed. Combined branch coverage: 97%. `examples/canonical_event.json`
+was produced through the real validated model and canonical serializer.
+
+Review found no networking or executable scenario behavior. Raw-payload copies
+cannot mutate stored evidence; hash verification rejects tampered snapshots.
+The model does not claim policy safety or standards compliance. Detection
+evaluation remains outside this phase. Phase 0 remote CI was green on both
+versions at commit `a8aa584` before this phase began.
