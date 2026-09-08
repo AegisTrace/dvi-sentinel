@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dvi-sentinel"
+version = "0.1.0.dev0"
+description = "Local fixture-based detection resilience engineering"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+  "typer>=0.16,<1", "rich>=14,<15", "pydantic>=2.11,<3",
+  "PyYAML>=6,<7", "Jinja2>=3.1,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<10", "hypothesis>=6,<7", "coverage[toml]>=7,<8",
+  "ruff>=0.12,<1", "mypy>=1.16,<2", "build>=1.2,<2", "types-PyYAML>=6,<7",
+]
+
+[project.scripts]
+dvi = "dvi_sentinel.cli.main:app"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["dvi_sentinel"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
