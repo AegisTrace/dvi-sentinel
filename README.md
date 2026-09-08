@@ -7,7 +7,9 @@ The current package provides CLI help/version and a validated
 [canonical event model](docs/event_model.md), and strict
 [scenario validation](docs/scenario_dsl.md) with a [safety policy](docs/safety_model.md).
 Two [local detector harnesses](docs/detector_harness.md) evaluate explicit result
-fixtures or small declarative rules. The end-to-end experiment workflow is not implemented yet.
+fixtures or small declarative rules. [Adapters](docs/adapters.md) normalize local
+JSONL, CSV, and synthetic Suricata EVE fixtures. The end-to-end experiment workflow
+is not implemented yet.
 
 ## Development
 

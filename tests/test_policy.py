@@ -206,6 +206,8 @@ def test_unsafe_urls(value: str) -> None:
 def test_inert_descriptions_and_documentation_urls_are_allowed() -> None:
     assert not inspect_content({"description": "A fixture about malware detection, not execution."})
     assert not inspect_content({"url": "https://example.com/synthetic"})
+    assert not inspect_content({"http": {"url": "/status"}})
+    assert inspect_content({"http": {"url": "//real-service.com"}})[0].rule_id == "DVI-POL-011"
 
 
 def test_ordering_and_dropout_require_valid_declarations() -> None:

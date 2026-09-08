@@ -88,3 +88,22 @@ rejections cannot silently become empty observations. Output timestamp overflow
 and unsafe output are tested unknowns. The scenario now requires a concrete
 harness declaration because detector selection is an implemented behavior.
 Phase 2 Linux CI passed all 113 tests before harness implementation began.
+
+## Phase 4 — Defensive telemetry adapters
+
+Acceptance: real JSONL, CSV, synthetic EVE mappings with raw evidence/digests,
+structured errors/warnings, deterministic output, malformed-data rejection,
+equivalent fixture tests, and documented supported fields/limitations.
+
+`uv run pytest tests/test_adapters.py`: 37 cases in the final suite. Full
+`uv run pytest` and `.venv312/Scripts/python.exe -m pytest`: 186 passed and the
+documented Windows symlink privilege skip on each version. Ruff, format, strict
+mypy (13 source files), and package build passed. Committed examples cover four
+event categories through every actual adapter.
+
+The fixture regression caught blank optional CSV DNS cells being treated as
+network identifiers; empty content is now absent, while required normalized
+fields remain validated. Relative HTTP resource paths are allowed because EVE
+uses them; protocol-relative external URLs remain rejected. Existing canonical
+raw snapshots are policy-checked before wrapping new source evidence. All changes
+stay within inert local fixture parsing. Phase 3 CI was green at `11daf36`.

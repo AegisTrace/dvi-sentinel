@@ -1,0 +1,5 @@
+action,category,correlation_id,dns_name,dst_ip,dst_port,event_id,http_method,http_path,labels,protocol,sensor,severity,src_ip,src_port,timestamp,vendor
+observed,flow,123,,198.51.100.20,443,example:flow,,,"[""lab""]",TCP,lab-sensor,unknown,192.0.2.10,42000,2026-01-01T03:00:00.123456+03:00,synthetic
+observed,dns,123,Example.TEST.,198.51.100.20,443,example:dns,,,"[""lab""]",TCP,lab-sensor,unknown,192.0.2.10,42000,2026-01-01T03:00:00.123456+03:00,synthetic
+observed,http,123,,198.51.100.20,443,example:http,get,/status,"[""lab""]",TCP,lab-sensor,unknown,192.0.2.10,42000,2026-01-01T03:00:00.123456+03:00,synthetic
+observed,alert,123,,198.51.100.20,443,example:alert,,,"[""lab""]",TCP,lab-sensor,high,192.0.2.10,42000,2026-01-01T03:00:00.123456+03:00,synthetic

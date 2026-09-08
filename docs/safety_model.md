@@ -38,7 +38,8 @@ Known network fields and URL-shaped content must use documentation addresses:
 192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24, 2001:db8::/32; example.com/net/org
 and their subdomains; or names under .example, .test, .invalid. Private and
 loopback addresses are excluded because fixtures do not need real lab hosts.
-HTTP(S) documentation URLs are inert strings; credentials and other URL schemes
+HTTP(S) documentation URLs and relative HTTP resource paths are inert strings;
+protocol-relative URLs, credentials, and other URL schemes
 are rejected. No identifier validation performs a DNS lookup.
 
 `local_fixtures.py` refuses absolute/UNC paths, backslashes, percent encoding,

@@ -124,6 +124,8 @@ def inspect_content(value: object, path: str = "$") -> tuple[PolicyDecision, ...
                 inspect(child_value, f"{location}[{index}]", key, depth + 1)
         elif isinstance(item, str):
             normalized_text = unicodedata.normalize("NFKC", unquote(item)).strip()
+            if not normalized_text:
+                return
             urls = re.findall(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s]+", normalized_text)
             for url in urls:
                 try:
@@ -145,7 +147,17 @@ def inspect_content(value: object, path: str = "$") -> tuple[PolicyDecision, ...
                             explanation="URL must use HTTP(S) documentation identifiers",
                         )
                     )
-            if key in network_keys and not urls and not documentation_identifier(normalized_text):
+            relative_http_path = (
+                key in {"url", "uri"}
+                and normalized_text.startswith("/")
+                and not normalized_text.startswith("//")
+            )
+            if (
+                key in network_keys
+                and not urls
+                and not relative_http_path
+                and not documentation_identifier(normalized_text)
+            ):
                 decisions.append(
                     PolicyDecision(
                         rule_id="DVI-POL-011",
