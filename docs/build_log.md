@@ -194,3 +194,24 @@ duplicate IDs cannot fabricate one. Independent invariant/normalization/harness
 guards precede all matching. Completeness measures evidence availability only;
 fully evidenced failures can score 1.0 completeness. Rules and limitations are
 documented in `docs/matching.md`. Phase 7 CI was green at `237a39a` before work.
+
+## Phase 9 — Resilience frontier and fragility taxonomy
+
+Acceptance: explicit counts and ratios, independent validity/parser guards,
+evidence availability, measured latency percentiles, per-family observed
+boundaries, adapter disagreement, and evidence-linked fragility classes.
+
+Full suite: 278 passed with the documented Windows symlink privilege skip.
+`tests/test_scoring.py`: 10 passing tests on Python 3.12 and 3.13, including
+Hypothesis outcome partitions. Ruff, format, strict mypy (28 source files),
+and wheel/sdist build passed. Formula fixtures prove 1/4 detected, 1/4 missed,
+2/4 unknown, 9/10 invariant checks, and explicit unavailable empty ratios.
+
+Actual planned duplicate variations give miss rate 1.0 and minimum miss distance
+one for the fragile exact-count rule; the robust control gives detection rate
+1.0 with no findings. Real probe/schema results prove taxonomy deduplication and
+one-third adapter disagreement. Review verified baseline exclusion, invalid-case
+guards, denominator/sample disclosure, deterministic ties, and no cross-family
+distance ranking or weighted headline score. `docs/resilience_frontier.md`
+documents all formulas and interpretation limits. Phase 8 remote CI passed at
+`5c2c253` before implementation began.
