@@ -238,3 +238,26 @@ reads, stable ordering, and unknown decisions that cannot become false passes.
 `docs/regression_comparison.md` documents the snapshot contract and gates.
 The compare command is implemented here as the phase explicitly requires; full
 run orchestration remains Phase 14. Phase 9 remote CI passed at `df9b724`.
+
+## Phase 11 — Failure shrinking and root-cause explanation
+
+Acceptance: bounded FailureShrinker, replayable MinimalCounterexample, independent
+reduction validation, preserved finding class/matcher reason, conditional causal
+ablation and RootCauseRanker, and all four requested artifacts.
+
+Full suite: 307 passed with the documented Windows symlink privilege skip.
+`tests/test_shrinking.py`: 12 tests pass on Python 3.12 and 3.13. Ruff,
+format, strict mypy (34 source files), and wheel/sdist builds passed. The actual
+`examples/shrink_failure.py` run reduces eight events to four in six attempts,
+retaining two protected originals and two threshold-crossing duplicates.
+It writes `minimal_case.json`, `minimal_case.md`, `shrinking_trace.jsonl`, and
+`root_cause.json` under `runs/shrinking-proof/`.
+
+Other real fixture tests reach one noise event, one affected metadata/source
+record, one ordering inversion, and a 10.001 ms shift against a 10 ms window.
+Review checked restoring nonessential metadata, rejecting lost intent/unsafe
+inputs, unknown reductions, explicit budget exhaustion, no zero-change
+counterexamples, and robust controls without root-cause claims. Minimum claims
+are local to the supported reductions; causal language is conditional on the
+tested fixture. See `docs/failure_shrinking.md`. Phase 10 remote CI passed at
+`cb8c9b3` before implementation began.
