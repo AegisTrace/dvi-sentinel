@@ -153,3 +153,24 @@ identity collisions, unsafe baselines, and normalized metadata loss: none become
 fragility claims. The current comparison deliberately measures detector/signature
 identity survival; expected-detection matching remains Phase 8. Phase 5 remote
 CI passed at `9db251f` before this phase began.
+
+## Phase 7 — Cross-schema differential testing
+
+Acceptance: encode from a canonical sequence, independently normalize canonical
+JSONL/CSV/synthetic EVE, compare meaningful fields and observed detector outcomes,
+report typed disagreement with per-case evidence, and suppress formatting noise.
+
+Full suite: 250 passed with the documented Windows symlink privilege skip.
+`uv run pytest tests/test_differential.py` and the Python 3.12 equivalent:
+14 passed, including a deterministic Hypothesis matrix of exact timestamps and
+supported EVE alert severities. Ruff, format, strict mypy (23 source files),
+and wheel/sdist build passed. `examples/compare_schemas.py` produced agreement
+in all three representations for the robust control and schema-fragility
+disagreements in canonical JSONL/EVE for the raw-field-dependent local rule.
+
+Proof outputs are the robust and fragile `differential_schema_report.json` files
+under `runs/differential-proof/`. Review checked loss-aware encoders, unknown
+unsupported fields, actual per-field disagreement, explicit ID/order alignment,
+partial-parse rejection, safety, and raw provenance. Schema fragility is claimed
+only after normalized semantics agree. Full expected-detection matching is the
+next phase. Phase 6 remote CI passed at `4379cb4` before implementation began.
