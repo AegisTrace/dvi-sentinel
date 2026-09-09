@@ -23,6 +23,8 @@ class FixtureInput(ValueModel):
 class DetectionExpectation(ValueModel):
     detector: NonEmpty
     signature: NonEmpty | None = None
+    signature_contains: NonEmpty | None = None
+    source_adapter: NonEmpty | None = None
     title_contains: NonEmpty | None = None
     min_severity: Annotated[StrictInt, Field(ge=0, le=5)] = 0
     labels: tuple[NonEmpty, ...] = ()

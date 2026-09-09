@@ -7,11 +7,12 @@ from pydantic import ValidationError
 from dvi_sentinel import __version__
 from dvi_sentinel.harness import DetectorHarness
 from dvi_sentinel.harness_models import HarnessRequest
+from dvi_sentinel.matching import match_detection
 from dvi_sentinel.models import TelemetryEvent
 from dvi_sentinel.policy import PolicyError, evaluate_events
 from dvi_sentinel.probe_models import AssumptionProbe
 from dvi_sentinel.probe_transforms import permission, specifications, transform
-from dvi_sentinel.scenario import VariationPolicy
+from dvi_sentinel.scenario import DetectionExpectation, VariationPolicy
 from dvi_sentinel.serialization import canonical_json, digest
 
 
@@ -21,6 +22,7 @@ def run_probes(
     harness: DetectorHarness,
     *,
     event_budget: int = 50_000,
+    expected: DetectionExpectation | None = None,
 ) -> tuple[AssumptionProbe, ...]:
     if not events or len(events) > 10_000 or len({e.event_id for e in events}) != len(events):
         raise ValueError("DVI-PROBE-INPUT: require 1..10000 uniquely identified events")
@@ -30,16 +32,27 @@ def run_probes(
     if decisions:
         raise PolicyError(decisions)
     baseline = harness.evaluate(HarnessRequest(case_id="baseline", events=events))
+    baseline_match = match_detection(expected, baseline, events) if expected else None
     identities = [(d.detector, d.signature) for d in baseline.detections]
     ambiguous = any(count > 1 for count in Counter(identities).values())
     input_digest = digest([e.model_dump(mode="json") for e in events])
     config_digest = digest(
-        {"policy": policy.model_dump(mode="json"), "budget": event_budget, "version": __version__}
+        {
+            "policy": policy.model_dump(mode="json"),
+            "budget": event_budget,
+            "version": __version__,
+            "expected": expected.model_dump(mode="json") if expected else None,
+        }
     )
     rows: list[AssumptionProbe] = []
     spent = len(events)
     seen: set[str] = set()
     for spec in specifications():
+        if expected:
+            spec = type(spec).model_validate(
+                spec.model_dump()
+                | {"hypothesis": f"Expected detection survives: {spec.transformation}"}
+            )
         probe_id = (
             "probe:"
             + digest(
@@ -58,8 +71,9 @@ def run_probes(
             observed_result="not_applicable",
             reason="Transformation is not declared by policy",
             confidence_rationale="One local counterfactual; no statistical or universal claim",
-            evidence_paths=("#/baseline",),
+            evidence_paths=("#/baseline", "#/baseline_match") if expected else ("#/baseline",),
             baseline=baseline,
+            baseline_match=baseline_match,
         )
         changes: dict[str, object] = {}
         if permission(spec, policy):
@@ -91,10 +105,15 @@ def run_probes(
                             observed_result="invalid",
                             reason="Invariant failed; candidate was not evaluated",
                         )
-                    elif baseline.status != "complete" or not identities or ambiguous:
+                    elif (baseline_match is not None and baseline_match.status != "detected") or (
+                        baseline_match is None
+                        and (baseline.status != "complete" or not identities or ambiguous)
+                    ):
                         changes.update(
                             observed_result="unknown",
-                            reason="Baseline is unavailable, empty, or identity-ambiguous",
+                            reason="Baseline does not establish the expected detection"
+                            if baseline_match
+                            else "Baseline is unavailable, empty, or identity-ambiguous",
                         )
                     else:
                         result = harness.evaluate(
@@ -109,7 +128,29 @@ def run_probes(
                             "#/preservation",
                         )
                         observed = [(d.detector, d.signature) for d in result.detections]
-                        if result.status != "complete" or len(set(observed)) != len(observed):
+                        if expected:
+                            matched = match_detection(
+                                expected, result, candidate, preservation=preservation
+                            )
+                            changes["candidate_match"] = matched
+                            changes["evidence_paths"] = (
+                                "#/baseline",
+                                "#/candidate",
+                                "#/events",
+                                "#/lineage",
+                                "#/preservation",
+                                "#/baseline_match",
+                                "#/candidate_match",
+                            )
+                            changes.update(
+                                observed_result="fragile"
+                                if matched.status == "missed"
+                                else "robust"
+                                if matched.status == "detected"
+                                else "unknown",
+                                reason=f"Expected-detection comparison: {matched.reason}",
+                            )
+                        elif result.status != "complete" or len(set(observed)) != len(observed):
                             changes.update(
                                 observed_result="unknown",
                                 reason="Candidate observation is unavailable or identity-ambiguous",
@@ -143,7 +184,9 @@ def probes_markdown(probes: tuple[AssumptionProbe, ...]) -> str:
         "",
         "; ".join(f"{key}: {counts[key]}" for key in sorted(counts)),
         "",
-        "Findings compare detector/signature identity survival in controlled local observations.",
+        "Findings compare configured expected-detection semantics in local observations."
+        if any(probe.baseline_match for probe in probes)
+        else "Findings compare detector/signature identity survival in local observations.",
         "A robust result covers only its tested counterfactual; unknown is not a measured miss.",
         "",
     ]

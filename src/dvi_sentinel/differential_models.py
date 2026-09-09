@@ -7,6 +7,7 @@ from pydantic import Field, JsonValue
 from dvi_sentinel.adapters import NormalizationResult
 from dvi_sentinel.fixture_encoding import Representation
 from dvi_sentinel.harness_models import HarnessResult
+from dvi_sentinel.match_models import MatchResult
 from dvi_sentinel.models import Identifier, NonEmpty, Sha256, TelemetryEvent, ValueModel
 
 DifferenceClass = Literal[
@@ -42,6 +43,7 @@ class DifferentialCase(ValueModel):
     source: FixtureRepresentation | None = None
     normalized: NormalizationResult | None = None
     observation: HarnessResult | None = None
+    match: MatchResult | None = None
     differences: tuple[SchemaDifference, ...] = ()
     evidence_paths: tuple[NonEmpty, ...] = ()
 
@@ -52,4 +54,5 @@ class DifferentialReport(ValueModel):
     input_digest: Sha256
     events: tuple[TelemetryEvent, ...]
     baseline: HarnessResult
+    baseline_match: MatchResult | None = None
     cases: tuple[DifferentialCase, ...]

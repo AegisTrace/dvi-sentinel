@@ -38,7 +38,9 @@ semantics agree, unavailable, empty baseline, or repeated ambiguous detection
 identities make the detector comparison unknown. Complete empty candidate
 observations against a nonempty baseline are a measured schema disagreement.
 Additional detector identities also count as disagreement. The comparison does
-not yet inspect expected title/evidence/latency semantics; that matcher is Phase 8.
+not inspect expected title/evidence/latency semantics unless an `expected` contract
+is supplied. With that contract, Phase 8 matching drives the outcome comparison;
+baseline and per-case matching details are embedded. See `matching.md`.
 
 ## Supported encodings and limits
 

@@ -174,3 +174,23 @@ unsupported fields, actual per-field disagreement, explicit ID/order alignment,
 partial-parse rejection, safety, and raw provenance. Schema fragility is claimed
 only after normalized semantics agree. Full expected-detection matching is the
 next phase. Phase 6 remote CI passed at `4379cb4` before implementation began.
+
+## Phase 8 — Explainable detection matching
+
+Acceptance: detected/missed/unknown with candidate-level comparisons, required
+field/identity/signature/title/severity/metadata/event/correlation/time checks,
+matching IDs, exact delay, missing/contradictory evidence, and finite reason codes.
+
+Full suite: 268 passed and the documented Windows symlink privilege skip.
+`tests/test_matching.py`: 18 tests on both Python 3.12 and 3.13, including
+Hypothesis window boundaries. Ruff check/format, strict mypy (25 source files),
+and isolated wheel/sdist builds passed. Integration tests expose title failure
+in probes and severity failure in differential output while identities survive.
+
+The scenario adds explicit literal signature containment and observation-source
+adapter constraints. Exact signature and containment together are an unknown
+ambiguous expectation. Distinct failed candidates cannot hide a true match;
+duplicate IDs cannot fabricate one. Independent invariant/normalization/harness
+guards precede all matching. Completeness measures evidence availability only;
+fully evidenced failures can score 1.0 completeness. Rules and limitations are
+documented in `docs/matching.md`. Phase 7 CI was green at `237a39a` before work.

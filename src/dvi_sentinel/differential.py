@@ -17,9 +17,11 @@ from dvi_sentinel.differential_models import (
 from dvi_sentinel.fixture_encoding import REPRESENTATIONS, EncodingError, encode_fixture
 from dvi_sentinel.harness import DetectorHarness
 from dvi_sentinel.harness_models import HarnessRequest
+from dvi_sentinel.matching import match_detection
 from dvi_sentinel.models import TelemetryEvent
 from dvi_sentinel.policy import PolicyError, evaluate_events
 from dvi_sentinel.probe_sources import semantic_projection
+from dvi_sentinel.scenario import DetectionExpectation
 from dvi_sentinel.serialization import digest
 
 JSON_VALUE: TypeAdapter[JsonValue] = TypeAdapter(JsonValue)
@@ -103,6 +105,8 @@ def run_differential(
     events: tuple[TelemetryEvent, ...],
     harness: DetectorHarness,
     representations: tuple[FixtureRepresentation, ...] | None = None,
+    *,
+    expected: DetectionExpectation | None = None,
 ) -> DifferentialReport:
     if not events or len(events) > 10_000 or len({e.event_id for e in events}) != len(events):
         raise ValueError("DVI-DIFFERENTIAL-INPUT: require 1..10000 unique events")
@@ -115,6 +119,7 @@ def run_differential(
     if decisions:
         raise PolicyError(decisions)
     baseline = harness.evaluate(HarnessRequest(case_id="baseline", events=events))
+    baseline_match = match_detection(expected, baseline, events) if expected else None
     baseline_ids = Counter((d.detector, d.signature) for d in baseline.detections)
     input_digest = digest([e.model_dump(mode="json") for e in events])
     supplied = {r.representation: r for r in representations} if representations else {}
@@ -153,20 +158,29 @@ def run_differential(
             continue
         differences = list(compare_semantics(events, normalized.events))
         observation = harness.evaluate(HarnessRequest(case_id=case_id, events=normalized.events))
+        matched = match_detection(expected, observation, normalized.events) if expected else None
         observed_ids = Counter((d.detector, d.signature) for d in observation.detections)
         measurable = (
             baseline.status == observation.status == "complete"
             and bool(baseline_ids)
             and all(count == 1 for count in (*baseline_ids.values(), *observed_ids.values()))
         )
-        if not differences and measurable and baseline_ids != observed_ids:
+        outcome_differs = baseline_ids != observed_ids
+        if baseline_match and matched:
+            measurable = baseline_match.status == "detected" and matched.status != "unknown"
+            outcome_differs = baseline_match.status != matched.status
+        if not differences and measurable and outcome_differs:
             differences.append(
                 SchemaDifference(
                     finding_class="schema_fragility",
-                    path="/observation/detections",
-                    expected=[list(pair) for pair in sorted(baseline_ids)],
-                    observed=[list(pair) for pair in sorted(observed_ids)],
-                    explanation="Equivalent semantics produced different detection identities",
+                    path="/match/status" if matched else "/observation/detections",
+                    expected=baseline_match.status
+                    if baseline_match
+                    else [list(pair) for pair in sorted(baseline_ids)],
+                    observed=matched.status
+                    if matched
+                    else [list(pair) for pair in sorted(observed_ids)],
+                    explanation="Equivalent semantics produced different detection outcomes",
                 )
             )
         status: Literal["agree", "disagree", "unknown"] = (
@@ -177,16 +191,25 @@ def run_differential(
                 id=case_id,
                 representation=representation,
                 status=status,
-                reason="Normalized fields or detector identities disagree"
+                reason="Normalized fields or detection outcomes disagree"
                 if differences
-                else "Normalized semantics and observed detection identities agree"
+                else "Normalized semantics and detection outcomes agree"
                 if measurable
                 else "Semantics agree; detector evidence is unavailable, empty, or ambiguous",
                 source=source,
                 normalized=normalized,
                 observation=observation,
+                match=matched,
                 differences=tuple(differences),
-                evidence_paths=("#/source", "#/normalized", "#/observation", "#/differences"),
+                evidence_paths=(
+                    "#/source",
+                    "#/normalized",
+                    "#/observation",
+                    "#/differences",
+                    "#/match",
+                )
+                if matched
+                else ("#/source", "#/normalized", "#/observation", "#/differences"),
             )
         )
     return DifferentialReport(
@@ -194,5 +217,6 @@ def run_differential(
         input_digest=input_digest,
         events=events,
         baseline=baseline,
+        baseline_match=baseline_match,
         cases=tuple(cases),
     )

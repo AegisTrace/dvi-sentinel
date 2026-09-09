@@ -3,6 +3,7 @@
 from typing import Literal
 
 from dvi_sentinel.harness_models import HarnessResult
+from dvi_sentinel.match_models import MatchResult
 from dvi_sentinel.models import Identifier, NonEmpty, Sha256, TelemetryEvent, ValueModel
 from dvi_sentinel.variation_models import EventLineage, SemanticPreservationResult
 
@@ -42,6 +43,8 @@ class AssumptionProbe(ValueModel):
     evidence_paths: tuple[NonEmpty, ...]
     baseline: HarnessResult
     candidate: HarnessResult | None = None
+    baseline_match: MatchResult | None = None
+    candidate_match: MatchResult | None = None
     events: tuple[TelemetryEvent, ...] = ()
     lineage: tuple[EventLineage, ...] = ()
     preservation: SemanticPreservationResult | None = None

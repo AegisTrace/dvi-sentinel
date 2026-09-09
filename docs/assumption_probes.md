@@ -15,10 +15,11 @@ identities, and exhausted budgets are **unknown**, never measured misses.
 Failed invariants are **invalid** and are not evaluated. Undeclared, unsupported,
 unchanged, or already-tested equivalent candidates are **not_applicable**.
 
-This observation comparison does not yet implement the expected-detection
-matcher (Phase 8). It cannot detect changed title, severity, evidence, or latency
-when detector/signature identities survive. It makes no statistical confidence
-claim and does not establish universal resilience or causality.
+When an `expected` contract is supplied (Phase 8), baseline and candidate use the
+full matcher described in `matching.md`, including title, severity, evidence,
+and latency. Otherwise the identity-only comparison above applies and cannot
+detect those changes when identities survive. Neither mode makes statistical
+confidence claims or establishes universal resilience or causality.
 
 ## Transformations and permissions
 
