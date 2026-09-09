@@ -215,3 +215,26 @@ guards, denominator/sample disclosure, deterministic ties, and no cross-family
 distance ranking or weighted headline score. `docs/resilience_frontier.md`
 documents all formulas and interpretation limits. Phase 8 remote CI passed at
 `5c2c253` before implementation began.
+
+## Phase 10 — Baseline regression comparison
+
+Acceptance: declared snapshot comparison with stable case/content pairing,
+incompatibility reasons, previous/current frontiers and family deltas, case/class
+transitions, adapter deltas, configurable inclusive thresholds, and real
+`dvi compare` JSON/human output with exit 0/1/2.
+
+Full suite: 295 passed with the documented Windows symlink privilege skip.
+`tests/test_comparison.py`: 17 passing tests on Python 3.12 and 3.13. Ruff,
+format, strict mypy (31 source files), and wheel/sdist build passed. Tests run
+real robust/fragile local rules against identical planned variations and invoke
+the CLI against actual snapshot files. Regression, recovery, unchanged misses,
+class changes, schema disagreement, parser/invariant deterioration, compatibility
+dimensions, missing cases, changed content, empty unknowns, strict JSON, and
+threshold equality are verified.
+
+Review checked explicit detector-change allowance without relaxing static
+scenario/input/configuration identity, recomputed metrics, finite bounded local
+reads, stable ordering, and unknown decisions that cannot become false passes.
+`docs/regression_comparison.md` documents the snapshot contract and gates.
+The compare command is implemented here as the phase explicitly requires; full
+run orchestration remains Phase 14. Phase 9 remote CI passed at `df9b724`.

@@ -11,6 +11,10 @@ fixtures or small declarative rules. [Adapters](docs/adapters.md) normalize loca
 JSONL, CSV, and synthetic Suricata EVE fixtures. The end-to-end experiment workflow
 is not implemented yet. The [variation planner](docs/variation_engine.md) generates
 bounded deterministic cases with independently checked invariants and lineage.
+[Assumption probes](docs/assumption_probes.md), [schema comparisons](docs/differential_testing.md),
+[explainable matching](docs/matching.md), and [frontier metrics](docs/resilience_frontier.md)
+operate on those local observations. `dvi compare` evaluates declared run snapshots
+with [compatibility checks and regression thresholds](docs/regression_comparison.md).
 
 ## Development
 

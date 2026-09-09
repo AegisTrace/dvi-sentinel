@@ -5,12 +5,14 @@ from typing import Annotated
 import typer
 
 from dvi_sentinel import __version__
+from dvi_sentinel.cli.compare import compare_command
 
 app = typer.Typer(
     help="DVI Sentinel: local synthetic fixture-based detection resilience.",
     add_completion=False,
     rich_markup_mode=None,
 )
+app.command("compare")(compare_command)
 
 
 @app.callback(invoke_without_command=True)
