@@ -261,3 +261,25 @@ counterexamples, and robust controls without root-cause claims. Minimum claims
 are local to the supported reductions; causal language is conditional on the
 tested fixture. See `docs/failure_shrinking.md`. Phase 10 remote CI passed at
 `cb8c9b3` before implementation began.
+
+## Phase 12 — Run artifact and manifest system
+
+Acceptance: complete typed run evidence, original fixture capture, deterministic
+identity and serialization, portable SHA-256 manifest, bounded cross-file
+verification, staged publication and explicit verified overwrite.
+
+Full suite: 331 passed with the documented Windows symlink privilege skip.
+`tests/test_artifacts.py`: 24 tests pass on Python 3.12 and 3.13. Ruff check/format,
+strict mypy (38 source files), and isolated wheel/sdist builds passed. The real
+`examples/write_run_artifacts.py` run writes and verifies fourteen artifacts plus
+the manifest under `runs/artifact-proof/`, including volume misses and a minimized
+counterexample. Both Python versions produce run ID `run:920e4a597d62bd0afce351c4`.
+
+Tests cover raw hash tampering, missing/extra files and empty directories,
+validly typed but inconsistent rehashed scores, independent manifest anchors,
+captured result fixtures, deterministic reruns, invalid paths, incomplete input,
+and rollback after injected rename failure. Review confirmed bounded local I/O,
+no execution/network capability, preservation of unowned output, and honest
+limits on hashes, detector claim verification, overwrite crash recovery and
+filesystem concurrency. See `docs/run_artifacts.md`. Phase 11 remote CI passed
+at `9fd00af` before implementation began.

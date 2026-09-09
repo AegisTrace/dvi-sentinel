@@ -1,0 +1,32 @@
+schema_version: '1'
+metadata:
+  id: artifact-proof
+  title: Local volume artifact proof
+  description: A synthetic count threshold with replayable evidence.
+inputs:
+  - path: probes/events.jsonl
+    format: jsonl
+    provenance: synthetic
+expected:
+  detector: lab
+  signature: volume
+harness:
+  kind: rule_logic
+  rules:
+    - id: volume
+      detector: lab
+      signature: volume
+      title: Local bounded volume threshold
+      conditions:
+        - field: action
+          operator: eq
+          value: observed
+      max_count: 3
+variations:
+  families: [volume]
+  max_duplicates: 6
+  max_variants: 12
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

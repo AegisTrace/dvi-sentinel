@@ -15,6 +15,9 @@ bounded deterministic cases with independently checked invariants and lineage.
 [explainable matching](docs/matching.md), and [frontier metrics](docs/resilience_frontier.md)
 operate on those local observations. `dvi compare` evaluates declared run snapshots
 with [compatibility checks and regression thresholds](docs/regression_comparison.md).
+[Failure shrinking](docs/failure_shrinking.md) retains minimal local evidence.
+[Run bundles](docs/run_artifacts.md) capture fixtures, derived analysis, and verified
+SHA-256 manifests for reproducible inspection.
 
 ## Development
 
