@@ -1,5 +1,6 @@
 """Shared real engine evidence for artifact and reporting integration tests."""
 
+import socket
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,21 @@ from dvi_sentinel.run_artifacts import FixtureCapture, RunEvidence
 from dvi_sentinel.scenario_io import load_scenario
 from dvi_sentinel.shrinking import FailureShrinker
 from dvi_sentinel.variations import plan_variations
+
+
+@pytest.fixture(scope="session", autouse=True)
+def no_network():
+    """Fail the real engine tests if Python attempts DNS or network socket I/O."""
+
+    def denied(*args, **kwargs):
+        raise AssertionError("DVI tests are local-only: network access is prohibited")
+
+    with pytest.MonkeyPatch.context() as guard:
+        for name in ("connect", "connect_ex", "bind", "send", "sendall", "sendto"):
+            guard.setattr(socket.socket, name, denied)
+        for name in ("getaddrinfo", "create_connection", "gethostbyname", "gethostbyaddr"):
+            guard.setattr(socket, name, denied)
+        yield
 
 
 @pytest.fixture(scope="module")

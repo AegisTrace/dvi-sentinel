@@ -337,3 +337,30 @@ generated before destination publication, command arrays are data only, git
 metadata reads launch no process, and no network/live detector surface was added.
 The CI gate's scope and 0/1/2 exits are explicit in `docs/cli.md`. Phase 13 code CI
 passed at `e23ceb9`; its separate browser-render release proof remains pending.
+
+## Phase 15 — GitHub Actions CI gate
+
+Acceptance: secure Python 3.12/3.13 matrix with full quality checks, coverage,
+wheel/sdist build, fresh installed-package checks, doctor, a bounded real fixture
+run, CI acceptance and useful artifact retention.
+
+Fresh local reproduction used Python 3.12.14 in `.venv-ci` with a new pip editable
+development install. Ruff check/format, strict mypy, coverage-wrapped pytest and
+the 90% coverage gate passed: 360 tests passed, one documented Windows symlink
+privilege skip, and 95% combined coverage. Coverage XML and wheel/sdist builds
+were produced. A separate `.venv-package` installed the wheel with its runtime
+dependencies; `pip check`, doctor and module-version checks passed outside the
+checkout, and the imported module path was confirmed inside its site-packages.
+
+The installed wheel ran `examples/foundation_scenario.yaml` with seed 42 and a
+256-event planner/probe budget: 31 detected variants, no misses/unknowns/findings,
+and threshold 1 passed. Artifacts are under `runs/ci/`, run ID
+`run:23edb6b6d7b011729fa4caa8`. All workflow commands match `docs/ci.md`.
+
+Actionlint 1.7.12, downloaded from its official release with the archive SHA-256
+checked against published checksums, accepted the workflow. Official action
+release commits are pinned with version comments. Review checked read-only token
+permissions, disabled credential persistence, no required secrets, job timeout,
+concurrency cancellation, scoped seven-day evidence uploads, and session-wide
+test guards against Python DNS/socket I/O. The guard does not claim an OS sandbox.
+Phase 14 remote CI passed at `c05f576` before implementation began.
