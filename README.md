@@ -3,13 +3,13 @@
 AegisTrace's detection resilience engineering project, under development.
 The intended V1 scope is local, synthetic, fixture-based defensive telemetry.
 
-The current package provides CLI help/version and a validated
+The current package provides a validated
 [canonical event model](docs/event_model.md), and strict
 [scenario validation](docs/scenario_dsl.md) with a [safety policy](docs/safety_model.md).
 Two [local detector harnesses](docs/detector_harness.md) evaluate explicit result
 fixtures or small declarative rules. [Adapters](docs/adapters.md) normalize local
-JSONL, CSV, and synthetic Suricata EVE fixtures. The end-to-end experiment workflow
-is not implemented yet. The [variation planner](docs/variation_engine.md) generates
+JSONL, CSV, and synthetic Suricata EVE fixtures. The
+[variation planner](docs/variation_engine.md) generates
 bounded deterministic cases with independently checked invariants and lineage.
 [Assumption probes](docs/assumption_probes.md), [schema comparisons](docs/differential_testing.md),
 [explainable matching](docs/matching.md), and [frontier metrics](docs/resilience_frontier.md)
@@ -20,6 +20,8 @@ with [compatibility checks and regression thresholds](docs/regression_comparison
 SHA-256 manifests for reproducible inspection.
 [JSON, Markdown and local HTML reports](docs/reports.md) explain these results
 with direct references to the underlying evidence.
+The [local CLI workflow](docs/cli.md) connects these engines through `doctor`,
+`validate`, `run`, `report`, `compare`, and `ci-check`.
 
 ## Development
 

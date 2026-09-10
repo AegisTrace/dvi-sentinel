@@ -313,3 +313,27 @@ workarounds. A native Codex file-preview request was accepted as queued, but the
 tools did not confirm rendered display. No visual inspection is claimed. This
 check remains pending while implementation continues at the user's instruction;
 it must be resolved before the release gate can pass.
+
+## Phase 14 — CLI integration
+
+Acceptance: installed/module entrypoints for doctor, run, compare, report and
+ci-check, shared local validation, bounded full engine orchestration, explicit
+overwrite, JSON/human summaries, stable exits and expected errors without traces.
+
+Full suite: 360 passed with the documented Windows symlink privilege skip.
+`tests/test_cli_workflow.py`: 19 tests pass on Python 3.12 and 3.13. Ruff
+check/format, strict mypy (48 source files), and isolated wheel/sdist builds
+passed. Installed `dvi doctor`, `validate`, `run`, `ci-check`, `report`, and
+`compare` commands ran against real fixtures; the Python module entrypoint also
+passed. `runs/cli-proof/` contains a complete verified report bundle with nine
+misses among eleven variants, and its threshold-1 gate exits 1 as expected.
+
+Integration tests cover robust controls, real regression between run bundles,
+probe-only shrinking, baseline misses, exhausted budgets, unknown coverage,
+optional analysis switches, overwrite refusal/replacement, malformed/unsafe YAML,
+missing/partial/duplicate fixture input, unsafe unused detector observations,
+non-finite thresholds and tampered consumer inputs. Review confirmed reports are
+generated before destination publication, command arrays are data only, git
+metadata reads launch no process, and no network/live detector surface was added.
+The CI gate's scope and 0/1/2 exits are explicit in `docs/cli.md`. Phase 13 code CI
+passed at `e23ceb9`; its separate browser-render release proof remains pending.

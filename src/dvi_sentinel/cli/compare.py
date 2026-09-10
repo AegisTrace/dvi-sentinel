@@ -4,19 +4,22 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
-from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
 
+from dvi_sentinel.cli.common import comparison_input, fail
 from dvi_sentinel.comparison import compare_snapshots
-from dvi_sentinel.comparison_models import ComparisonSnapshot, ComparisonThresholds
-from dvi_sentinel.local_fixtures import read_fixture
-from dvi_sentinel.serialization import canonical_json, parse_json
+from dvi_sentinel.comparison_models import ComparisonThresholds
+from dvi_sentinel.serialization import canonical_json
 
 
 def compare_command(
-    previous: Annotated[Path, typer.Argument(help="Declared previous comparison snapshot JSON.")],
-    current: Annotated[Path, typer.Argument(help="Current comparison snapshot JSON.")],
+    previous: Annotated[
+        Path, typer.Argument(help="Verified baseline run or comparison snapshot JSON.")
+    ],
+    current: Annotated[
+        Path, typer.Argument(help="Verified current run or comparison snapshot JSON.")
+    ],
     json_output: Annotated[
         bool, typer.Option("--json", help="Print machine-readable JSON.")
     ] = False,
@@ -27,18 +30,7 @@ def compare_command(
     max_adapter_increase: Annotated[float, typer.Option(min=0, max=1)] = 0.0,
 ) -> None:
     try:
-        old, new = (
-            ComparisonSnapshot.model_validate(
-                parse_json(
-                    read_fixture(
-                        path.parent,
-                        path.name,
-                        limit=32 * 1024 * 1024,
-                    )
-                )
-            )
-            for path in (previous, current)
-        )
+        old, new = comparison_input(previous), comparison_input(current)
         result = compare_snapshots(
             old,
             new,
@@ -51,22 +43,7 @@ def compare_command(
             ),
         )
     except (ValueError, OSError, RecursionError) as exc:
-        detail = (
-            "; ".join(
-                f"{'.'.join(map(str, error['loc']))}: {error['msg']}"
-                for error in exc.errors(include_input=False)
-            )
-            if isinstance(exc, ValidationError)
-            else str(exc)
-        )
-        detail = detail[:1000]
-        if json_output:
-            typer.echo(
-                canonical_json({"status": "invalid_input", "exit_status": 2, "reason": detail})
-            )
-        else:
-            typer.echo(f"Comparison input rejected: {detail}", err=True)
-        raise typer.Exit(2) from exc
+        fail(exc, json_output)
     if json_output:
         typer.echo(canonical_json(result))
     else:
