@@ -14,5 +14,6 @@ RUN pip install --no-cache-dir --no-deps . \
     && mkdir /runs \
     && chown dvi:dvi /runs
 COPY examples ./examples
+COPY benchmarks ./benchmarks
 USER 10001:10001
 CMD ["dvi", "doctor"]

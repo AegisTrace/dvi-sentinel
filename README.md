@@ -22,6 +22,8 @@ SHA-256 manifests for reproducible inspection.
 with direct references to the underlying evidence.
 The [local CLI workflow](docs/cli.md) connects these engines through `doctor`,
 `validate`, `run`, `report`, `compare`, and `ci-check`.
+The [expert fixture benchmarks](docs/benchmarks.md) pair ten known fragility
+families with ten robust controls and assert measured findings and minimal evidence.
 
 ## Development
 

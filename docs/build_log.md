@@ -430,3 +430,35 @@ invariants, minimum claims stay local, temporary mutation cases do not share
 state, and no skips/health-check suppression or unstable clocks were added.
 Phase 16 remote CI passed at `354c678` before hardening. The separate Phase 13
 visual browser-render release gate remains unresolved.
+
+## Phase 18 — Expert benchmark suite
+
+Acceptance: ten required fragility families with paired robust controls, declared
+scenario/fixtures, finding classes, reason codes, minima, metric ranges and
+automated oracles; deterministic JSON evidence and clean-checkout execution.
+
+Twenty scenarios and three shared synthetic source fixtures drive 275 explicit
+checks. All twenty cases pass; ten controls have zero findings and nine safe
+fragility cases reach their declared minima. The adapter-disagreement case
+detects a deliberately changed action and correctly has no safe failure minimum.
+The JSON evidence includes plans, assessments, source/suite digests, probes,
+frontier values and reduction traces. Changed oracles fail without changing
+measured detector evidence. See `docs/benchmarks.md` for the exact expectations
+and the distinction between planner rates, probes and semantic mapping loss.
+
+Full suite: 418 passed, one documented Windows symlink privilege skip, 95%
+combined coverage. Benchmark-specific Python 3.12 suite: 27 passed. Ruff
+check/format, strict mypy (50 source files), actionlint and wheel/sdist build
+passed. Docker built and ran all twenty benchmarks with networking disabled.
+Native and container final reports match byte for byte, SHA-256
+`5bd60bd5d90e2685cb91dfc4aa46669e4a24d8bb48902bf8bb29f3108f220618`, under
+`runs/benchmarks-final/` and `runs/benchmarks-docker-final/`.
+
+Review aligned CSV fixture bytes with the repository LF checkout policy, kept
+expectations separate from detector execution, checked bounded local paths and
+resource limits, and retained explicit unavailable minimum/rate values. The
+Docker context/image now includes the new benchmark fixtures, and CI records the
+report through its installed wheel; these are necessary integrations of this
+phase rather than new runtime services. No prohibited capability was introduced.
+Phase 17 remote CI passed at `3a3917a` before implementation. Phase 13 visual
+browser-render proof remains an unresolved release gate.

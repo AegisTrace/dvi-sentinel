@@ -1,0 +1,36 @@
+schema_version: '1'
+metadata:
+  id: benchmark:schema_alias-fragile
+  title: schema alias fragile
+  description: Synthetic local evidence for schema_alias with a deliberately sensitive
+    observation.
+inputs:
+- path: events.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: benchmark-lab
+  signature: synthetic-observation
+  min_severity: 4
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: benchmark-lab
+    signature: synthetic-observation
+    title: Synthetic benchmark observation
+    conditions:
+    - field: raw.src_ip
+      operator: exists
+    min_count: 2
+    severity: 4
+variations:
+  max_variants: 8
+  families:
+  - metadata
+  - timing
+  max_jitter_ms: 20
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

@@ -1,0 +1,37 @@
+schema_version: '1'
+metadata:
+  id: benchmark:severity_mapping-fragile
+  title: severity mapping fragile
+  description: Synthetic local evidence for severity_mapping with a deliberately sensitive
+    observation.
+inputs:
+- path: events.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: benchmark-lab
+  signature: synthetic-observation
+  min_severity: 4
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: benchmark-lab
+    signature: synthetic-observation
+    title: Synthetic benchmark observation
+    conditions:
+    - field: raw.severity
+      operator: eq
+      value: 4
+    min_count: 2
+    severity: 4
+variations:
+  max_variants: 8
+  families:
+  - metadata
+  - timing
+  max_jitter_ms: 20
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

@@ -1,0 +1,38 @@
+schema_version: '1'
+metadata:
+  id: benchmark:volume-control
+  title: volume control
+  description: Synthetic local evidence for volume with a robust control.
+inputs:
+- path: events.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: benchmark-lab
+  signature: synthetic-observation
+  min_severity: 4
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: benchmark-lab
+    signature: synthetic-observation
+    title: Synthetic benchmark observation
+    conditions:
+    - field: action
+      operator: eq
+      value: observed
+    - field: severity
+      operator: gte
+      value: 4
+    min_count: 2
+    severity: 4
+variations:
+  max_variants: 8
+  families:
+  - volume
+  max_duplicates: 4
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

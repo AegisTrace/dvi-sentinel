@@ -1,0 +1,2 @@
+{"action": "observed", "category": "alert", "correlation_id": "123", "event_id": "probe:original:1", "labels": ["lab"], "sensor": "lab-sensor", "severity": 4, "src_ip": "192.0.2.10", "tags": ["fixture"], "timestamp": "2026-01-01T00:00:00.000000Z", "vendor": "synthetic"}
+{"action": "observed", "category": "alert", "correlation_id": "123", "event_id": "probe:original:2", "labels": ["lab"], "sensor": "lab-sensor", "severity": 4, "src_ip": "192.0.2.10", "tags": ["fixture"], "timestamp": "2026-01-01T00:00:01.000000Z", "vendor": "synthetic"}

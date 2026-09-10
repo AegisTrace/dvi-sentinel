@@ -1,0 +1,36 @@
+schema_version: '1'
+metadata:
+  id: benchmark:timezone-fragile
+  title: timezone fragile
+  description: Synthetic local evidence for timezone with a deliberately sensitive
+    observation.
+inputs:
+- path: events.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: benchmark-lab
+  signature: synthetic-observation
+  min_severity: 4
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: benchmark-lab
+    signature: synthetic-observation
+    title: Synthetic benchmark observation
+    conditions:
+    - field: timestamp_text
+      operator: contains
+      value: Z
+    min_count: 2
+    severity: 4
+variations:
+  max_variants: 8
+  families:
+  - timing
+  max_jitter_ms: 20
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

@@ -1,0 +1,503 @@
+{
+  "cases": [
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for schema_alias with a deliberately sensitive observation.",
+      "family": "schema_alias",
+      "finding_classes": [
+        "schema"
+      ],
+      "id": "schema_alias-fragile",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "schema_alias",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "schema_alias-fragile.yaml",
+      "shrink_family": "metadata",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for schema_alias with a robust control.",
+      "family": "schema_alias",
+      "finding_classes": [],
+      "id": "schema_alias-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "schema_alias",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "schema_alias-control.yaml",
+      "shrink_family": "metadata",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for timestamp_precision with a deliberately sensitive observation.",
+      "family": "timestamp_precision",
+      "finding_classes": [
+        "timestamp_timezone"
+      ],
+      "id": "timestamp_precision-fragile",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "timestamp_precision",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "timestamp_precision-fragile.yaml",
+      "shrink_family": "timing",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for timestamp_precision with a robust control.",
+      "family": "timestamp_precision",
+      "finding_classes": [],
+      "id": "timestamp_precision-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "timestamp_precision",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "timestamp_precision-control.yaml",
+      "shrink_family": "timing",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for timezone with a deliberately sensitive observation.",
+      "family": "timezone",
+      "finding_classes": [
+        "timestamp_timezone"
+      ],
+      "id": "timezone-fragile",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "timezone",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "timezone-fragile.yaml",
+      "shrink_family": "timing",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for timezone with a robust control.",
+      "family": "timezone",
+      "finding_classes": [],
+      "id": "timezone-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "timezone",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "timezone-control.yaml",
+      "shrink_family": "timing",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for ordering with a deliberately sensitive observation.",
+      "family": "ordering",
+      "finding_classes": [
+        "ordering"
+      ],
+      "id": "ordering-fragile",
+      "metrics": [
+        {
+          "maximum": 0,
+          "metric": "detection_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 0,
+        "event_count": 2,
+        "order_inversions": 1
+      },
+      "probe_name": "ordering",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "ordering-fragile.yaml",
+      "shrink_family": "ordering",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for ordering with a robust control.",
+      "family": "ordering",
+      "finding_classes": [],
+      "id": "ordering-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "ordering",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "ordering-control.yaml",
+      "shrink_family": "ordering",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for optional_field with a deliberately sensitive observation.",
+      "family": "optional_field",
+      "finding_classes": [
+        "optional_field_dependency"
+      ],
+      "id": "optional_field-fragile",
+      "metrics": [
+        {
+          "maximum": 0,
+          "metric": "detection_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "drop:sensor",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "optional_field-fragile.yaml",
+      "shrink_family": "dropout",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for optional_field with a robust control.",
+      "family": "optional_field",
+      "finding_classes": [],
+      "id": "optional_field-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "drop:sensor",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "optional_field-control.yaml",
+      "shrink_family": "dropout",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for severity_mapping with a deliberately sensitive observation.",
+      "family": "severity_mapping",
+      "finding_classes": [
+        "severity_normalization"
+      ],
+      "id": "severity_mapping-fragile",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "severity_normalization",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "severity_mapping-fragile.yaml",
+      "shrink_family": "metadata",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for severity_mapping with a robust control.",
+      "family": "severity_mapping",
+      "finding_classes": [],
+      "id": "severity_mapping-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "severity_normalization",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "severity_mapping-control.yaml",
+      "shrink_family": "metadata",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for correlation_key with a deliberately sensitive observation.",
+      "family": "correlation_key",
+      "finding_classes": [
+        "correlation_key_dependency",
+        "optional_field_dependency"
+      ],
+      "id": "correlation_key-fragile",
+      "metrics": [
+        {
+          "maximum": 0,
+          "metric": "detection_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": {
+        "added_events": 0,
+        "changed_originals": 1,
+        "event_count": 2,
+        "order_inversions": 0
+      },
+      "probe_name": "drop:correlation_id",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "correlation_key-fragile.yaml",
+      "shrink_family": "dropout",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for correlation_key with a robust control.",
+      "family": "correlation_key",
+      "finding_classes": [],
+      "id": "correlation_key-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "drop:correlation_id",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "correlation_key-control.yaml",
+      "shrink_family": "dropout",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for benign_noise with a deliberately sensitive observation.",
+      "family": "benign_noise",
+      "finding_classes": [
+        "noise_sensitivity"
+      ],
+      "id": "benign_noise-fragile",
+      "metrics": [
+        {
+          "maximum": 0,
+          "metric": "detection_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": {
+        "added_events": 1,
+        "changed_originals": 0,
+        "event_count": 3,
+        "order_inversions": 0
+      },
+      "probe_name": "benign_noise",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "benign_noise-fragile.yaml",
+      "shrink_family": "noise",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for benign_noise with a robust control.",
+      "family": "benign_noise",
+      "finding_classes": [],
+      "id": "benign_noise-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "benign_noise",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "benign_noise-control.yaml",
+      "shrink_family": "noise",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": null,
+      "control": false,
+      "description": "Synthetic local evidence for volume with a deliberately sensitive observation.",
+      "family": "volume",
+      "finding_classes": [
+        "volume_sensitivity"
+      ],
+      "id": "volume-fragile",
+      "metrics": [
+        {
+          "maximum": 0,
+          "metric": "detection_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": {
+        "added_events": 1,
+        "changed_originals": 0,
+        "event_count": 3,
+        "order_inversions": 0
+      },
+      "probe_name": "bounded_volume",
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "volume-fragile.yaml",
+      "shrink_family": "volume",
+      "target_status": "fragile"
+    },
+    {
+      "comparison_fixture": null,
+      "control": true,
+      "description": "Synthetic local evidence for volume with a robust control.",
+      "family": "volume",
+      "finding_classes": [],
+      "id": "volume-control",
+      "metrics": [
+        {
+          "maximum": 1,
+          "metric": "detection_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": "bounded_volume",
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "volume-control.yaml",
+      "shrink_family": "volume",
+      "target_status": "robust"
+    },
+    {
+      "comparison_fixture": "changed-action.csv",
+      "control": false,
+      "description": "Synthetic local evidence for adapter_disagreement with a deliberately sensitive observation.",
+      "family": "adapter_disagreement",
+      "finding_classes": [
+        "adapter_disagreement"
+      ],
+      "id": "adapter_disagreement-fragile",
+      "metrics": [
+        {
+          "maximum": null,
+          "metric": "detection_rate",
+          "minimum": null
+        },
+        {
+          "maximum": 1,
+          "metric": "adapter_disagreement_rate",
+          "minimum": 1
+        }
+      ],
+      "minimum": null,
+      "probe_name": null,
+      "reason_code": "DVI-MATCH-NO-CANDIDATE",
+      "scenario": "adapter_disagreement-fragile.yaml",
+      "shrink_family": null,
+      "target_status": "disagree"
+    },
+    {
+      "comparison_fixture": "equivalent.csv",
+      "control": true,
+      "description": "Synthetic local evidence for adapter_disagreement with a robust control.",
+      "family": "adapter_disagreement",
+      "finding_classes": [],
+      "id": "adapter_disagreement-control",
+      "metrics": [
+        {
+          "maximum": null,
+          "metric": "detection_rate",
+          "minimum": null
+        },
+        {
+          "maximum": 0,
+          "metric": "adapter_disagreement_rate",
+          "minimum": 0
+        }
+      ],
+      "minimum": null,
+      "probe_name": null,
+      "reason_code": "DVI-MATCH-DETECTED",
+      "scenario": "adapter_disagreement-control.yaml",
+      "shrink_family": null,
+      "target_status": "agree"
+    }
+  ],
+  "event_budget": 256,
+  "schema_version": "1",
+  "seed": 42
+}

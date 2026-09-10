@@ -1,0 +1,3 @@
+action,category,correlation_id,dns_name,dst_ip,dst_port,event_id,http_method,http_path,labels,outcome,protocol,sensor,severity,src_ip,src_port,tags,timestamp,vendor
+different,alert,123,,,,probe:original:1,,,"[""lab""]",unknown,,lab-sensor,4,192.0.2.10,,"[""fixture""]",2026-01-01T00:00:00.000000+00:00,synthetic
+observed,alert,123,,,,probe:original:2,,,"[""lab""]",unknown,,lab-sensor,4,192.0.2.10,,"[""fixture""]",2026-01-01T00:00:01.000000+00:00,synthetic

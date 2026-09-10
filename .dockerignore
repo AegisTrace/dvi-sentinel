@@ -8,5 +8,7 @@
 !src/**
 !examples/
 !examples/**
+!benchmarks/
+!benchmarks/**
 **/__pycache__
 **/*.py[cod]

@@ -7,6 +7,8 @@ formatting, strict mypy and the complete pytest suite with branch coverage, and
 requires at least 90% combined coverage. It then builds a wheel/sdist, installs
 the wheel into an isolated environment, runs `pip check`, and invokes the installed
 CLI outside the checkout before running a bounded robust fixture and its CI gate.
+It also runs the expert benchmark script through the installed wheel and retains
+`benchmark_report.json`; the benchmark acceptance assertions are part of pytest.
 
 The workflow uses only `contents: read`; it requires no repository secrets and
 does not retain checkout credentials. It does not use `pull_request_target` or
@@ -58,6 +60,7 @@ python -m venv .venv-package
 .venv-package/bin/python -m dvi_sentinel.cli.main --version
 .venv-package/bin/dvi run examples/foundation_scenario.yaml --out runs/ci --seed 42 --event-budget 256 --json
 .venv-package/bin/dvi ci-check runs/ci --threshold 1 --json
+.venv-package/bin/python examples/run_benchmarks.py --out runs/benchmarks/benchmark_report.json
 ```
 
 On Windows, replace `bin/` with `Scripts/`, and pass the wheel path explicitly
