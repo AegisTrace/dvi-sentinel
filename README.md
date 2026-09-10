@@ -18,6 +18,8 @@ with [compatibility checks and regression thresholds](docs/regression_comparison
 [Failure shrinking](docs/failure_shrinking.md) retains minimal local evidence.
 [Run bundles](docs/run_artifacts.md) capture fixtures, derived analysis, and verified
 SHA-256 manifests for reproducible inspection.
+[JSON, Markdown and local HTML reports](docs/reports.md) explain these results
+with direct references to the underlying evidence.
 
 ## Development
 

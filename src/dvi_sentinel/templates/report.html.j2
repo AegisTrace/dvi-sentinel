@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>{{ report.run.configuration.reporting.title }} · DVI Sentinel</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #172b35; background: #f3f5f5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-size: 15px; line-height: 1.6; }
+    a { color: #065e71; text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid #ba5b0b; outline-offset: 3px; }
+    .skip { position: absolute; top: -4rem; left: 1rem; background: white; padding: .5rem; }
+    .skip:focus { top: 0; }
+    header { background: #102c36; color: #fff; padding: 3rem max(2rem, calc((100vw - 1220px) / 2)); }
+    .eyebrow { text-transform: uppercase; letter-spacing: .16em; color: #a4dbe2; font-size: .75rem; font-weight: 700; }
+    h1 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); line-height: 1.2; margin: .7rem 0; max-width: 950px; }
+    header p { margin: .7rem 0 0; color: #d6e7eb; overflow-wrap: anywhere; }
+    .layout { max-width: 1284px; margin: auto; padding: 2rem; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 2rem; }
+    nav { align-self: start; position: sticky; top: 1.5rem; }
+    nav a { display: block; padding: .4rem 0; font-size: .85rem; }
+    main { min-width: 0; }
+    .counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7rem; margin-bottom: 2rem; }
+    .count { background: #fff; border: 1px solid #d4dfe1; border-top: 3px solid #246c78; padding: 1rem; }
+    .count strong { display: block; font-size: 2rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+    .count span { color: #4b616a; font-size: .85rem; }
+    section { background: #fff; border: 1px solid #d4dfe1; margin-bottom: 1.4rem; padding: 1.4rem; scroll-margin-top: 1rem; }
+    h2 { font-size: 1.15rem; margin: 0 0 1rem; }
+    p { overflow-wrap: anywhere; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+    caption { text-align: left; color: #4b616a; margin-bottom: .5rem; }
+    th { text-align: left; background: #edf3f4; font-weight: 650; }
+    th, td { padding: .7rem; border-bottom: 1px solid #dce5e7; vertical-align: top; overflow-wrap: anywhere; max-width: 360px; }
+    tbody tr:nth-child(even) { background: #f8fafb; }
+    code { font-size: .78rem; overflow-wrap: anywhere; }
+    .inventory li { margin: .8rem 0; }
+    .inventory code { display: block; color: #4b616a; }
+    footer { color: #4b616a; font-size: .8rem; padding: 0 0 2rem; }
+    @media (max-width: 850px) { .layout { grid-template-columns: 1fr; padding: 1rem; } nav { position: static; } nav a { display: inline-block; margin-right: 1rem; } .counts { grid-template-columns: repeat(2, 1fr); } header { padding: 2rem 1rem; } }
+    @media print { body { background: #fff; } header { background: #fff; color: #172b35; padding: 1rem; } header p, .eyebrow { color: #172b35; } nav { display: none; } .layout { display: block; padding: 0; } section { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to report</a>
+<header>
+  <div class="eyebrow">DVI Sentinel / local fixture report</div>
+  <h1>{{ report.run.configuration.reporting.title }}</h1>
+  <p>{{ report.run.configuration.metadata.title }} · seed {{ report.run.seed }} · {{ report.run.tool_version }}</p>
+  <p>{{ report.run.run_id }}</p>
+</header>
+<div class="layout">
+  <nav aria-label="Report sections">{% for section in sections %}<a href="#{{ section.id }}">{{ section.title }}</a>{% endfor %}<a href="#inventory">Artifact inventory</a></nav>
+  <main id="main">
+    <div class="counts" aria-label="Variant outcomes; baseline excluded">
+      <div class="count"><strong>{{ report.frontier.metrics.detected }}</strong><span>Detected variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.missed }}</strong><span>Missed variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.unknown }}</strong><span>Unknown variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.invalid }}</strong><span>Invalid variants</span></div>
+    </div>
+    {% for section in sections %}
+    <section id="{{ section.id }}" aria-labelledby="title-{{ section.id }}">
+      <h2 id="title-{{ section.id }}">{{ section.title }}</h2>
+      {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+      {% if section.rows %}<div class="table-wrap" tabindex="0" role="region" aria-label="{{ section.title }} table"><table>
+        <caption>{{ section.title }} evidence</caption>
+        <thead><tr>{% for column in section.columns %}<th scope="col">{{ column }}</th>{% endfor %}</tr></thead>
+        <tbody>{% for row in section.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+      </table></div>{% endif %}
+    </section>
+    {% endfor %}
+    <section id="inventory" aria-labelledby="title-inventory">
+      <h2 id="title-inventory">Artifact inventory</h2>
+      <p>Relative links resolve inside this bundle. JSONL references in provenance.json use one-based lines and JSON Pointers within each record.</p>
+      <ul class="inventory">{% for artifact in report.provenance.artifacts %}<li><a href="{{ artifact.path }}">{{ artifact.path }}</a><code>SHA-256 {{ artifact.sha256 }} · {{ artifact.size_bytes }} bytes</code></li>{% endfor %}</ul>
+      <p><a href="report.json">Machine report</a> · <a href="provenance.json">Finding provenance</a> · <a href="manifest.json">Final manifest</a></p>
+    </section>
+    <footer>Report schema {{ report.schema_version }}. Local synthetic evidence; no network resources or executable report content.</footer>
+  </main>
+</div>
+</body>
+</html>

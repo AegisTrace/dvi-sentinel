@@ -41,7 +41,12 @@ def main() -> None:
             scenario.expected,
         ),
     )
-    files = build_run_artifacts(evidence, started_at=started, finished_at=datetime.now(UTC))
+    files = build_run_artifacts(
+        evidence,
+        started_at=started,
+        finished_at=datetime.now(UTC),
+        command=("python", "examples/write_run_artifacts.py"),
+    )
     output = root.parent / "runs/artifact-proof"
     written = write_artifacts(output, files, overwrite=True)
     verified = verify_artifacts(output, expected_manifest_digest=written.manifest_digest)

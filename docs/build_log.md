@@ -283,3 +283,33 @@ no execution/network capability, preservation of unowned output, and honest
 limits on hashes, detector claim verification, overwrite crash recovery and
 filesystem concurrency. See `docs/run_artifacts.md`. Phase 11 remote CI passed
 at `9fd00af` before implementation began.
+
+## Phase 13 — Explainable reports and provenance
+
+Implemented: reports from verified bundles, JSON/Markdown/HTML and provenance,
+all requested human sections with explicit absent-analysis states, actual
+regression comparison with captured baseline/thresholds, escaped local rendering,
+and direct finding-to-file/record/field hashes.
+
+Full suite: 341 passed with the documented Windows symlink privilege skip.
+`tests/test_reports.py`: 10 tests pass on Python 3.12 and 3.13. Ruff check/format,
+strict mypy (42 source files), and isolated wheel/sdist builds passed. The wheel
+contains the HTML template. `examples/render_report.py` adds four verified report
+files to `runs/artifact-proof/`; repeated generation is byte-identical. Tests
+prove 2/11 detected and 9/11 missed, unknown-only result fixtures, escaping of
+HTML/Markdown/template-looking text, no external resource elements, valid anchor
+targets, optional-section messages, regression persistence, and resolution of
+variation/probe/schema finding references.
+
+Review checked preservation of input artifacts, source inventory hashing without
+report recursion, local links, explicit invocation arguments, no execution or
+network capability, and accessible document structure. The artifact integration
+fixture was shared with report tests without changing engine behavior. See
+`docs/reports.md`. Phase 12 remote CI passed at `189e767` before implementation.
+
+Outstanding release proof: automated browser navigation to the local HTML URL
+was rejected by the browser URL policy, which also prohibited alternate browser
+workarounds. A native Codex file-preview request was accepted as queued, but the
+tools did not confirm rendered display. No visual inspection is claimed. This
+check remains pending while implementation continues at the user's instruction;
+it must be resolved before the release gate can pass.

@@ -1,0 +1,12 @@
+## Scenario and safety
+## Resilience frontier
+## Variation families
+## Fragility findings
+## Detected, missed, unknown and invalid cases
+## Assumption probes
+## Cross-schema differential
+## Minimal reproducer and root cause
+## Baseline regression comparison
+## Reproduction and artifact references
+## Limitations
+## Artifact inventory

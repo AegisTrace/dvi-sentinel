@@ -6,47 +6,15 @@ from pathlib import Path
 
 import pytest
 
-from dvi_sentinel.adapters import normalize
 from dvi_sentinel.artifact_models import REQUIRED_ARTIFACTS, ArtifactManifest
 from dvi_sentinel.artifact_store import ArtifactError, verify_artifacts, write_artifacts
-from dvi_sentinel.differential import run_differential
-from dvi_sentinel.harness import FixtureHarness, RuleLogicHarness
+from dvi_sentinel.harness import FixtureHarness
 from dvi_sentinel.harness_models import FixtureCase, FixtureResults, HarnessRequest
-from dvi_sentinel.probes import run_probes
-from dvi_sentinel.run_artifacts import FixtureCapture, RunEvidence, build_run_artifacts, json_bytes
+from dvi_sentinel.run_artifacts import FixtureCapture, build_run_artifacts, json_bytes
 from dvi_sentinel.scenario import Scenario
-from dvi_sentinel.scenario_io import load_scenario
 from dvi_sentinel.serialization import canonical_json, parse_json
-from dvi_sentinel.shrinking import FailureShrinker
-from dvi_sentinel.variations import plan_variations
 
-ROOT = Path(__file__).parents[1] / "examples"
 NOW = datetime(2026, 9, 10, tzinfo=UTC)
-
-
-@pytest.fixture(scope="module")
-def evidence():
-    scenario, _ = load_scenario(ROOT / "artifact_scenario.yaml")
-    capture = FixtureCapture(scenario.inputs[0], (ROOT / scenario.inputs[0].path).read_bytes())
-    events = normalize(capture.content, "jsonl").events
-    detector = RuleLogicHarness(scenario.harness)
-    plan = plan_variations(scenario.metadata.id, events, scenario.variations, 42)
-    return RunEvidence(
-        scenario=scenario,
-        fixtures=(capture,),
-        plan=plan,
-        observations=tuple(
-            detector.evaluate(HarnessRequest(case_id=c.id, events=c.events)) for c in plan.cases
-        ),
-        probes=run_probes(events, scenario.variations, detector, expected=scenario.expected),
-        differential=run_differential(events, detector, expected=scenario.expected),
-        minimal=FailureShrinker(detector).shrink(
-            events,
-            max(plan.cases, key=lambda c: len(c.events)),
-            scenario.variations,
-            scenario.expected,
-        ),
-    )
 
 
 def bundle(evidence, when=NOW):
