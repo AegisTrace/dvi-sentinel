@@ -1,8 +1,16 @@
 services:
   dvi:
     build: .
+    image: dvi-sentinel:local
+    user: "${DVI_UID:-10001}:${DVI_GID:-10001}"
     network_mode: none
     read_only: true
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
-    command: [dvi, --help]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m
+    volumes:
+      - type: bind
+        source: ./runs
+        target: /runs
+    command: [dvi, doctor]

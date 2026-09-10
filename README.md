@@ -41,6 +41,23 @@ python -m build
 Alternatively, use `uv sync --extra dev` and prefix commands with `uv run`.
 See [foundation notes](docs/foundation.md) for the implemented boundary.
 
+## Docker
+
+From the repository root with Docker Desktop's Linux engine (PowerShell):
+
+```powershell
+New-Item -ItemType Directory -Force runs | Out-Null
+docker build -t dvi-sentinel:local .
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges dvi-sentinel:local dvi doctor --json
+docker compose run --rm dvi dvi run examples/foundation_scenario.yaml --out /runs/docker-proof --seed 42 --event-budget 256 --json
+docker compose run --rm dvi dvi ci-check /runs/docker-proof --threshold 1 --json
+```
+
+Artifacts appear in `runs/docker-proof/` on the host. Use a new output name for
+each run, or explicitly add `--overwrite` to replace a verified previous bundle.
+See [Docker reproduction](docs/docker.md) for Linux mount ownership, direct
+`docker run`, custom fixture mounts, dependency pins and verification details.
+
 ## Safety
 
 V1 is limited to local fixtures and synthetic telemetry. Live scanning,

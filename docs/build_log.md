@@ -364,3 +364,35 @@ permissions, disabled credential persistence, no required secrets, job timeout,
 concurrency cancellation, scoped seven-day evidence uploads, and session-wide
 test guards against Python DNS/socket I/O. The guard does not claim an OS sandbox.
 Phase 14 remote CI passed at `c05f576` before implementation began.
+
+## Phase 16 — Docker reproducibility
+
+Acceptance: pinned slim Python, non-root offline CLI, bounded temporary storage,
+documented host artifact mounts, no ports/services/privileges, and a real mounted
+fixture run after the native quality gate passed.
+
+Docker Desktop's Linux amd64 engine 29.5.2 built the image successfully from the
+official Python 3.13.15 slim Bookworm index pinned by digest. Pip installed the
+hash-verified runtime export of `uv.lock` and checked the installed package.
+Both direct `docker run` and Compose created complete host bundles under
+`runs/docker-direct/` and `runs/docker-proof/`. Doctor passed; the bounded example
+detected all 31 variants, with no misses, unknowns, invalids or findings, and its
+threshold-1 gate passed. Run ID: `run:23edb6b6d7b011729fa4caa8`.
+
+Native/container `dvi compare` passed with zero metric changes. Eight core
+analysis artifacts, including variations, matches, probes and schema comparison,
+matched the native run byte for byte. Both complete manifests verified. The
+Compose bundle manifest digest is
+`f4f09936cc339b8df79aa3f7f1bb28ea43cc891a1ceeb6a30fb85703128de98b`.
+Container checks confirmed UID/GID 10001, zero effective capabilities,
+no-new-privileges, loopback-only interfaces, a read-only root and writable tmpfs.
+README PowerShell commands and `docker compose config --quiet` passed.
+
+Full native suite: 360 passed, one documented Windows symlink privilege skip;
+Ruff check/format, strict mypy and wheel/sdist builds passed. Self-review covered
+the restricted build context, runtime/build network distinction, mount ownership,
+explicit overwrite, absent checkout metadata and honest image reproducibility
+limits. No runtime engine change or prohibited capability was introduced.
+Phase 15 CI passed at `3c77fb5`; the user's deletion of `AGENTS.md` at `9560d07`
+was fast-forwarded and preserved. Its CI also passed. The separate Phase 13
+rendered-HTML visual proof remains pending before release.
