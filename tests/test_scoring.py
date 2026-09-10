@@ -142,6 +142,39 @@ def test_outcome_partition_and_rate_bounds(statuses):
     assert not result.findings
 
 
+@given(
+    st.lists(
+        st.tuples(
+            st.sampled_from(["detected", "missed", "unknown"]),
+            st.booleans(),
+            st.sampled_from([True, False, None]),
+        ),
+        max_size=20,
+    )
+)
+def test_mixed_invalid_and_unparsed_cases_keep_honest_denominators(cases):
+    rows = tuple(
+        assessment(f"case:{i}", status=status, valid=valid, parser=parsed)
+        for i, (status, valid, parsed) in enumerate(cases)
+    )
+    score = summarize(rows)
+    valid_count = sum(valid for _, valid, _ in cases)
+    hits = sum(status == "detected" and valid and parsed is True for status, valid, parsed in cases)
+    misses = sum(status == "missed" and valid and parsed is True for status, valid, parsed in cases)
+    assert score.metrics.invalid == len(cases) - valid_count
+    assert score.metrics.detected == hits and score.metrics.missed == misses
+    assert score.metrics.unknown == valid_count - hits - misses
+    assert (
+        score.metrics.detection_rate.denominator
+        == score.metrics.unknown_rate.denominator
+        == valid_count
+    )
+    assert score.metrics.measured_detection_rate.denominator == hits + misses
+    assert score.metrics.latency_samples == hits
+    assert summarize((assessment("baseline", family="baseline"), *rows)).metrics == score.metrics
+    assert canonical_json(summarize(tuple(reversed(rows)))) == canonical_json(score)
+
+
 @pytest.mark.parametrize("rule_id", ["duplicates", "robust"])
 def test_real_variation_benchmark_has_expected_frontier_and_evidence(rule_id):
     events = normalize((ROOT / "probes/events.jsonl").read_bytes(), "jsonl").events

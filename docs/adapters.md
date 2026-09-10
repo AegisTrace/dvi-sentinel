@@ -11,6 +11,8 @@ normalized events, and structured errors (code, record index, path, explanation)
 records in a partial failure remain inspectable but must not imply a successful
 experiment. JSONL indices are physical lines; CSV indices are record numbers,
 counting the header as record 1, not physical lines within quoted cells.
+JSONL accepts LF or CRLF record terminators. Unicode line/paragraph characters
+inside JSON strings remain part of the string; they do not create records.
 
 ## Generic JSONL and CSV mapping
 

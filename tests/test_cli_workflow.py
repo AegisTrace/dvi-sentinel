@@ -1,4 +1,5 @@
 import importlib
+import json
 from pathlib import Path
 
 import pytest
@@ -50,6 +51,28 @@ def test_doctor_checks_installed_runtime_and_template():
     assert result.exit_code == 0 and parse_json(result.output)["status"] == "ready"
     assert all(check["status"] == "pass" for check in parse_json(result.output)["checks"])
     assert runner.invoke(app, ["doctor"]).exit_code == 0
+
+
+def test_unicode_jsonl_labels_survive_the_complete_cli_pipeline(tmp_path):
+    scenario = scenario_file(tmp_path, robust=True)
+    source = tmp_path / "probes/events.jsonl"
+    records = [parse_json(line) for line in source.read_bytes().splitlines()]
+    label = "lab\u0085fixture\u2028text\u2029end"
+    records[0]["labels"] = [label]
+    source.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in records) + "\n", encoding="utf-8"
+    )
+    output = tmp_path / "unicode-output"
+    result = runner.invoke(app, ["run", str(scenario), "--out", str(output), "--json"])
+    assert result.exit_code == 0, result.output
+    assert parse_json(result.output)["missed"] == 0
+    assert verify_artifacts(output).valid
+    normalized = [
+        parse_json(line) for line in (output / "normalized_events.jsonl").read_bytes().splitlines()
+    ]
+    assert normalized[0]["labels"] == [label]
+    assert normalized[0]["raw"]["record_index"] == 1
+    assert runner.invoke(app, ["ci-check", str(output), "--threshold", "1"]).exit_code == 0
 
 
 def test_doctor_reports_package_metadata_failure(monkeypatch):

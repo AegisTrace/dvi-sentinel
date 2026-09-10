@@ -396,3 +396,37 @@ limits. No runtime engine change or prohibited capability was introduced.
 Phase 15 CI passed at `3c77fb5`; the user's deletion of `AGENTS.md` at `9560d07`
 was fast-forwarded and preserved. Its CI also passed. The separate Phase 13
 rendered-HTML visual proof remains pending before release.
+
+## Phase 17 — Property, metamorphic and interaction hardening
+
+Acceptance: strengthen complete-engine behavioral evidence across model/policy
+boundaries, parsers, variation interactions, probes, schema equivalence, matching,
+frontier arithmetic, regression, shrinking, artifact tampering and CLI behavior.
+
+Added 31 test cases plus generated inputs: bounded arbitrary fixture bytes,
+partial-line locations, Unicode/offset model round-trips, inert scenario text,
+numeric safety rejection, normalized prohibited-key spellings, eight-row pairwise
+coverage of seven planner parameters, full matcher/schema endpoint equivalence,
+candidate permutation invariance, honest mixed-outcome denominators, regression
+and recovery across seeds, robust/missing-evidence probes, threshold-based
+shrinker minimality, byte mutation/restoration and complete Unicode CLI runs.
+
+The Unicode JSONL regressions initially failed for U+0085, U+2028 and U+2029.
+Corrected the parser to split physical LF boundaries instead of general Unicode
+text lines; CRLF and the terminal-newline/10,000-record limit remain explicit.
+This is the only production change in this phase and does not add capabilities.
+
+Full Python 3.13 coverage suite: 391 passed, one documented Windows symlink
+privilege skip, 95% combined coverage. Focused Python 3.12 model, metamorphic,
+matching, scoring and CLI suite: 77 passed using seed 20260910. The artifact and
+matching hardening subset also passed on Python 3.13. Ruff check/format, strict
+mypy and isolated wheel/sdist builds passed. Property generation now defaults to
+deterministic cases with reproduction blobs, with explicit smaller budgets on
+costlier properties. Reproduction commands, coverage map and limits are recorded
+in `docs/testing.md`.
+
+Self-review checked that assertions exercise real detectors and independent
+invariants, minimum claims stay local, temporary mutation cases do not share
+state, and no skips/health-check suppression or unstable clocks were added.
+Phase 16 remote CI passed at `354c678` before hardening. The separate Phase 13
+visual browser-render release gate remains unresolved.

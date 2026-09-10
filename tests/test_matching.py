@@ -92,6 +92,26 @@ def test_true_match_contains_normalized_evidence_and_roundtrips():
     assert MatchResult.model_validate_json(canonical_json(result)) == result
 
 
+@given(st.permutations((0, 1, 2, 3)))
+def test_candidate_permutations_do_not_change_existential_match_or_reasons(order):
+    candidates = (
+        observed(event_id="a:hit"),
+        observed(event_id="b:signature", signature="different"),
+        observed(event_id="c:severity", severity=0),
+        observed(event_id="d:hit"),
+    )
+    first = evaluate(detections=candidates)
+    permuted = evaluate(detections=tuple(candidates[index] for index in order))
+    assert canonical_json(first) == canonical_json(permuted)
+    assert permuted.matching_event_ids == ("a:hit", "d:hit")
+    assert permuted.status == "detected" and permuted.reason == "DVI-MATCH-DETECTED"
+    assert {c.reason for c in permuted.candidates} == {
+        "DVI-MATCH-DETECTED",
+        "DVI-MATCH-SIGNATURE",
+        "DVI-MATCH-SEVERITY",
+    }
+
+
 @pytest.mark.parametrize(
     ("changes", "code", "field"),
     [

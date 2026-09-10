@@ -4,6 +4,7 @@ import socket
 from pathlib import Path
 
 import pytest
+from hypothesis import settings
 
 from dvi_sentinel.adapters import normalize
 from dvi_sentinel.differential import run_differential
@@ -14,6 +15,9 @@ from dvi_sentinel.run_artifacts import FixtureCapture, RunEvidence
 from dvi_sentinel.scenario_io import load_scenario
 from dvi_sentinel.shrinking import FailureShrinker
 from dvi_sentinel.variations import plan_variations
+
+settings.register_profile("dvi", max_examples=100, deadline=None, derandomize=True, print_blob=True)
+settings.load_profile("dvi")
 
 
 @pytest.fixture(scope="session", autouse=True)

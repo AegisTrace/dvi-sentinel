@@ -40,6 +40,8 @@ python -m build
 
 Alternatively, use `uv sync --extra dev` and prefix commands with `uv run`.
 See [foundation notes](docs/foundation.md) for the implemented boundary.
+See [behavioral verification](docs/testing.md) for property seeds, interaction
+coverage and the contracts checked by the suite.
 
 ## Docker
 

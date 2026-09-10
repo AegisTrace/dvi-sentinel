@@ -84,7 +84,9 @@ def normalize(content: bytes, adapter: str) -> NormalizationResult:
             raise ValueError("DVI-ADAPTER-SIZE: fixture exceeds 2 MiB")
         text = content.decode("utf-8-sig")
         if adapter in {"jsonl", "suricata_eve"}:
-            for index, line in enumerate(text.splitlines(), 1):
+            # JSONL uses LF (optionally preceded by CR), not Unicode text separators.
+            # Remove only the terminator so a final LF does not consume a record slot.
+            for index, line in enumerate(text.removesuffix("\n").split("\n"), 1):
                 if index > 10_000:
                     raise ValueError("DVI-ADAPTER-SIZE: record limit exceeded")
                 if not line.strip():

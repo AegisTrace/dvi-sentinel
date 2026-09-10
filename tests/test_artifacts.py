@@ -3,8 +3,11 @@ import os
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pytest
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from dvi_sentinel.artifact_models import REQUIRED_ARTIFACTS, ArtifactManifest
 from dvi_sentinel.artifact_store import ArtifactError, verify_artifacts, write_artifacts
@@ -66,6 +69,28 @@ def test_repeated_runs_only_change_documented_clock_fields(tmp_path, evidence):
     assert (tmp_path / "one/manifest.json").read_bytes() == (
         tmp_path / "two/manifest.json"
     ).read_bytes()
+
+
+@settings(max_examples=8)
+@given(
+    st.sampled_from(["score.json", "matches.jsonl", "normalized_events.jsonl", "run.json"]),
+    st.integers(min_value=0, max_value=1_000_000),
+    st.integers(min_value=1, max_value=255),
+)
+def test_single_byte_mutation_is_detected_and_exact_restoration_recovers(
+    evidence, name, offset, mask
+):
+    with TemporaryDirectory(prefix="dvi-tamper-test-") as temporary:
+        root = Path(temporary) / "run"
+        anchor = write_artifacts(root, bundle(evidence)).manifest_digest
+        path = root / name
+        before = path.read_bytes()
+        mutated = bytearray(before)
+        mutated[offset % len(before)] ^= mask
+        path.write_bytes(mutated)
+        assert not verify_artifacts(root, expected_manifest_digest=anchor).valid
+        path.write_bytes(before)
+        assert verify_artifacts(root, expected_manifest_digest=anchor).valid
 
 
 @pytest.mark.parametrize("kind", ["changed", "missing", "extra", "empty_directory", "manifest"])
