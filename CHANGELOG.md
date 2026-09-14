@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased - V2 development
+
+### Planning
+
+- Defined the semantic-engine scope, ordered implementation cards, safety categories,
+  V1 compatibility requirements and release gates in `docs/v2_architecture.md`.
+- Added the one-card development standard and separated planned V2 capabilities
+  from released V1 behavior. This scope-lock change adds no runtime capability,
+  dependency or new command.
+
 ## 1.0.0 — 2026-09-14
 
 ### Implemented

@@ -12,6 +12,10 @@ See the [release verification](docs/release_v1.md),
 [safety audit](RELEASE_SAFETY_REVIEW.md) and [changelog](CHANGELOG.md) for evidence
 and limits. HTML readability was confirmed by the project owner.
 
+**V2 is in development.** The released commands and behavior described below are
+V1. The [V2 scope](docs/v2_architecture.md) defines the next implementation sequence;
+planned V2 capabilities are not release features.
+
 ## Run a finding
 
 With Git and Python 3.12 or 3.13 installed, from an unused directory (PowerShell):
@@ -132,8 +136,25 @@ not live validation, ATT&CK coverage, Sigma execution or full schema compliance.
 
 Read the [architecture](docs/architecture.md), [engineering notes](docs/engineering_notes.md),
 [research sources](docs/research_sources.md) and [decision records](docs/adr/README.md)
-for the implementation choices. [V1.5/V2 ideas](docs/roadmap.md) remain roadmap
-only. The [changelog](CHANGELOG.md) records delivered behavior and release status.
+for the implementation choices. The [roadmap](docs/roadmap.md) separates the V2
+development plan from further research. The [changelog](CHANGELOG.md) records
+delivered behavior and release status.
+
+## V2 development roadmap
+
+The V2 target is to analyze local defensive telemetry fixtures for brittle schema,
+timing, correlation and evidence assumptions. Work starts with explicit semantic
+signals and evidence bindings, then adds executable relations, loss-aware profile
+projections, bounded temporal reasoning and independent oracle decisions. Search,
+counterfactuals, uncertainty, graphs and reports follow only after those foundations
+have executable proof.
+
+At the scope-lock stage, these are planned capabilities: no V2 runtime extension
+is implemented yet. V1 remains available at the `v1.0.0` tag. See the ordered
+[V2 architecture contract](docs/v2_architecture.md),
+[development standard](docs/development_standard.md) and
+[card evidence record](docs/v2_build_log.md). Each card must pass tests, packaging
+and CI before the next starts. V2 keeps the same local synthetic/fixture boundary.
 
 Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [code of conduct](CODE_OF_CONDUCT.md). Report vulnerabilities privately through
