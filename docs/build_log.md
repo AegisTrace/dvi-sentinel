@@ -512,3 +512,23 @@ run and the complete 20-case/275-check benchmark report match byte for byte.
 Commands, versions, artifact paths and hashes are in `docs/reproduction.md`.
 Phase 19 CI passed before verification. Phase 13 visual readability remains an
 open release gate; structural/report-integrity proof does not replace it.
+
+## Phase 21 — Release safety audit
+
+Reviewed all 148 tracked files at `8d10c66`, including runtime, examples, fixtures,
+tests, documentation/comments, CLI help, report templates, Docker/CI and roadmap
+wording. AST import/call checks covered 50 runtime modules, seven examples and 19
+test modules. No prohibited capability was identified; the sole socket import is
+the test guard. Inspected policy/preflight/post-transformation call sites, local
+path restrictions, output ownership/rollback, escaping, dependency/CI settings
+and inert negative-test content. Targeted secret-pattern searches had no matches.
+
+All 22 shipped scenarios pass policy/normalization; SHA-256 inventories confirm
+40 example/benchmark files were unchanged. Actionlint passes. The audited runtime
+is unchanged from Phase 20's full test, installed-wheel, benchmark and Docker
+proof; CI passed for both Python versions before the review completed.
+
+`RELEASE_SAFETY_REVIEW.md` records scope, methods, evidence, no required runtime
+remediation, legacy standalone-proof overwrite behavior and residual trust limits.
+The review supports the fixture-only boundary and explicitly does not waive the
+Phase 13 visual gate or final packaging requirements.
