@@ -22,7 +22,8 @@ Only generated documentation-fixture evidence and coverage XML are uploaded, wit
 seven-day retention and a distinct name for each Python version. No credentials,
 external logs, arbitrary workspace directories or hidden files are selected.
 These artifacts make failures and report provenance inspectable without rerunning
-the job. They do not establish the outstanding visual browser-render proof.
+the job. They do not establish visual readability, which was separately confirmed
+by the project owner for V1; see [release verification](release_v1.md).
 
 ## Action pinning policy
 

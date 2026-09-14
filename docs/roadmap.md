@@ -1,9 +1,8 @@
 # Roadmap
 
-The V1 candidate implements the local fixture workflow documented in the README.
-Its release remains gated on rendered HTML readability. Future work starts only
-after all V1 release gates pass; the items below are research directions, not
-supported features or delivery commitments.
+V1 implements the local fixture workflow documented in the README. Its evidence
+is recorded in [release verification](release_v1.md). The items below are research
+directions, not supported features or delivery commitments.
 
 ## V1.5 candidates
 

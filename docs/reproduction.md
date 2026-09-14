@@ -10,8 +10,9 @@ execution reads synthetic local fixtures and requires no credentials or targets.
 The recorded checkout is `runs/phase20-checkout/` beneath the original repository.
 Start from an unused directory. Outputs are created under the new checkout's
 `runs/`; existing output directories are deliberately refused. This proves the
-development candidate's executable workflow. The separate rendered HTML check
-remains open; this record does not declare a release.
+development candidate's executable workflow. At the time of these runs, the
+rendered HTML check was still open. The project owner subsequently confirmed
+readability on 2026-09-14; final V1 checks are in [release verification](release_v1.md).
 
 ## Install and execute
 
@@ -204,5 +205,5 @@ The fragile report's verified manifest was
 `a7d6de8e17364431b58f68cb919ffeebb7de763cd1cfd6829ca8e2a573a8075c`;
 the robust run's was
 `cb38e2369255cf3049f0700daf791aa420b9abb4aadaf88e10821e5f2b320c3b`.
-This additional check validates the reader's command path and does not constitute
-the outstanding rendered HTML inspection.
+This additional check validates the reader's command path. The separate rendered
+HTML inspection was subsequently confirmed by the project owner, as recorded above.

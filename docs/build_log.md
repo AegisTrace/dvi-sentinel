@@ -1,5 +1,9 @@
 # Build proof record
 
+Current release status: the project owner confirmed HTML readability on
+2026-09-14. The earlier open-gate entries below preserve what was known at each
+phase; see [final V1 verification](release_v1.md) for the completed checks.
+
 ## Phase 0 — Repository foundation
 
 Acceptance came from the Phase 0 card on the authoritative Trello board:
@@ -569,3 +573,27 @@ Browser URL policy explicitly blocked that navigation and alternate browser
 workarounds; the native file-preview request did not confirm a rendered view.
 No screenshot, completed visual check, version promotion or release tag is claimed.
 Phase 22 and the overall release remain open until this external proof is resolved.
+
+## V1 release gate resolved — 2026-09-14
+
+The project owner confirmed the rendered report: “Visual seems good.” This is
+human visual evidence; no automated rendering or screenshot is claimed. Phase 13
+was marked complete in the signed-in Trello UI with that confirmation preserved.
+
+Promoted the version to `1.0.0` in packaging, the runtime constant and the lockfile;
+removed the alpha classifier and corrected current-status documentation. The
+report template, runtime behavior, safety policies and dependencies are unchanged.
+The user's `AGENTS.md` deletion and root ignore rule remain intact.
+
+Local Python 3.13 verification passed 418 tests with the expected Windows symlink
+skip in 145.21 seconds and 95% coverage. Ruff, format, strict mypy, actionlint and
+lock checks passed. Built a wheel/sdist and installed the wheel in a new runtime-only
+Python 3.12.14 environment. Doctor/version/validation, real robust and fragile runs,
+0/1 CI gates, repeat comparison, deterministic report regeneration, 20 benchmarks
+with 275 checks, nine-miss regression and manifest verification all passed.
+
+Built and ran `dvi-sentinel:1.0.0` with container networking disabled, a read-only
+root and a confined output mount. Both outcomes/gates and benchmarks passed;
+eight analysis files per sample and complete benchmark bytes match native output.
+[Release verification](release_v1.md) records the scope, commands and digests.
+The release commit must pass remote CI before its tag and GitHub release are published.

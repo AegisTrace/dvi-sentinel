@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — V1 candidate (`0.1.0.dev0`)
+## 1.0.0 — 2026-09-14
 
 ### Implemented
 
@@ -23,9 +23,10 @@
 - JSONL parsing now uses physical LF boundaries so U+0085/U+2028/U+2029 inside
   valid JSON strings remain intact. CRLF and terminal-newline behavior are tested.
 
-### Release status
+### Release verification
 
-No V1 release is tagged. The rendered HTML readability check remains open despite
-passing content, escaping, provenance and deterministic regeneration tests. The
-[build log](docs/build_log.md) records actual incremental work and verification;
-the [roadmap](docs/roadmap.md) lists intentionally deferred capabilities.
+The project owner confirmed rendered HTML readability on 2026-09-14, completing
+the visual check alongside passing content, escaping, provenance and deterministic
+regeneration tests. [Release verification](docs/release_v1.md) records the final
+checks; the [build log](docs/build_log.md) preserves incremental work and the
+[roadmap](docs/roadmap.md) lists intentionally deferred capabilities.

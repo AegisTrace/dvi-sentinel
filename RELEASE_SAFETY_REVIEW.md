@@ -8,8 +8,9 @@ fixtures, comments, CLI help, report templates, Docker/CI and roadmap statements
 **Safety conclusion:** no prohibited capability or unresolved unsafe behavior was
 identified within the declared V1 boundary. DVI Sentinel is a defensive,
 fixture-based resilience harness. It evaluates synthetic local telemetry and
-local detector models. This review is not a release declaration: Phase 13 visual
-readability and final packaging verification remain separate release gates.
+local detector models. The project owner confirmed Phase 13 visual readability
+on 2026-09-14. Final version and packaging checks are recorded in
+[release verification](docs/release_v1.md).
 
 ## Checks and evidence
 
@@ -91,6 +92,6 @@ script refuses an existing output file.
 - This review addresses the requested capability/safety boundary. It is not a
   penetration test, dependency CVE assessment, third-party certification or
   guarantee of production detector resilience.
-- HTML integrity, escaping and links passed tests; visual readability still
-  requires the separate Phase 13 rendered-view check. No release tag is justified
-  while that gate remains unresolved.
+- HTML integrity, escaping and links passed tests. Visual readability was
+  separately confirmed by the project owner on 2026-09-14; this review does not
+  claim an automated browser inspection or accessibility certification.

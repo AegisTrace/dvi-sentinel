@@ -19,9 +19,9 @@ There is no guaranteed response or remediation time.
 
 ## Supported state and limits
 
-The current `0.1.0.dev0` candidate is unreleased; reports should identify a commit
-and reproduce against current main when practical. No stable maintenance branch
-or production-support guarantee is offered.
+The current release is `1.0.0`; reports should identify the affected version or
+commit and reproduce against current main when practical. No separate maintenance
+branch or production-support guarantee is offered.
 
 Use a trusted local filesystem and validated public APIs. Policy is not an OS
 sandbox, provenance declarations are not content classification, and unkeyed

@@ -7,9 +7,10 @@ telemetry, then preserves an explained finding and a bounded counterexample.
 It uses only synthetic/documentation fixtures: no live targets, attack traffic,
 scenario commands or external detector integrations.
 
-**Status:** V1 development candidate, `0.1.0.dev0`. Executable release checks and
-the [safety audit](RELEASE_SAFETY_REVIEW.md) pass; rendered HTML readability remains
-an open release gate. No V1 release is tagged.
+**Version:** `1.0.0`, the first public release of the local fixture workflow.
+See the [release verification](docs/release_v1.md),
+[safety audit](RELEASE_SAFETY_REVIEW.md) and [changelog](CHANGELOG.md) for evidence
+and limits. HTML readability was confirmed by the project owner.
 
 ## Run a finding
 

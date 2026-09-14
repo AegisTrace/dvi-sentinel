@@ -122,8 +122,8 @@ unsupported narrative. Static HTML uses escaped content, local links and a
 restrictive content policy, with no script or remote asset dependency. Source
 inventory excludes derived reports to avoid circular hashes. Structural,
 escaping and provenance tests establish those contracts; they cannot establish
-visual readability. The separate Phase 13 rendered-view check remains open and
-must pass before release.
+visual readability. The project owner confirmed the rendered report on 2026-09-14,
+resolving the separate Phase 13 check; see [release verification](release_v1.md).
 
 ## Verification must be able to disagree with the engine
 

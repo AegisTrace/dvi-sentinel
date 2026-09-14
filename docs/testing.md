@@ -68,5 +68,6 @@ artifact verification. No scenario capability or safety policy was broadened.
 
 The single local skip is the real symlink test when Windows denies symlink
 creation without privilege. Linux CI executes it. HTML structure, escaping and
-links are tested, but the separate Phase 13 visual browser-render proof remains
-an unresolved release check. Coverage and passing properties do not replace it.
+links are tested. The project owner confirmed rendered HTML readability on
+2026-09-14, resolving the separate Phase 13 visual check. Coverage and passing
+properties do not replace visual inspection; see [release verification](release_v1.md).
