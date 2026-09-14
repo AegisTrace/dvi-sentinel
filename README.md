@@ -47,6 +47,8 @@ coverage and the contracts checked by the suite.
 See [research sources](docs/research_sources.md) for design influences and explicit
 nonclaims, and [engineering notes](docs/engineering_notes.md) for tradeoffs and
 failure modes.
+The [fresh-checkout proof](docs/reproduction.md) records executed commands,
+expected pass/fail exits, artifact hashes and native/Docker agreement.
 
 ## Docker
 

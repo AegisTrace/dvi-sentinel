@@ -483,3 +483,32 @@ whitespace checks pass. This phase changes documentation only. Phase 18 CI passe
 at `dfebc0d` on Python 3.12/3.13; its separate clean Python 3.12 clone passed 27
 benchmark tests and produced the same report bytes as native and Docker runs.
 The Phase 13 rendered HTML check remains open and is stated in the notes.
+
+## Phase 20 — End-to-end fresh-checkout verification
+
+Acceptance: fresh environment, doctor, robust/fragile runs, verified artifacts,
+compatible comparison, report regeneration, correct CI exits, full quality/build
+checks and available Docker reproduction, with exact commands documented.
+
+Cloned GitHub main at `e7469d0` into `runs/phase20-checkout/`, created a clean
+Python 3.12.14 environment and installed through standard pip. Doctor and fixture
+validation passed. The robust benchmark had two detected variants/no findings;
+the fragile example had two detections/nine misses and ten findings. Gates
+returned 0 and 1 respectively; a repeated robust run compared successfully.
+A generated pair differing only in detector count limit produced nine new misses
+and regression exit 1. No tracked fixture needed editing.
+
+Verified manifest anchors, typed reports/provenance and all finding/event
+references. Report/provenance/manifest regeneration was byte-identical. Ruff
+0.16.7, formatting, mypy, isolated wheel/sdist build and pip check passed. Full
+suite: 418 passed, one Windows symlink privilege skip, 95% coverage. A wheel-only
+environment passed doctor/version outside the checkout root and a complete
+robust run/gate. The fresh checkout remained clean.
+
+Docker Desktop's service command started its stopped Linux engine. Built from
+the fresh checkout and executed with networking disabled and root read-only.
+Robust/fragile outcomes and exits match native Python; eight analysis files per
+run and the complete 20-case/275-check benchmark report match byte for byte.
+Commands, versions, artifact paths and hashes are in `docs/reproduction.md`.
+Phase 19 CI passed before verification. Phase 13 visual readability remains an
+open release gate; structural/report-integrity proof does not replace it.
