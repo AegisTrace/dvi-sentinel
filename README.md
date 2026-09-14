@@ -10,7 +10,7 @@ scenario commands or external detector integrations.
 **Version:** `1.0.0`, the first public release of the local fixture workflow.
 See the [release verification](docs/release_v1.md),
 [safety audit](RELEASE_SAFETY_REVIEW.md) and [changelog](CHANGELOG.md) for evidence
-and limits. HTML readability was confirmed by the project owner.
+and limits.
 
 ## Run a finding
 
