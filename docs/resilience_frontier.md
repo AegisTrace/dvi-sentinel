@@ -62,7 +62,7 @@ preservation; differential findings retain measured field/outcome disagreement.
 Finding IDs bind class, evidence source, and case ID. Repeated identical findings
 are deduplicated; distinct sources can corroborate the same class. Evidence paths
 are logical selectors over variations, matches, probes, and differential cases.
-The artifact/report phases will resolve those selectors into files. No weighted
+The [report provenance](reports.md) resolves those selectors into files. No weighted
 headline score, confidence interval, or adaptive discovery model is implemented.
 
 `tests/test_scoring.py` checks exact formulas, empty/baseline-only/unknown cases,

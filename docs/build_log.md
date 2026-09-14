@@ -462,3 +462,24 @@ report through its installed wheel; these are necessary integrations of this
 phase rather than new runtime services. No prohibited capability was introduced.
 Phase 17 remote CI passed at `3a3917a` before implementation. Phase 13 visual
 browser-render proof remains an unresolved release gate.
+
+## Phase 19 — Research sources and engineering notes
+
+Acceptance: primary-source attribution for the declared V1 influences, explicit
+implementation/nonclaim boundaries, and concise explanations of engineering
+choices, failure modes and rejected alternatives.
+
+Added `docs/research_sources.md` and `docs/engineering_notes.md`, linked from the
+README. Checked primary OCSF, ECS, OpenTelemetry, Suricata, Sigma/pySigma, MITRE,
+Hypothesis, metamorphic-testing and NIST sources on 2026-09-14. ATT&CK's data-source
+deprecation is explicit. Roadmap technologies remain future research, with no
+new dependency or runtime capability. Reviewed claims against actual models,
+harnesses, metrics, shrinking, artifact verification and tests. Also corrected
+the frontier page's stale reference to future report provenance.
+
+Validation: all 33 local links in the changed documentation resolve; Ruff check,
+format (101 discovered Python files), strict mypy (50 source files) and diff
+whitespace checks pass. This phase changes documentation only. Phase 18 CI passed
+at `dfebc0d` on Python 3.12/3.13; its separate clean Python 3.12 clone passed 27
+benchmark tests and produced the same report bytes as native and Docker runs.
+The Phase 13 rendered HTML check remains open and is stated in the notes.

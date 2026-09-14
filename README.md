@@ -44,6 +44,9 @@ Alternatively, use `uv sync --extra dev` and prefix commands with `uv run`.
 See [foundation notes](docs/foundation.md) for the implemented boundary.
 See [behavioral verification](docs/testing.md) for property seeds, interaction
 coverage and the contracts checked by the suite.
+See [research sources](docs/research_sources.md) for design influences and explicit
+nonclaims, and [engineering notes](docs/engineering_notes.md) for tradeoffs and
+failure modes.
 
 ## Docker
 
