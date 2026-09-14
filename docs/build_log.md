@@ -532,3 +532,40 @@ proof; CI passed for both Python versions before the review completed.
 remediation, legacy standalone-proof overwrite behavior and residual trust limits.
 The review supports the fixture-only boundary and explicitly does not waive the
 Phase 13 visual gate or final packaging requirements.
+
+## Phase 22 — Public review packaging prepared; release gate open
+
+Prepared the README around an executed install/run path, restrained architecture
+diagram, actual CI badge, explained failure, robust control, benchmark proof,
+artifact inspection and explicit limits. Added architecture, roadmap, four ADRs,
+SECURITY, CONTRIBUTING, CHANGELOG and CODE_OF_CONDUCT. Corrected stale phase-era
+documentation and one module docstring. Package metadata adds author/classifiers
+and project links; version remains `0.1.0.dev0`. No runtime behavior or dependency
+was added. Enabled and verified GitHub private vulnerability reporting.
+
+Preserved the user's `AGENTS.md` deletion and added its root ignore rule. The
+wheel/source archive exclude it, environments and run outputs. Validated 86 local
+file/heading links across 38 Markdown documents. A separate fresh GitHub reader
+clone with runtime-only pip installation executed the exact README command path:
+doctor, fragile gate exit 1, robust gate exit 0, report regeneration and all twenty
+benchmarks. Its benchmark report matches earlier native/Docker bytes; manifests
+and unchanged tracked checkout were verified. See `docs/reproduction.md`.
+
+Final local Python 3.13 suite: 418 passed, one Windows symlink privilege skip,
+92.21 seconds. Ruff check/format, strict mypy, actionlint, `uv lock --check`, and
+isolated wheel/sdist builds pass. Inspected the 57-member wheel for metadata,
+template and typing marker; the 161-member source archive contains required
+docs/ADRs/examples/benchmarks and excludes local artifacts. The Phase 20 clean
+Python 3.12 coverage/Docker/regression proofs remain applicable.
+
+Self-review checked Python contract/dependency direction, detection meaning and
+unknowns, maintainer installation/documentation paths, capability/safety limits,
+and whether public claims have executable evidence. The safety review includes
+an addendum for the final documentation and metadata changes.
+
+Phase 21 remote CI passed at `3f5f183` before this work. Packaging is prepared for
+review, but Phase 13 still lacks a confirmed local rendered HTML inspection.
+Browser URL policy explicitly blocked that navigation and alternate browser
+workarounds; the native file-preview request did not confirm a rendered view.
+No screenshot, completed visual check, version promotion or release tag is claimed.
+Phase 22 and the overall release remain open until this external proof is resolved.

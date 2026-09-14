@@ -10,10 +10,9 @@ and use strict duplicate-key-rejecting JSON parsing and local path checks.
 `snapshot_from_plan` binds assessments to actual planned case content digests.
 Snapshots retain comparison metadata, assessments, optional probe evidence, and
 optional schema results. Frontier metrics are recomputed, not accepted as
-authoritative self-reported scores. The general run artifact writer is Phase 12;
-`run` orchestration is Phase 14. This phase implements the requested compare
-command against explicit snapshots rather than advertising an unfinished run
-command.
+authoritative self-reported scores. The integrated CLI also accepts verified run
+directories and reads their captured `comparison.json`; see [CLI usage](cli.md)
+and the [executed regression example](reproduction.md#verify-an-actual-regression).
 
 ## Compatibility before arithmetic
 
@@ -29,9 +28,9 @@ cross-version comparison.
 operation. The caller's `scenario_digest` must cover static scenario meaning,
 expected detection contract, and fixture declarations, excluding the changing
 detector/harness implementation. The planner supplies input/config/case digests.
-The future run orchestrator will compute those from the strict scenario. A
-declared snapshot is not an authenticated claim; artifact integrity verification
-belongs to Phase 12.
+The run orchestrator computes these from the strict scenario. A standalone
+declared snapshot is not an authenticated claim; directory inputs use the
+[bundle integrity contract](run_artifacts.md).
 
 ## Deltas, transitions, and gates
 

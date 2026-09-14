@@ -189,3 +189,20 @@ For each run, these eight analysis files match native Python byte for byte:
 `differential_schema_report.json`. Both benchmark reports also match exactly:
 SHA-256 `5bd60bd5d90e2685cb91dfc4aa46669e4a24d8bb48902bf8bb29f3108f220618`.
 See [Docker notes](docker.md) for Linux bind-mount ownership and Compose usage.
+
+## README reader check
+
+The Phase 22 README quickstart was separately executed in a new GitHub clone at
+`runs/phase22-reader/dvi-sentinel/`, starting from `3f5f183`. A Python 3.12.14
+executable was put on that process's PATH to satisfy the documented installed-Python
+prerequisite; `python -m venv .venv` then created a fresh environment. Standard
+`pip install -e .` installed runtime dependencies only. The exact README doctor,
+fragile run/gate, robust run/gate, report regeneration and benchmark commands all
+produced their documented outcomes. No tracked file changed.
+
+The fragile report's verified manifest was
+`a7d6de8e17364431b58f68cb919ffeebb7de763cd1cfd6829ca8e2a573a8075c`;
+the robust run's was
+`cb38e2369255cf3049f0700daf791aa420b9abb4aadaf88e10821e5f2b320c3b`.
+This additional check validates the reader's command path and does not constitute
+the outstanding rendered HTML inspection.

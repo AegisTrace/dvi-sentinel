@@ -9,7 +9,7 @@ fixtures, comments, CLI help, report templates, Docker/CI and roadmap statements
 identified within the declared V1 boundary. DVI Sentinel is a defensive,
 fixture-based resilience harness. It evaluates synthetic local telemetry and
 local detector models. This review is not a release declaration: Phase 13 visual
-readability and final packaging remain separate release gates.
+readability and final packaging verification remain separate release gates.
 
 ## Checks and evidence
 
@@ -60,6 +60,14 @@ The earlier Unicode JSONL record-boundary defect is fixed and has permanent
 regressions; it did not introduce an execution capability. Historical phased
 documentation still needs final presentation cleanup in Phase 22, which must
 retain the same safety claims and be reviewed before release.
+
+Phase 22 addendum (2026-09-14): reviewed the new README, architecture/ADRs,
+roadmap, security/contribution/conduct policies and changelog. They retain the
+fixture boundary and explicit nonclaims. Stale future-phase descriptions were
+corrected; the sole Python change is a module docstring correction. Packaging
+adds author/classifier/project-link metadata without a dependency or executable
+behavior change. GitHub private vulnerability reporting was enabled and verified.
+`AGENTS.md` remains deleted and is now ignored. No new safety issue was identified.
 
 Legacy standalone example scripts write only their documented proof files under
 `runs/` and may replace those proof files on repetition. They do not modify input

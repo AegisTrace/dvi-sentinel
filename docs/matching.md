@@ -80,4 +80,4 @@ distinct reasons, missing fields, malformed-normalization guards, conflicting
 candidates, ambiguous IDs/expectations, inference and missing time, deterministic
 ordering, exact inclusive windows through Hypothesis, and integration cases where
 title/severity failure is discovered even though detector/signature identities
-survive. The CLI orchestration belongs to Phase 14.
+survive. The [CLI workflow](cli.md) uses this matcher throughout the experiment.

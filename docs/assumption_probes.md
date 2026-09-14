@@ -67,7 +67,8 @@ budget, and tool version. Observations and lineage are embedded for inspection.
 `probes_jsonl` and `probes_markdown` are pure serializers. To write the concrete
 proof artifacts, run `uv run python examples/probe_assumptions.py`. It writes
 `runs/assumption-proof/assumption_probes.jsonl` and `assumption_probes.md`.
-The general run artifact system is reserved for Phase 12.
+The [run artifact system](run_artifacts.md) captures these observations in complete
+CLI bundles with manifest verification and report provenance.
 
 `examples/probes/events.jsonl` and `rules.json` contain thirteen known fragile
 local rules and a normalized-meaning negative control. `tests/test_probes.py`

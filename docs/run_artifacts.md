@@ -14,7 +14,8 @@ python examples/write_run_artifacts.py
 
 It writes `runs/artifact-proof/` with real count-threshold findings, assumption
 probes, differential results, and a shrunk counterexample. Repeating the example
-explicitly replaces a verified prior output. The integrated CLI follows in Phase 14.
+explicitly replaces a verified prior output. The [integrated CLI](cli.md) produces
+the complete bundle and reports in one `dvi run` invocation.
 
 | File | Contract |
 | --- | --- |

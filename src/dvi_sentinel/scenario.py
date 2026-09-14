@@ -1,4 +1,4 @@
-"""The strict YAML-facing V1 scenario contract; parsing lives in policy.py."""
+"""The strict YAML-facing V1 scenario contract; parsing lives in scenario_io.py."""
 
 from typing import Annotated, Literal
 
