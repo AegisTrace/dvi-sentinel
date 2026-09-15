@@ -27,6 +27,10 @@ failure replay and the Windows symlink-permission skip.
 
 ## Changes and review
 
+`main` is the repository's only maintained branch. Commit and publish updates
+directly on `main`; do not create additional repository branches. Release tags
+retain the published versions while development continues on `main`.
+
 - Inspect the existing contracts and relevant decision record before changing
   behavior. Keep parsing, experiments, matching, analysis and presentation separate.
 - Add meaningful regression/edge tests for behavior changes. Use real local
@@ -34,9 +38,9 @@ failure replay and the Windows symlink-permission skip.
   access to make a test pass. Preserve a failing generated input when practical.
 - Keep synthetic fixtures small, use documentation identifiers and record source
   provenance honestly. Never commit credentials, private telemetry, environments,
-  run outputs or local agent instructions. `AGENTS.md` is intentionally untracked.
+  run outputs or private workspace configuration.
 - Update the affected docs and changelog. State what changed, why, the exact
-  validation performed, and any changed compatibility or limitations in the PR.
+  validation performed, and any changed compatibility or limitations in the change record.
 - Confirm the relevant benchmark controls still pass. Broaden testing when the
   affected contracts justify it; do not add a dependency or abstraction without
   a concrete implemented use case.

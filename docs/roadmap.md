@@ -1,10 +1,19 @@
 # Roadmap
 
-V1 implements the local fixture workflow documented in the README. Its evidence
-is recorded in [release verification](release_v1.md). The items below are research
-directions, not supported features or delivery commitments.
+V1 implements the released local fixture workflow documented in the README, with
+evidence in [release verification](release_v1.md). The owner supplied a new V2
+blueprint on 2026-09-15. Its [architecture contract](v2_architecture.md) now defines
+the active development sequence; the earlier V1.5/V2 labels below are historical
+research groupings, not separate promised releases.
 
-## V1.5 candidates
+V2 is in development. The [semantic ontology library](semantic_ontology.md) has
+working extraction, binding, loss and export behavior. Executable semantics,
+profile projections, intent, temporal reasoning,
+oracles, constrained exploration, coverage, counterfactuals, uncertainty, graphs
+and report integration must each earn an implemented claim through their card's
+tests and proof. The items below remain unsupported until explicitly delivered.
+
+## Earlier V1.5 research group
 
 | Direction | Evidence needed before adoption |
 | --- | --- |
@@ -13,7 +22,7 @@ directions, not supported features or delivery commitments.
 | Richer evidence relationships | A real reader/query need that existing provenance references cannot express; avoid adding a graph just to export one. |
 | JUnit/SARIF output | A tested consumer use case, faithful mapping of unknowns and local evidence references, and no implied code vulnerability finding where only fixture fragility was measured. |
 
-## V2 candidates
+## Further candidates and explicit nonclaims
 
 | Direction | Evidence needed before adoption |
 | --- | --- |
@@ -26,3 +35,9 @@ The fixture-only defensive boundary remains fixed: no live scanning, exploitatio
 payloads, credentials, stealth, persistence, scenario shell hooks or bypass recipes.
 New capabilities require their own tests, safety review, documentation and scoped
 implementation. V1 contains no placeholder implementations for these items.
+
+The current V2 blueprint calls for OCSF-like, ECS-like, OpenTelemetry-like,
+Zeek-like and Sigma-metadata projections with explicit loss reporting. It does
+not authorize full standard-compliance claims, production integrations or a full
+Sigma compiler. Z3, NetworkX and analytics dependencies need a demonstrated use
+case; they are not required merely because they appear in this roadmap.

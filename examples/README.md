@@ -13,3 +13,9 @@ scenario or generated network traffic.
 The standalone Python scripts illustrate individual engine APIs. They write
 documented proof files beneath `runs/` and some replace those files on repetition.
 Use the CLI for controlled bundle replacement and provenance verification.
+
+The V2 development [semantic ontology example](semantic_ontology.py) emits known and
+incomplete signals with real bindings and loss findings. Run
+`python examples/semantic_ontology.py --out runs/v2/ontology-proof` using a new output
+directory. See [the ontology contract](../docs/semantic_ontology.md); these standalone
+analysis files are distinct from a verified V1 run bundle.

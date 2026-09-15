@@ -19,7 +19,7 @@ The final change promotes the package version from `0.1.0.dev0` to `1.0.0` in
 package metadata, the version constant and the lockfile. It removes the obsolete
 alpha classifier and updates release-status documentation. There are no dependency,
 detector, parser, policy, report-template or runtime behavior changes.
-`AGENTS.md` remains deleted and ignored. The
+Private workspace configuration remains excluded. The
 [repository safety review](../RELEASE_SAFETY_REVIEW.md) remains applicable.
 
 ## Validation

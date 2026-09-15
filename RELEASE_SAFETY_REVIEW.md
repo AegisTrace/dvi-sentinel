@@ -68,7 +68,7 @@ fixture boundary and explicit nonclaims. Stale future-phase descriptions were
 corrected; the sole Python change is a module docstring correction. Packaging
 adds author/classifier/project-link metadata without a dependency or executable
 behavior change. GitHub private vulnerability reporting was enabled and verified.
-`AGENTS.md` remains deleted and is now ignored. No new safety issue was identified.
+Private workspace configuration remains excluded. No new safety issue was identified.
 
 Legacy standalone example scripts write only their documented proof files under
 `runs/` and may replace those proof files on repetition. They do not modify input

@@ -313,7 +313,7 @@ fixture was shared with report tests without changing engine behavior. See
 
 Outstanding release proof: automated browser navigation to the local HTML URL
 was rejected by the browser URL policy, which also prohibited alternate browser
-workarounds. A native Codex file-preview request was accepted as queued, but the
+workarounds. A local file-preview request was accepted as queued, but the
 tools did not confirm rendered display. No visual inspection is claimed. This
 check remains pending while implementation continues at the user's instruction;
 it must be resolved before the release gate can pass.
@@ -397,7 +397,7 @@ Ruff check/format, strict mypy and wheel/sdist builds passed. Self-review covere
 the restricted build context, runtime/build network distinction, mount ownership,
 explicit overwrite, absent checkout metadata and honest image reproducibility
 limits. No runtime engine change or prohibited capability was introduced.
-Phase 15 CI passed at `3c77fb5`; the user's deletion of `AGENTS.md` at `9560d07`
+Phase 15 CI passed at `3c77fb5`; the private-configuration cleanup at `9560d07`
 was fast-forwarded and preserved. Its CI also passed. The separate Phase 13
 rendered-HTML visual proof remains pending before release.
 
@@ -547,8 +547,8 @@ documentation and one module docstring. Package metadata adds author/classifiers
 and project links; version remains `0.1.0.dev0`. No runtime behavior or dependency
 was added. Enabled and verified GitHub private vulnerability reporting.
 
-Preserved the user's `AGENTS.md` deletion and added its root ignore rule. The
-wheel/source archive exclude it, environments and run outputs. Validated 86 local
+Preserved the private-configuration cleanup. The wheel/source archive exclude
+private configuration, environments and run outputs. Validated 86 local
 file/heading links across 38 Markdown documents. A separate fresh GitHub reader
 clone with runtime-only pip installation executed the exact README command path:
 doctor, fragile gate exit 1, robust gate exit 0, report regeneration and all twenty
@@ -583,7 +583,7 @@ was marked complete in the signed-in Trello UI with that confirmation preserved.
 Promoted the version to `1.0.0` in packaging, the runtime constant and the lockfile;
 removed the alpha classifier and corrected current-status documentation. The
 report template, runtime behavior, safety policies and dependencies are unchanged.
-The user's `AGENTS.md` deletion and root ignore rule remain intact.
+Private workspace configuration remains excluded.
 
 Local Python 3.13 verification passed 418 tests with the expected Windows symlink
 skip in 145.21 seconds and 95% coverage. Ruff, format, strict mypy, actionlint and
