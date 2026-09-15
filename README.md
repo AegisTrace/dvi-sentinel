@@ -149,8 +149,11 @@ projections, bounded temporal reasoning and independent oracle decisions. Search
 counterfactuals, uncertainty, graphs and reports follow only after those foundations
 have executable proof.
 
-At the scope-lock stage, these are planned capabilities: no V2 runtime extension
-is implemented yet. V1 remains available at the `v1.0.0` tag. See the ordered
+The development package (`2.0.0.dev0`) includes the [semantic ontology library](docs/semantic_ontology.md):
+signals, explicit evidence bindings, unknown/loss classification and deterministic
+exports, exercised by [tests](tests/test_v2_ontology.py) and a
+[runnable example](examples/semantic_ontology.py). The remaining capabilities above
+are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
 [development standard](docs/development_standard.md) and
 [card evidence record](docs/v2_build_log.md). Each card must pass tests, packaging

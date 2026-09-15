@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ from dvi_sentinel.local_fixtures import local_file, read_fixture
 from dvi_sentinel.models import RawSource, TelemetryEvent
 from dvi_sentinel.policy import (
     PolicyError,
+    _url_candidates,
     documentation_identifier,
     evaluate_events,
     inspect_content,
@@ -17,6 +19,45 @@ from dvi_sentinel.scenario_io import load_scenario, parse_scenario
 from dvi_sentinel.serialization import canonical_json
 
 EXAMPLE = Path(__file__).parents[1] / "examples" / "foundation_scenario.yaml"
+
+
+@given(st.text(alphabet="abcXYZ019+-._:/ \t\n", max_size=200))
+def test_url_scan_preserves_existing_candidate_semantics(text: str) -> None:
+    expected = tuple(re.findall(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s]+", text))
+    assert _url_candidates(text) == expected
+
+
+@pytest.mark.parametrize(
+    "prefix",
+    ["", "0", ".-01", "_", "1" * 100_000],
+    ids=["plain", "digit", "punctuation", "underscore", "long_digits"],
+)
+def test_url_scan_retains_prefixed_url_detection(prefix: str) -> None:
+    text = prefix + "https://service.com/fixture"
+    assert _url_candidates(text) == ("https://service.com/fixture",)
+    assert inspect_content({"note": text})[0].rule_id == "DVI-POL-011"
+
+
+def test_large_plain_string_and_separated_unsafe_url_are_bounded() -> None:
+    ordinary = "a" * 1_048_576
+    assert inspect_content({"note": ordinary}) == ()
+    decisions = inspect_content({"note": ordinary + " https://service.com/fixture"})
+    assert [item.rule_id for item in decisions] == ["DVI-POL-011"]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "://https://service.com",
+        "123://http://service.com",
+        "http://a://b",
+        "abc:// ",
+        "https://service.com ftp://example.com",
+        "123:// ",
+    ],
+)
+def test_url_scan_preserves_nested_and_invalid_scheme_behavior(text: str) -> None:
+    assert _url_candidates(text) == tuple(re.findall(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s]+", text))
 
 
 def scenario_data() -> dict:

@@ -1,7 +1,8 @@
 # V2 architecture contract
 
 V2 is in development. This document records the scope lock from the owner's
-2026-09-15 blueprint. **No V2 runtime behavior is implemented at this stage.**
+2026-09-15 blueprint. The development branch now includes the
+[V2-01 semantic ontology](semantic_ontology.md); subsequent cards remain planned.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
 [V1 architecture](architecture.md) remains the implemented foundation.

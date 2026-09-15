@@ -6,8 +6,9 @@ blueprint on 2026-09-15. Its [architecture contract](v2_architecture.md) now def
 the active development sequence; the earlier V1.5/V2 labels below are historical
 research groupings, not separate promised releases.
 
-V2 is in development. At scope lock, no V2 runtime capability is implemented.
-Ontology, executable semantics, profile projections, intent, temporal reasoning,
+V2 is in development. The [semantic ontology library](semantic_ontology.md) has
+working extraction, binding, loss and export behavior. Executable semantics,
+profile projections, intent, temporal reasoning,
 oracles, constrained exploration, coverage, counterfactuals, uncertainty, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.

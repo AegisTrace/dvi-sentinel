@@ -1,6 +1,7 @@
 """Structural safety decisions and bounded local scenario/fixture reads."""
 
 import re
+import string
 import unicodedata
 from ipaddress import ip_address, ip_network
 from typing import Literal
@@ -55,6 +56,28 @@ def documentation_identifier(value: str) -> bool:
 
 def _normalized_key(value: str) -> str:
     return re.sub(r"[\W_]", "", unicodedata.normalize("NFKC", value).casefold())
+
+
+def _url_candidates(text: str) -> tuple[str, ...]:
+    """Locate delimiters first so long non-URL words cannot cause quadratic backtracking."""
+    candidates = []
+    scheme_chars = frozenset(string.ascii_letters + string.digits + "+.-")
+    consumed_until = 0
+    suffix = re.compile(r"\S+")
+    for match in re.finditer(r"://", text):
+        if match.start() < consumed_until:
+            continue
+        start = match.start()
+        while start > 0 and text[start - 1] in scheme_chars:
+            start -= 1
+        while start < match.start() and text[start] not in string.ascii_letters:
+            start += 1
+        if start < match.start():
+            tail = suffix.match(text, match.end())
+            if tail is not None:
+                candidates.append(text[start : tail.end()])
+                consumed_until = tail.end()
+    return tuple(candidates)
 
 
 def inspect_content(value: object, path: str = "$") -> tuple[PolicyDecision, ...]:
@@ -126,7 +149,7 @@ def inspect_content(value: object, path: str = "$") -> tuple[PolicyDecision, ...
             normalized_text = unicodedata.normalize("NFKC", unquote(item)).strip()
             if not normalized_text:
                 return
-            urls = re.findall(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s]+", normalized_text)
+            urls = _url_candidates(normalized_text)
             for url in urls:
                 try:
                     parsed = urlsplit(url)

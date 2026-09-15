@@ -2,6 +2,19 @@
 
 ## Unreleased - V2 development
 
+### Added
+
+- Semantic ontology above canonical events: strict immutable signal/evidence models,
+  loss-aware equivalence, profile requirements and deterministic exports with a real
+  local example. Source provenance stays separate from semantic identity; unresolved
+  evidence cannot prove equivalence. Package development version is `2.0.0.dev0`.
+
+### Fixed
+
+- Bound URL-candidate scanning in fixture policy checks by locating delimiters first.
+  Long ordinary scalar values no longer trigger quadratic regex backtracking; the
+  existing URL detection and rejection semantics are retained and regression-tested.
+
 ### Planning
 
 - Defined the semantic-engine scope, ordered implementation cards, safety categories,
