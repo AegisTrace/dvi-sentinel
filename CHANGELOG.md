@@ -4,6 +4,11 @@
 
 ### Added
 
+- Bounded detection intent parsing and evidence analysis for native declarations,
+  a deliberately small Sigma-style metadata/selection subset and validated V1
+  rule metadata. The four deterministic intent/loss artifacts retain expected and
+  observed values, source digests, unsupported conditions, metadata scope and
+  pending time/correlation assumptions; this does not execute rules or compile Sigma.
 - Seven revisioned local schema/metadata profiles with explicit field paths, aliases,
   extensions, strict normalization, timestamp/severity loss traces and deterministic
   roundtrip reports. Incomplete Sigma metadata stays unknown; no full standard or

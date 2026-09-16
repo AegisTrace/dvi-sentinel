@@ -33,3 +33,10 @@ alias graph and roundtrip summary. Run
 `python examples/schema_profiles.py --out runs/v2/profile-proof` with a new directory.
 See [the profile contract](../docs/schema_profiles.md) for native-field references,
 explicit extensions, time/severity losses and the Sigma metadata boundary.
+
+The [detection intent example](detection_intent.py) parses a native declaration,
+analyzes one matching and one incomplete DNS event, and writes four deterministic
+intent/loss artifacts beneath a new directory. Run
+`python examples/detection_intent.py --out runs/v2/intent-proof` and read the
+[intent contract](../docs/detection_intent.md) for supported operators, unknowns,
+metadata scope and pending sequence limits.

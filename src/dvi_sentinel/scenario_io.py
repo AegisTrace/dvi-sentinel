@@ -29,16 +29,17 @@ def _check_yaml_node(node: Node, depth: int = 0) -> None:
             _check_yaml_node(item, depth + 1)
 
 
-def parse_scenario(text: str) -> Scenario:
+def parse_local_yaml(text: str, *, kind: str = "document") -> object:
+    """Shared inert YAML syntax/content boundary; callers validate their own typed schema."""
     if len(text.encode("utf-8")) > MAX_SCENARIO_BYTES:
-        raise reject("DVI-POL-010", "$", "scenario exceeds size limit")
+        raise reject("DVI-POL-010", "$", f"{kind} exceeds size limit")
     try:
         for token in yaml.scan(text):
             if isinstance(token, AliasToken | AnchorToken):
                 raise reject("DVI-POL-001", "$", "YAML anchors and aliases are unsupported")
         node = yaml.compose(text, Loader=yaml.SafeLoader)
         if node is None:
-            raise reject("DVI-POL-001", "$", "empty scenario")
+            raise reject("DVI-POL-001", "$", f"empty {kind}")
         _check_yaml_node(node)
         data = yaml.safe_load(text)
     except (yaml.YAMLError, RecursionError) as exc:
@@ -46,6 +47,11 @@ def parse_scenario(text: str) -> Scenario:
     decisions = inspect_content(data)
     if decisions:
         raise PolicyError(decisions)
+    return data
+
+
+def parse_scenario(text: str) -> Scenario:
+    data = parse_local_yaml(text, kind="scenario")
     try:
         scenario = Scenario.model_validate(data)
     except ValidationError as exc:

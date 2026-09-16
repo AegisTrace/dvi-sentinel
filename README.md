@@ -158,6 +158,11 @@ and measured support fractions, exercised by [tests](tests/test_v2_semantic_alge
 and a [runnable proof](examples/semantic_algebra.py). The [schema profiles](docs/schema_profiles.md)
 add seven explicit local subsets, field/loss reports and measured roundtrips, exercised
 by [mapping tests](tests/test_v2_mapping.py) and an [example](examples/schema_profiles.py).
+The [detection intent parser](docs/detection_intent.md) now parses native declarations,
+a deliberately small Sigma-style metadata subset and V1 rule metadata, then reports
+field/source/severity/metadata loss against actual events. It is exercised by
+[intent tests](tests/test_v2_intent.py) and a [runnable proof](examples/detection_intent.py);
+sequence and cross-event correlation remain the next card.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
