@@ -40,3 +40,10 @@ intent/loss artifacts beneath a new directory. Run
 `python examples/detection_intent.py --out runs/v2/intent-proof` and read the
 [intent contract](../docs/detection_intent.md) for supported operators, unknowns,
 metadata scope and pending sequence limits.
+
+The [temporal correlation example](temporal_correlation.py) evaluates a shuffled
+flow and validated alert using UTC ordering, a finite window, shared entity and
+correlation evidence, and a declared sequence. Run
+`python examples/temporal_correlation.py --out runs/v2/temporal-proof` and read the
+[temporal contract](../docs/temporal_correlation.md) for predicate semantics,
+precision warnings and bounded artifacts.

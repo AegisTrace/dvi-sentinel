@@ -12,7 +12,9 @@ evaluates seven bounded relations with explicit unknowns and evidence-support tr
 The [schema profile library](schema_profiles.md) adds seven explicit local subsets
 with field/loss reports and measured roundtrips. The [detection intent parser](detection_intent.md)
 adds bounded native/Sigma-subset/V1 metadata parsing and event evidence loss reports.
-Temporal reasoning,
+The [temporal and correlation engine](temporal_correlation.md) adds ten bounded
+predicates with stable UTC ordering and explicit missing-evidence/precision unknowns.
+Oracles,
 oracles, constrained exploration, coverage, counterfactuals, uncertainty, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.

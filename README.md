@@ -161,8 +161,11 @@ by [mapping tests](tests/test_v2_mapping.py) and an [example](examples/schema_pr
 The [detection intent parser](docs/detection_intent.md) now parses native declarations,
 a deliberately small Sigma-style metadata subset and V1 rule metadata, then reports
 field/source/severity/metadata loss against actual events. It is exercised by
-[intent tests](tests/test_v2_intent.py) and a [runnable proof](examples/detection_intent.py);
-sequence and cross-event correlation remain the next card.
+[intent tests](tests/test_v2_intent.py) and a [runnable proof](examples/detection_intent.py).
+The [temporal and correlation engine](docs/temporal_correlation.md) now evaluates
+ten bounded predicates over stable UTC event order, retains missing-key and
+precision unknowns, and emits trace/correlation/finding/summary artifacts. It is
+exercised by [temporal tests](tests/test_v2_temporal.py) and a [runnable proof](examples/temporal_correlation.py).
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

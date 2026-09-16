@@ -3,8 +3,8 @@
 V2 is in development. This document records the scope lock from the owner's
 2026-09-15 blueprint. Development on `main` now includes the
 [V2-01 semantic ontology](semantic_ontology.md), [V2-02 semantic algebra](semantic_algebra.md),
-[V2-03 schema profiles](schema_profiles.md) and [V2-04 detection intent](detection_intent.md);
-subsequent cards remain planned.
+[V2-03 schema profiles](schema_profiles.md), [V2-04 detection intent](detection_intent.md)
+and [V2-05 temporal correlation](temporal_correlation.md); subsequent cards remain planned.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
 [V1 architecture](architecture.md) remains the implemented foundation.
@@ -79,7 +79,7 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-02 | Executable preservation, requirements, contradiction, implication, equivalence, weakening and explanation relations. | D, A, W |
 | V2-03 | DVI, OCSF-like, ECS-like, OpenTelemetry-like, EVE, Zeek-like and Sigma-metadata projections with roundtrip/loss proof. | D, R, A, W |
 | V2-04 | Bounded local intent inputs and unsupported-condition, logsource, field, severity, time and correlation analysis. **Implemented on main; see [intent contract](detection_intent.md).** | D, R, A, W |
-| V2-05 | Bounded sequence/window/correlation predicates, stable ordering and explicit evidence/precision uncertainty. | D, A, W |
+| V2-05 | Bounded sequence/window/correlation predicates, stable ordering and explicit evidence/precision uncertainty. **Implemented on main; see [temporal contract](temporal_correlation.md).** | D, A, W |
 | V2-06 | Independent safety, schema, semantic, temporal, differential, detection, statistical, evidence and provenance decisions; preserved disagreement. | D, A, W |
 | V2-07 | Finite pairwise/t-way exploration, invalid-combination pruning, deterministic budgets and explained skips. | D, A, W |
 | V2-08 | Measured semantic coverage, novelty retention and reproducible growth without duplicate inflation. | D, A, W |
