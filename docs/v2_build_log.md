@@ -344,3 +344,95 @@ CI status: GitHub Actions run
 commit: https://github.com/AegisTrace/dvi-sentinel/actions/runs/35153650158.
 
 Next card: V2-05 bounded temporal and correlation engine.
+
+## V2-05 — Temporal and Correlation Engine
+
+Card: V2-05 Temporal and Correlation Engine
+
+Purpose: Evaluate bounded temporal, sequence and correlation assumptions over
+validated local telemetry while preserving missing evidence and representation
+uncertainty.
+
+Acceptance criteria: Ten required predicates, deterministic UTC/event-ID order,
+finite windows, explicit unknown outcomes for missing evidence, timezone
+normalization proof, timestamp precision-loss findings, correlation-key
+survival, four canonical artifacts, tests, docs, example, package proof and
+green Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/temporal_models.py` and
+`src/dvi_sentinel/temporal.py`; `tests/test_v2_temporal.py`;
+`docs/temporal_correlation.md`; `examples/temporal_correlation.py`; README,
+roadmap, architecture, changelog and examples index updates.
+
+Behavior implemented: Bounded `before`, `after`, `within`, `same_entity`,
+`same_flow`, `same_correlation_key`, `at_least_k_of_n`,
+`no_contradictory_context`, `alert_within_window` and `sequence_order`
+predicates operate on revalidated canonical events. Timestamps normalize to
+UTC and ties sort by event ID. Missing entity, flow, correlation, alert or
+finite-set evidence is unknown; benign/control markers produce an explicit
+contradicted context check. Windows are integer milliseconds from 0 through
+24 hours, sequence tokens match IDs/categories/actions, and declared source
+precision loss remains unknown. Correlation IDs are retained as evidence and
+never synthesized.
+
+Tests added: Eight focused tests cover before/after and finite windows,
+timezone shifts, out-of-order and duplicate-time ordering, entity/flow/key
+evidence, incomplete finite counts, precision loss, alert windows, benign
+suppression, sequence matching and deterministic canonical artifacts. The
+full local suite passed 576 tests with one expected Windows symlink-permission
+skip; coverage was 95% with the required 90% floor.
+
+Docs/examples updated: `docs/temporal_correlation.md` defines predicate
+semantics, unknowns, precision evidence, limits, artifacts and safety. The
+example writes all four artifacts for a shuffled flow-to-alert fixture; the
+README, roadmap, architecture, changelog and examples index link to the
+contract and proof.
+
+Artifacts generated: source and installed-wheel examples matched byte-for-byte
+in `runs/v2/V2-05-temporal-proof-release` and
+`runs/v2/V2-05-wheel-proof-release`. `correlation_evidence.json` is 339 bytes
+(SHA-256 `8e8177f60f19bf7ce771ec5f23c3b818a07577e548497bf92a998e03922e8b50`);
+`sequence_findings.json` is 2,908 bytes (SHA-256
+`f27c6e7b677702916e69ac58800976dcaa8c47435a3a7018042a8f13a540c8fa`);
+`temporal_summary.json` is 8,328 bytes (SHA-256
+`8b9e88ea05e893723a9ff0ed702aa50d85ccc573487359f90f4c4b5771dcaacf`);
+`temporal_trace.jsonl` is 5,092 bytes (SHA-256
+`018e2437e311131afd02e91e38d2345d3bfde82b2c31af93e98ae2cc58505005`).
+The wheel is 142,456 bytes (SHA-256
+`c46230e36a6e80eb6a5f4d1c87959b106e2c2ce075c4413b0c2efa5f01f706e8`);
+the sdist is 328,756 bytes (SHA-256
+`53f96e3bd42e3f0a91da24d4113f7722f810fea523246fb0051788bef458d3a7`).
+
+Commands run: Ruff format/check, strict mypy, focused tests, full coverage
+test/report, `python -m build`, source and installed-wheel examples, artifact
+hash comparison, wheel installation into the clean Python 3.12 proof runtime,
+wheel member/import inspection, `dvi doctor --json` outside the checkout and
+publication branding scan.
+
+Results: Local quality gates passed; focused tests passed 8/8; full local
+coverage passed 576/576 with one platform skip and 95% coverage. GitHub Actions
+run `35155532882` passed both `core (3.12)` and `core (3.13)` jobs for the exact
+implementation commit. The installed import resolved from site-packages,
+doctor reported `ready`, and both example output directories were identical.
+
+Safety review: Pure immutable models and bounded analyzers plus a local writer
+with fixed artifact names and new-directory validation. Existing event policy
+validation runs before every predicate. Limits are 128 events, 2 MiB combined
+canonical input, 24-hour windows, 128 sequence tokens and 32 MiB artifact
+output. No network, filesystem reads, subprocess, query, expression execution,
+live target or detector-service behavior was introduced.
+
+Known limitations: Temporal comparisons describe retained timestamp
+representation and do not establish clock accuracy or sensor resolution.
+Same-flow requires all three endpoint/protocol fields. Sequence matching is an
+ordered subsequence over supplied events, and correlation compares only an
+explicit retained string. This card does not add integrated CLI or independent
+oracle consensus.
+
+Commit: `bed50b699eba5e0ae0ba7bd18765965aedc1fc3b` — `feat(temporal): evaluate bounded detection sequences`.
+
+CI status: GitHub Actions run
+`35155532882` passed both supported Python jobs for the exact commit:
+https://github.com/AegisTrace/dvi-sentinel/actions/runs/35155532882.
+
+Next card: V2-06 Multi-Oracle Consensus and Uncertainty Classification.
