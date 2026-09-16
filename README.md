@@ -155,7 +155,10 @@ exports, exercised by [tests](tests/test_v2_ontology.py) and a
 [runnable example](examples/semantic_ontology.py). The [semantic algebra](docs/semantic_algebra.md)
 adds seven evidence-bound relations with explicit unknowns, contradiction suppression
 and measured support fractions, exercised by [tests](tests/test_v2_semantic_algebra.py)
-and a [runnable proof](examples/semantic_algebra.py). The remaining capabilities above
+and a [runnable proof](examples/semantic_algebra.py). The [schema profiles](docs/schema_profiles.md)
+add seven explicit local subsets, field/loss reports and measured roundtrips, exercised
+by [mapping tests](tests/test_v2_mapping.py) and an [example](examples/schema_profiles.py).
+The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
 [development standard](docs/development_standard.md) and

@@ -26,3 +26,10 @@ against a candidate missing its required question. Run
 directory. It writes `semantic_plan.json` and `algebra_decisions.jsonl`, preserving
 unknown decisions and the observed support change from 1.0 to 0.75. See the
 [algebra contract](../docs/semantic_algebra.md) for each relation and metric's limits.
+
+The [schema profile example](schema_profiles.py) projects a synthetic flow into all
+seven declared subsets and emits the profile definitions, mapping/loss evidence,
+alias graph and roundtrip summary. Run
+`python examples/schema_profiles.py --out runs/v2/profile-proof` with a new directory.
+See [the profile contract](../docs/schema_profiles.md) for native-field references,
+explicit extensions, time/severity losses and the Sigma metadata boundary.

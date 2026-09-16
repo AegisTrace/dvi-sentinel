@@ -4,6 +4,10 @@
 
 ### Added
 
+- Seven revisioned local schema/metadata profiles with explicit field paths, aliases,
+  extensions, strict normalization, timestamp/severity loss traces and deterministic
+  roundtrip reports. Incomplete Sigma metadata stays unknown; no full standard or
+  compiler support is claimed.
 - Executable semantic algebra for preservation, required evidence, contradiction,
   implication, equivalence, weakening and finding association. Decisions retain
   field-level values, explicit unknowns and evidence-support denominators; exported

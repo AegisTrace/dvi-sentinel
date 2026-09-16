@@ -183,3 +183,77 @@ example reproduced both Python 3.13 source artifacts byte-for-byte. Package arch
 contain the intended code and exclude private configuration. `git diff --check`
 passed. Commit/push and exact-commit CI evidence are recorded after publication;
 V2-03 may begin only when both supported Python jobs succeed.
+
+Completed and pushed on main: `3fa7ee71a567fa601e60fc3ed4f4e144dedae40f`.
+[CI succeeded on Python 3.12 and 3.13](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35045304945)
+before V2-03 began.
+
+## V2-03 - Standards Mapping Profiles
+
+Purpose: project canonical fixtures through explicit local subsets and measure what
+survives normalization, without implying complete standards conformance.
+
+Acceptance criteria were recorded before implementation: all seven profiles;
+canonical projection and evidence-aware normalization; mapped/unmapped/lossy fields,
+alias ambiguity, timestamp precision and severity drift; deterministic profile,
+mapping/loss, alias-graph and roundtrip artifacts; primary references, runnable example,
+negative/property tests, full gates and main-only publication before V2-04.
+
+Files changed: mapping_models.py, mapping_codecs.py, schema_profiles.py and
+schema_mapping.py; tests/test_v2_mapping.py, examples/schema_profiles.py and
+docs/schema_profiles.md; README, changelog, examples index, roadmap, architecture
+status and this record.
+
+Behavior implemented: seven revisioned mappings with literal key paths and explicit
+extensions; exact integer epoch conversions; strict alias comparison before selection;
+canonical subtype preservation; measured field changes and provenance separation.
+EVE reuses the V1 encoder/adapter. Sigma metadata reports missing event evidence
+instead of inventing an event. OpenTelemetry retains security severity in a local
+attribute, separate from native log severity. Artifact export reevaluates source
+events and retains actual values, issues and digests.
+
+Tests added: 45 behavioral/property/negative cases across all profiles, DNS/HTTP
+resources, lossless and lossy controls, severity collapse, timestamp precision/range,
+metadata-only unknowns, subtype serialization, alias conflict, unsupported fields,
+strict types, bounded inputs, fixture policy, tampering and the executable example.
+An alias-conflict test exposed an inspection gap for an unselected endpoint spelling;
+every mapped candidate now receives canonical-field policy checks before selection.
+Normalization traces also retain the actual values after V1 adapter normalization.
+
+Docs/examples updated: exact supported subsets, primary versioned definitions,
+extension and metadata boundaries, independent roundtrip/semantic decisions,
+source-provenance limits, and a real seven-profile synthetic flow proof.
+
+Safety review: immutable data models plus pure bounded codec/profile/analyzer modules;
+existing canonical, raw and fixture-policy validation applies before consumption.
+The example is a bounded local writer with fixed names and new-directory validation.
+No network, subprocess or executable mapping/condition behavior in the runtime;
+no dependency, V1 schema/command or release tag changed.
+
+Known limitations: explicit subsets only. Sigma metadata cannot reconstruct events;
+Zeek time uses local decimal text; EVE uses the declared legacy DNS projection.
+Timestamp value preservation does not prove source clock accuracy or measurement
+resolution. Replay/digests do not authenticate external source assertions. Original
+raw provenance stays in the report, while normalized raw evidence describes the
+profile payload. Independent oracles, intent and integrated CLI remain later cards.
+
+Commands/results: Ruff check and format passed for 135 files; strict mypy passed for
+58 source files. Targeted coverage reported 45 passed in 11.53 seconds and 98% combined
+coverage across the four new modules. The full coverage run reported 554 passed and
+one Windows symlink-privilege skip in 169.20 seconds, with 96% combined coverage.
+The Linux CI suite exercises that symlink case. All 146 local links across 45 Markdown
+files resolve; the publication-content audit passed for 181 files.
+
+Artifacts generated: eleven files under ignored runs/v2/V2-03-final-proof. The actual
+flow example records four lossless profiles, two lossy profiles and one unknown
+metadata projection. mapping_report.json is 48,288 bytes, SHA-256
+`321570940b48156be03b0f4504fe47855bc44704c02596f8c1217d911ab7ad9f`;
+roundtrip_report.json is 2,745 bytes, SHA-256
+`801d0f3be15d1634f14d31c8edc7594a0c39e8a306ae6b6e6a610970e6f6c76f`.
+
+Both packages built with `python -m build`. The clean Python 3.12 wheel installation
+passed dependency checks and `dvi doctor --json` outside the checkout. Its import
+resolved in site-packages and its example reproduced all eleven Python 3.13 source
+artifacts byte-for-byte. A final package rebuild includes the source formatting
+correction identified by archive comparison. Exact-commit CI must pass for both
+supported Python versions before V2-04 begins.

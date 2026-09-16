@@ -9,7 +9,8 @@ research groupings, not separate promised releases.
 V2 is in development. The [semantic ontology library](semantic_ontology.md) has
 working extraction, binding, loss and export behavior. The [semantic algebra](semantic_algebra.md)
 evaluates seven bounded relations with explicit unknowns and evidence-support traces.
-Profile projections, intent, temporal reasoning,
+The [schema profile library](schema_profiles.md) adds seven explicit local subsets
+with field/loss reports and measured roundtrips. Intent, temporal reasoning,
 oracles, constrained exploration, coverage, counterfactuals, uncertainty, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
