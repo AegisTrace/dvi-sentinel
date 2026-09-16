@@ -257,3 +257,90 @@ resolved in site-packages and its example reproduced all eleven Python 3.13 sour
 artifacts byte-for-byte. A final package rebuild includes the source formatting
 correction identified by archive comparison. Exact-commit CI must pass for both
 supported Python versions before V2-04 begins.
+
+## V2-04 — Detection Intent Parser
+
+Card: V2-04 Detection Intent Parser
+
+Purpose: Parse bounded local detection declarations and explain whether supplied
+fixture evidence supports their explicit requirements.
+
+Acceptance criteria: Strict immutable intent models, native DVI parsing, a small
+Sigma-style metadata/selection subset, validated V1 rule metadata, ontology-backed
+field binding, explicit unsupported/loss classes, source and output severity scope,
+finite time/correlation expectations, deterministic artifacts, safety boundaries,
+tests, docs, example, package proof and green Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/intent_models.py`,
+`src/dvi_sentinel/intent_parsing.py`, `src/dvi_sentinel/detection_intent.py`,
+and the shared YAML boundary in `src/dvi_sentinel/scenario_io.py`;
+`tests/test_v2_intent.py`; `docs/detection_intent.md`;
+`examples/detection_intent.py`; README, roadmap, architecture, changelog and
+examples index updates.
+
+Behavior implemented: Native intent records use canonical JSON values and inert
+finite selectors/operators. Sigma support requires explicit `taxonomy: dvi`, one
+flat scalar selection and a selection-naming condition; unsupported shapes and
+metadata remain unknown diagnostics. V1 rule count/order/window/delay requirements
+remain assumptions. Actual events are revalidated through ontology bindings and
+produce expected/observed checks for missing, optional, unsupported, mismatched,
+ambiguous, lossy, correlation, time, metadata and technique evidence. Overall
+support is existential across candidates only when global requirements are known.
+
+Tests added: 14 focused parser/analyzer tests cover native support, literal
+operators, unsupported shape/operator, missing versus optional evidence, source
+mismatch, alias ambiguity, normalization loss, correlation keys, timestamp
+precision, Sigma metadata/technique scope, detection severity, V1 metadata,
+canonical artifacts, duplicate/anchor YAML and nested capability-field rejection.
+The full suite passed 568 tests with one expected Windows symlink-permission skip;
+local coverage was 95% with the required 90% floor.
+
+Docs/examples updated: `docs/detection_intent.md` defines the local subset,
+unknown semantics, artifacts, bounds and limitations. `examples/detection_intent.py`
+writes the four artifacts from one matching and one incomplete synthetic DNS event;
+the README, roadmap, architecture, changelog and examples index link to it.
+
+Artifacts generated: source and installed-wheel examples matched byte-for-byte in
+`runs/v2/V2-04-intent-proof-release` and `runs/v2/V2-04-wheel-proof-release`.
+`detection_intent.json` is 818 bytes (SHA-256
+`e6e0a93d181f0254630677ba3f5a7e2af3025856f170d06326019db75848ef14`);
+`semantic_loss_report.json` is 4,274 bytes (SHA-256
+`0768d9e8784f6befa06d4b169790bf6caa6081d77a090db664c497c95601ec8b`);
+`unsupported_conditions.json` is 118 bytes (SHA-256
+`3d7359123a68ea8ca0d4960fea38b131eb471a0038abe637cc4f709daa62bf5c`);
+`intent_assumptions.json` is 73 bytes (SHA-256
+`ce51f67a5b31edf401ec4101fed57c0c4e68c38e3edf489790cc646b1515c4f6`).
+The final wheel is 136,423 bytes (SHA-256
+`8a246458668cb63bf0ccd959bfaedf838fcb993a082a0cf2658174759ab12065`);
+the sdist is 318,506 bytes (SHA-256
+`faeb190dccf1de471b6e27fd5a431469b4bfd6b83c75fc6e996bfac7eaa678f8`).
+
+Commands run: Ruff format/check, strict mypy, focused tests, full coverage test
+and report, `python -m build`, source and installed-wheel examples, artifact hash
+comparison, wheel member inspection, and `dvi doctor --json` outside the checkout.
+
+Results: Ruff and mypy passed; focused tests passed 14/14; full local coverage
+passed 568/568 with one platform skip and 95% coverage; the wheel imported from
+site-packages, doctor reported `ready`, and both example output directories were
+identical. No runtime dependency or V1 command changed.
+
+Safety review: Pure typed models/parsers/analyzers plus a bounded local artifact
+writer. The existing YAML syntax, duplicate/anchor/depth, canonical-value,
+fixture-policy and documentation-network checks remain enforced. No filesystem,
+network, subprocess, query, plugin, compiler or executable condition behavior is
+available to the parser or analyzer.
+
+Known limitations: The Sigma adapter is an explicit local subset, not a full
+Sigma compiler. Source metadata may be absent or unmapped. Detection/output
+severity cannot be inferred from ordinary input events. Time checks cover retained
+representation and precision only; cross-event windows, order and same-value
+correlation belong to V2-05. Evidence references associate paths but do not
+authenticate source claims; unresolved assumptions stay unknown.
+
+Commit: `1cf9402e50a1433d6aece451f6469af2347a421c` — `feat(intent): analyze local detection intent`.
+
+CI status: GitHub Actions run
+`35153650158` passed both `core (3.12)` and `core (3.13)` jobs for the exact
+commit: https://github.com/AegisTrace/dvi-sentinel/actions/runs/35153650158.
+
+Next card: V2-05 bounded temporal and correlation engine.
