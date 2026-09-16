@@ -152,7 +152,10 @@ have executable proof.
 The development package (`2.0.0.dev0`) includes the [semantic ontology library](docs/semantic_ontology.md):
 signals, explicit evidence bindings, unknown/loss classification and deterministic
 exports, exercised by [tests](tests/test_v2_ontology.py) and a
-[runnable example](examples/semantic_ontology.py). The remaining capabilities above
+[runnable example](examples/semantic_ontology.py). The [semantic algebra](docs/semantic_algebra.md)
+adds seven evidence-bound relations with explicit unknowns, contradiction suppression
+and measured support fractions, exercised by [tests](tests/test_v2_semantic_algebra.py)
+and a [runnable proof](examples/semantic_algebra.py). The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
 [development standard](docs/development_standard.md) and

@@ -4,6 +4,10 @@
 
 ### Added
 
+- Executable semantic algebra for preservation, required evidence, contradiction,
+  implication, equivalence, weakening and finding association. Decisions retain
+  field-level values, explicit unknowns and evidence-support denominators; exported
+  plans replay against their recorded evidence before serialization.
 - Semantic ontology above canonical events: strict immutable signal/evidence models,
   loss-aware equivalence, profile requirements and deterministic exports with a real
   local example. Source provenance stays separate from semantic identity; unresolved

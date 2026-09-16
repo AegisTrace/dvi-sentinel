@@ -19,3 +19,10 @@ incomplete signals with real bindings and loss findings. Run
 `python examples/semantic_ontology.py --out runs/v2/ontology-proof` using a new output
 directory. See [the ontology contract](../docs/semantic_ontology.md); these standalone
 analysis files are distinct from a verified V1 run bundle.
+
+The [semantic algebra example](semantic_algebra.py) evaluates a known DNS signal
+against a candidate missing its required question. Run
+`python examples/semantic_algebra.py --out runs/v2/algebra-proof` using a new output
+directory. It writes `semantic_plan.json` and `algebra_decisions.jsonl`, preserving
+unknown decisions and the observed support change from 1.0 to 0.75. See the
+[algebra contract](../docs/semantic_algebra.md) for each relation and metric's limits.

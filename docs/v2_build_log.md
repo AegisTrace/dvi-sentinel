@@ -114,5 +114,72 @@ private configuration. `git diff --check` passed.
 Completed and pushed: `18714fbfd3fd3b8b8108ac55f682c0ff55e3baeb`.
 [CI succeeded on Python 3.12 and 3.13](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35027961953).
 The repository now uses `main` for all updates, preserving the existing README
-correction and published release tag. V2-02 is next after the combined main commit
-passes CI.
+correction and published release tag. The consolidation commit
+`2434a8a5b0ae55e33b85d93f1ceeb3d0234ad8c3` passed
+[both CI jobs](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35028733681)
+before V2-02 began. `main` is the only local and remote branch.
+
+## V2-02 - Semantic Detection Algebra
+
+Purpose: evaluate bounded semantic relations over actual ontology evidence, retaining
+field checks and unresolved support in every result.
+
+Acceptance criteria were recorded before implementation: execute all seven relations;
+reuse full ontology context and validate actual invariant/transform references; keep
+missing evidence unknown; distinguish known contradictions from absence; record
+required-evidence support with explicit numerators/denominators; produce replayable
+plans and decision records; exercise real example behavior, tampering, bounds and
+determinism; preserve V1 gates and publish directly on main before V2-03.
+
+Files changed: semantic_algebra_models.py and semantic_algebra.py, their behavioral
+tests, examples/semantic_algebra.py and docs/semantic_algebra.md; README, changelog,
+examples index, roadmap, architecture status and this record.
+
+Behavior implemented: evidence-bound invariant/transform identities; three-valued
+preservation, requirements, contradiction, contract implication and equivalence;
+observed weakening fractions; association of actual findings with source bindings.
+Known contradictions suppress the compared signal assertion. Unknown contexts cannot
+prove preservation/equivalence; missing required fields remain in support denominators.
+Artifact serialization re-evaluates the entire plan, rejecting changed decision traces.
+
+Tests added: 25 behavioral/property/negative cases, including actual protected changes,
+unknown and robust controls, directional constraints, absent/lossy bindings, support
+fractions, full-support unknown contexts, known contradiction alongside missing data,
+forged identities/decisions, context bounds, fixture policy and the executable example.
+Docs/examples updated: relation semantics, metric interpretation, selectors, trust
+boundary, replay and the actual missing-DNS proof.
+
+Safety review: models are immutable data; the analyzer is pure bounded analysis with
+no I/O. It revalidates evidence and reapplies existing fixture policy to exposed values.
+The example is a local writer with fixed filenames beneath a new directory, rejecting
+network/symlink/junction/existing destinations. No dependencies, scenario capabilities,
+runtime network/subprocess calls, V1 artifact contracts or release tags changed.
+
+Known limitations: implication compares declared projection contracts; explanation
+verifies finding association rather than independently proving every upstream loss.
+Support fractions are descriptive, not statistical confidence or detector accuracy.
+Replay checks consistency with recorded evidence and cannot authenticate original
+source assertions. Independent oracles, temporal logic, profiles and CLI integration
+remain planned.
+
+Commands/results: Ruff check and format passed (128 files); strict mypy passed for
+54 source files. Targeted coverage ran all 25 algebra tests in 7.50 seconds, with
+100% statement/branch coverage in both new modules. The full coverage run reported
+509 passed and one Windows symlink-privilege skip in 160.25 seconds, with 96% combined
+coverage. The Linux CI suite exercises that symlink case. All 136 local links across
+44 Markdown files resolve, and the publication-content audit passed for 174 files.
+
+Artifacts generated: the real source example wrote semantic_plan.json (49,711 bytes,
+SHA-256 `038dc52231dce562a44b69829aa6dfdb7f3cb5fe9de3f96d30ea756de0ab964f`)
+and algebra_decisions.jsonl (17,312 bytes, SHA-256
+`00012b163c6f53da6824ce4607fcd21a6dc2699cf596a54e751012e5c86b140e`)
+under ignored runs/v2/V2-02-proof. It measured five unknown relations, true weakening
+from 4/4 to 3/4 support, and one true explanation for the actual missing DNS question.
+
+`python -m build` produced wheel and source distribution. A clean Python 3.12 wheel
+installation passed dependency checks and `dvi doctor --json` outside the checkout;
+the analyzer import resolved inside that environment's site-packages. The installed
+example reproduced both Python 3.13 source artifacts byte-for-byte. Package archives
+contain the intended code and exclude private configuration. `git diff --check`
+passed. Commit/push and exact-commit CI evidence are recorded after publication;
+V2-03 may begin only when both supported Python jobs succeed.
