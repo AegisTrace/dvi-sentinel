@@ -652,3 +652,96 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-08 Semantic Coverage Engine.
+
+## V2-08 — Semantic Coverage Engine
+
+Card: V2-08.
+
+Purpose: Retain cases that add measured semantic or diagnostic observations,
+with exact growth accounting and visible unresolved evidence.
+
+Acceptance criteria: Twelve measured dimensions, deterministic seeded ordering,
+novelty retention, duplicate rejection, explained skips, unknown evidence blocking
+the coverage evidence gate, four canonical artifacts, behavioral tests, docs,
+example, installed-package proof and successful Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/coverage_models.py`, `semantic_coverage.py`,
+`tests/test_v2_coverage.py`, `examples/semantic_coverage.py`,
+`docs/semantic_coverage.md`, README, changelog, roadmap, architecture and examples index.
+
+Behavior implemented: Pinned, bounded inputs pass policy and integrity checks
+before ontology, equivalence, adapter, mapping, matching and oracle analyses.
+Twelve dimensions retain their measurements and evidence paths. Only resolved
+dimension/value tokens increase coverage. Seeded ordering determines which case
+first contributes each token; duplicate cases add nothing. Queue entries retain
+the input digest and exact new tokens. Validators recompute union and growth
+arithmetic. The evidence gate remeasures inputs and checks every case, including
+skipped unknowns and safety rejections.
+
+Tests added: 32 focused cases cover measured branches/signals, duplicate and
+incidental-metadata rejection, adapter/profile paths, precision and correlation
+loss, missing evidence, policy/integrity rejection before consumers, actual
+disagreement, seed/order determinism, bounded inputs, report tampering, evidence
+paths, exact union arithmetic and the runnable example.
+
+Docs/examples updated: The [coverage contract](semantic_coverage.md) defines each
+dimension, retention, gates, bounds and limitations. The
+[example](../examples/semantic_coverage.py) evaluates timely, late and duplicate
+observations through the local rule harness. Two of three cases are retained,
+with 34 measured tokens and a passing evidence-resolution gate.
+
+Artifacts generated: Source Python 3.13 and installed-wheel Python 3.12 outputs
+matched byte-for-byte in `runs/v2/V2-08-source-proof` and
+`runs/v2/V2-08-wheel-proof`.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| semantic_coverage.json | 149507 | `77f6426536a110c33d50eb06e0f102e2f6c3dcddb5a7bc9374e35e86abb98dee` |
+| coverage_growth.json | 210 | `0d87e728ad6305ea2a43a1ce31d133e8e1ff8db26f20b47fccbed4acd58de033` |
+| discovery_queue.jsonl | 3264 | `e90908bc8a4e8c1bb432b5cd3269d9cba3ed1d60b4587e95fcc66c45ea8d52fd` |
+| coverage_retention.json | 3495 | `2d4b9af823571526e2254c64362006d3d48a4b059f862986421dda1cc9621cc4` |
+
+The proof wheel is 167729 bytes (SHA-256
+`3aa80dc54fa04c64631d5a657b44c72fec8b4b4079557fc7bec2a0b824f0c237`);
+the sdist is 375029 bytes (SHA-256
+`f4ae5fcc6ccc6df628f5a6b7c9964aba2904f325980bdb68503dfb9fe29235bb`).
+Both new module files in the wheel match the committed source.
+
+Commands run: Ruff lint/format, strict mypy, focused pytest, full coverage pytest
+with JUnit, coverage report with the 90% floor, isolated build with uv, source and
+installed-wheel examples, isolated installation/dependency check, doctor/import
+checks outside the checkout, artifact/member hash comparisons, archive exclusion
+checks, Markdown links, publication-content scan and Git whitespace checks.
+
+Results: Focused tests passed 32/32. Full regression passed 686 tests with one
+expected Windows symlink-permission skip in 234.99 seconds, at 94% combined
+statement/branch coverage. Lint, format and strict mypy passed. All four artifacts
+matched across runtimes. Doctor reported `ready`, imports resolved from
+site-packages and all 17 runtime packages had compatible dependencies. Checked
+187 local links across 42 Markdown files. Proof logs, JUnit, coverage and hashes
+remain under ignored `runs/v2/`.
+
+Safety review: Immutable pure data models and bounded pure analyzers reuse the
+existing policy, adapters, ontology, mapping, matching and oracles. No network,
+subprocess, callback, external detector or dependency was added. Inputs allow
+16 cases, eight source/reference events per case, three profiles and 256 KiB per
+case. Dimension values and total output are bounded; artifacts are limited to
+32 MiB combined. Rejected unsafe inputs are not re-exported. The example writes
+fixed filenames under a new validated local directory. V1 contracts are preserved.
+
+Known limitations: Coverage measures supplied local observations, not security
+completeness or independent samples. The gate checks evidence resolution, not
+release readiness or detector effectiveness; known negative results remain known.
+Partially unresolved cases may contribute resolved tokens but still block the gate.
+Fragility tokens describe associations, not causal proof. Existing adapter limits
+remain visible, including rejection of an empty CSV vendor field. Hashes establish
+content linkage, not authenticity. These files do not replace the V1 run bundle.
+
+Commit: `9d877edf1a71b2f7e0ec0702fe85bfc60c375160` —
+`feat(coverage): track semantic discovery coverage`.
+
+CI status: [GitHub Actions run 35663803726](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35663803726)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-09 Cross-Representation Metamorphic Testing.
