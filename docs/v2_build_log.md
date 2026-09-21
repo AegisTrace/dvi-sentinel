@@ -549,3 +549,106 @@ commit, including the test/coverage gates, package build, isolated install,
 CLI fixture run and benchmarks.
 
 Next card: V2-07 bounded combinatorial exploration and coverage accounting.
+
+## V2-07 — Constraint-Guided Exploration
+
+Card: V2-07 Constraint-Guided Exploration
+
+Purpose: Select local telemetry cases that cover feasible interactions between
+existing safe transformations while explaining constraints, invariant failures
+and budget omissions.
+
+Acceptance criteria: Pairwise and configurable t-way covering; exact declarative
+constraints; semantic and policy filtering; seeded deterministic ordering;
+bounded case/event selection; explained rejected and skipped combinations;
+four canonical artifacts; real local controls, tests, docs, example, installed
+package proof and successful Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/constraint_models.py`, `constraints.py`,
+`covering_array.py` and `exploration.py`; `tests/test_v2_constraints.py`;
+`examples/constraint_exploration.py`; `docs/constraint_exploration.md`; README,
+changelog, roadmap, architecture and examples index.
+
+Behavior implemented: A finite parameter space names existing V1 probe operations
+or identity. Exact forbidden conjunctions, V1 permissions, independently checked
+transform outputs, structural policy and final V2 ontology equivalence determine
+feasibility. The complete bounded Cartesian space is evaluated before greedy
+coverage selection. A seeded digest breaks ties; affordable alternatives remain
+eligible when larger cases exceed the event budget. Infeasible interactions and
+feasible uncovered interactions are separate. Every assignment appears once as
+selected, rejected or skipped. Selected cases replay their measured content digest;
+the plan retains inputs, configuration, events and transformation hash chains.
+
+Tests added: 37 focused cases cover one-/two-/three-/four-way interactions,
+independent coverage denominators, forbidden conjunctions, case/event budgets,
+affordable alternatives, seeded declaration-order invariance, safety rejection,
+permission checks, semantic unknowns and correlation loss, real duplicate-ID
+collisions, finite growth, schema/search bounds, known and unexpected errors,
+replay drift, absent optional solvers, artifact hashes/tampering and local controls.
+
+Docs/examples updated: The [exploration contract](constraint_exploration.md)
+defines parameter choices, constraints, feasibility, budgets, provenance and
+limits. The [example](../examples/constraint_exploration.py) exercises four binary
+dimensions and two actual local rules. Five selected cases cover all 23 feasible
+pairs out of 24 theoretical pairs; four of 16 full assignments are forbidden.
+The robust rule detects all five selected cases, while the sensor-dependent rule
+detects three. These are measured local fixture observations.
+
+Artifacts generated: Source Python 3.13 and installed-wheel Python 3.12 outputs
+matched byte-for-byte in `runs/v2/V2-07-source-proof` and
+`runs/v2/V2-07-wheel-proof`.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| constraint_plan.json | 34037 | `c5c1204acbbfc61fe15fea5d1f3227f04483a8fdb5d753c5aeef743385326a7f` |
+| covering_array.json | 1140 | `711c2e509d192abd9610a7aa653f6dccda4568fd5f50b090769b3076bdea8aef` |
+| exploration_manifest.json | 565 | `55651eaae396837e00df277299f8bc5e6de5f25850252fb95793510c32953161` |
+| invalid_combinations.json | 3677 | `5646b61a156ff0914f91fb9eef7fd552790d62be87d0e3aa5a6629de0bfa76aa` |
+
+The proof wheel is 160634 bytes (SHA-256
+`633d67349e9d668f8a2cc9d0166815d7ae3ccf33b5af4acc46b19dcf0d2809d8`);
+the sdist is 361225 bytes (SHA-256
+`69f139f439179ecb730678b0165590b9be3ee31133ee60927201fb556ec09a0d`).
+The four exploration module files in the wheel match the committed source.
+
+Commands run: `ruff check .`, `ruff format --check .`, strict mypy, focused pytest,
+full `python -m coverage run -m pytest -q --junitxml=...`, coverage report with
+the 90% floor, isolated `python -m build --installer uv`, source and installed-wheel
+examples, isolated wheel installation/dependency check, `dvi doctor --json`
+outside the checkout, artifact/member hash comparison, archive exclusion check,
+documentation links, publication-content scan and Git whitespace checks.
+
+Results: Focused tests passed 37/37. Full local regression passed 654 tests with
+one expected Windows symlink-permission skip in 226.43 seconds, at 95% combined
+statement/branch coverage. Ruff and strict mypy passed. All four example artifacts
+matched. Doctor reported `ready`, the import resolved from site-packages and all
+17 runtime packages had compatible dependencies. Checked 175 local links across
+41 Markdown files. Proof logs, JUnit, coverage and hashes remain under ignored
+`runs/v2/`.
+
+Safety review: Pure immutable input models and bounded analyzers reuse existing
+V1 probes, canonical validation, policy checks and V2 ontology comparisons. No
+scenario callback, expression execution, network, subprocess, external detector
+or solver dependency was added. Limits are six dimensions, 512 combinations,
+32 constraints, 32 original events, 128 events per candidate, 2 MiB per
+input/candidate, 128 selected cases, 4096 selected events and 32 MiB output.
+Unsafe inputs block analysis and unsafe candidates never reach selection. The
+example writes fixed names under a new validated local directory. V1 contracts,
+commands, dependencies and release history remain unchanged.
+
+Known limitations: Options are the existing finite probe catalog, not arbitrary
+numeric synthesis. Greedy selection does not promise a minimum covering array.
+Budgets limit selected execution cases; full eligibility validation remains
+bounded but exhaustive. Parameter coverage is distinct from semantic novelty;
+no-op choices can share telemetry. Empty feasible spaces are explicitly
+`infeasible`, not complete. Hashes establish content linkage, not authenticity.
+These artifacts do not replace the V1 verified run bundle.
+
+Commit: `b66453e660fbdfffb0048ba9a7f8c4838cbed3c6` —
+`feat(explore): add constraint-guided exploration`.
+
+CI status: [GitHub Actions run 35553046587](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35553046587)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-08 Semantic Coverage Engine.
