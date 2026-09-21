@@ -13,6 +13,10 @@
   explicit missing-key and timestamp-precision unknowns, benign-context suppression,
   deterministic JSON/JSONL traces and a runnable flow-to-alert proof. Sequence and
   window decisions remain local evidence checks, not production detector execution.
+- Nine local oracles with separate eligibility and diagnostic roles, recomputed
+  input integrity, preserved disagreement and conservative gap confirmation.
+  Four deterministic artifacts retain decisions, input evidence and uncertainty;
+  delayed-alert and timely-control fixtures exercise real harness observations.
 - Seven revisioned local schema/metadata profiles with explicit field paths, aliases,
   extensions, strict normalization, timestamp/severity loss traces and deterministic
   roundtrip reports. Incomplete Sigma metadata stays unknown; no full standard or

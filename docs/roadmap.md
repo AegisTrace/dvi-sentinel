@@ -14,8 +14,9 @@ with field/loss reports and measured roundtrips. The [detection intent parser](d
 adds bounded native/Sigma-subset/V1 metadata parsing and event evidence loss reports.
 The [temporal and correlation engine](temporal_correlation.md) adds ten bounded
 predicates with stable UTC ordering and explicit missing-evidence/precision unknowns.
-Oracles,
-oracles, constrained exploration, coverage, counterfactuals, uncertainty, graphs
+The [oracle consensus engine](oracle_consensus.md) combines nine bounded evidence
+checks with explicit integrity gates, disagreement and uncertainty.
+Constrained exploration, coverage, counterfactuals, population statistics, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
 

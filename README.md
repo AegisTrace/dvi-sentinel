@@ -166,6 +166,10 @@ The [temporal and correlation engine](docs/temporal_correlation.md) now evaluate
 ten bounded predicates over stable UTC event order, retains missing-key and
 precision unknowns, and emits trace/correlation/finding/summary artifacts. It is
 exercised by [temporal tests](tests/test_v2_temporal.py) and a [runnable proof](examples/temporal_correlation.py).
+The [oracle consensus engine](docs/oracle_consensus.md) evaluates nine local evidence
+checks, blocks unsafe or changed inputs, and retains diagnostic disagreement and
+uncertainty. [Oracle tests](tests/test_v2_oracles.py) and a
+[delayed-alert/control example](examples/oracle_consensus.py) verify its decisions.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

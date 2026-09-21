@@ -47,3 +47,9 @@ correlation evidence, and a declared sequence. Run
 `python examples/temporal_correlation.py --out runs/v2/temporal-proof` and read the
 [temporal contract](../docs/temporal_correlation.md) for predicate semantics,
 precision warnings and bounded artifacts.
+
+The [oracle consensus example](oracle_consensus.py) runs a delayed local harness
+alert and a timely control through nine evidence checks. Run
+`python examples/oracle_consensus.py --out runs/v2/oracle-proof` for four artifacts
+per case. The [oracle contract](../docs/oracle_consensus.md) explains integrity
+gates, diagnostic disagreement and the finite meaning of confidence.
