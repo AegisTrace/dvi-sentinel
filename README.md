@@ -170,6 +170,11 @@ The [oracle consensus engine](docs/oracle_consensus.md) evaluates nine local evi
 checks, blocks unsafe or changed inputs, and retains diagnostic disagreement and
 uncertainty. [Oracle tests](tests/test_v2_oracles.py) and a
 [delayed-alert/control example](examples/oracle_consensus.py) verify its decisions.
+The [constraint exploration engine](docs/constraint_exploration.md) composes existing
+safe transformations into finite pairwise/t-way plans with measured feasible
+coverage, invariant filtering and explained budget omissions.
+[Exploration tests](tests/test_v2_constraints.py) and a
+[local-control example](examples/constraint_exploration.py) exercise the selected cases.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

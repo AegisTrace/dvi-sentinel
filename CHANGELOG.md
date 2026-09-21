@@ -4,6 +4,10 @@
 
 ### Added
 
+- Finite constraint-guided exploration over existing safe probe operations,
+  pairwise/t-way coverage of feasible combinations, invariant/policy filtering,
+  deterministic seeded selection and explicit case/event budget omissions.
+  Four artifacts link selected cases and coverage to actual input and transform evidence.
 - Bounded detection intent parsing and evidence analysis for native declarations,
   a deliberately small Sigma-style metadata/selection subset and validated V1
   rule metadata. The four deterministic intent/loss artifacts retain expected and

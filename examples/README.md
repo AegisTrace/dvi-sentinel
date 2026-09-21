@@ -53,3 +53,11 @@ alert and a timely control through nine evidence checks. Run
 `python examples/oracle_consensus.py --out runs/v2/oracle-proof` for four artifacts
 per case. The [oracle contract](../docs/oracle_consensus.md) explains integrity
 gates, diagnostic disagreement and the finite meaning of confidence.
+
+The [constraint exploration example](constraint_exploration.py) covers feasible
+pairs across four transformation dimensions and runs the selected cases against
+robust and sensor-dependent local rules. Run
+`python examples/constraint_exploration.py --out runs/v2/exploration-proof` for
+four artifacts with coverage, constraints, skips, trace hashes and case evidence.
+The [exploration contract](../docs/constraint_exploration.md) defines bounds,
+coverage denominators and the scope of the existing transformation catalog.
