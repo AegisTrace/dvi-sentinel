@@ -175,6 +175,11 @@ safe transformations into finite pairwise/t-way plans with measured feasible
 coverage, invariant filtering and explained budget omissions.
 [Exploration tests](tests/test_v2_constraints.py) and a
 [local-control example](examples/constraint_exploration.py) exercise the selected cases.
+The [semantic coverage engine](docs/semantic_coverage.md) derives twelve coverage
+dimensions from actual local analyses, retains new observations and prevents
+duplicate inflation. [Coverage tests](tests/test_v2_coverage.py) and a
+[timely/late/duplicate example](examples/semantic_coverage.py) verify growth and
+the conservative evidence gate.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

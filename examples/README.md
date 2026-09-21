@@ -61,3 +61,10 @@ robust and sensor-dependent local rules. Run
 four artifacts with coverage, constraints, skips, trace hashes and case evidence.
 The [exploration contract](../docs/constraint_exploration.md) defines bounds,
 coverage denominators and the scope of the existing transformation catalog.
+
+The [semantic coverage example](semantic_coverage.py) measures twelve discovery
+dimensions for timely, late and duplicate observations. Run
+`python examples/semantic_coverage.py --out runs/v2/coverage-proof` for the real
+coverage, growth, queue and retention artifacts. The
+[coverage contract](../docs/semantic_coverage.md) explains novelty, unknowns and
+the scope of its evidence-resolution gate.

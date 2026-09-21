@@ -18,7 +18,9 @@ The [oracle consensus engine](oracle_consensus.md) combines nine bounded evidenc
 checks with explicit integrity gates, disagreement and uncertainty.
 The [constraint exploration engine](constraint_exploration.md) adds finite
 pairwise/t-way selection with actual invariant filtering, feasible-interaction
-accounting and explained budgets. Semantic novelty coverage, counterfactuals, population statistics, graphs
+accounting and explained budgets. The [semantic coverage engine](semantic_coverage.md)
+tracks twelve measured dimensions, novelty retention and unknown evidence without
+duplicate inflation. Counterfactuals, population statistics, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
 

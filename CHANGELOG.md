@@ -4,6 +4,10 @@
 
 ### Added
 
+- Measured semantic discovery coverage across twelve dimensions, seeded novelty
+  retention, exact union growth and a conservative evidence-resolution gate.
+  Four artifacts retain actual analysis evidence and explain duplicate, unknown
+  and safety-rejected cases without claiming security completeness.
 - Finite constraint-guided exploration over existing safe probe operations,
   pairwise/t-way coverage of feasible combinations, invariant/policy filtering,
   deterministic seeded selection and explicit case/event budget omissions.
