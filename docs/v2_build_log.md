@@ -436,3 +436,116 @@ CI status: GitHub Actions run
 https://github.com/AegisTrace/dvi-sentinel/actions/runs/35155532882.
 
 Next card: V2-06 Multi-Oracle Consensus and Uncertainty Classification.
+
+## V2-06 — Multi-Oracle Consensus and Uncertainty Classification
+
+Card: V2-06 Multi-Oracle Consensus and Uncertainty Classification
+
+Purpose: Evaluate a proposed local detection gap through nine bounded evidence
+checks while preserving disagreement, missing evidence and integrity failures.
+
+Acceptance criteria: All nine required oracle classes; typed decisions with
+confidence, severity, evidence references, reasons, explanation, uncertainty,
+blocking and content digest; seven consensus states; multiple diagnostic checks
+for confirmation; authoritative safety/provenance rejection; stable oracle-ID
+ordering; four canonical artifacts; behavioral tests, docs, runnable controls,
+installed-package proof and green Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/oracle_models.py`,
+`src/dvi_sentinel/oracle.py`, `src/dvi_sentinel/oracle_consensus.py`,
+`tests/test_v2_oracles.py`, `examples/oracle_consensus.py`,
+`docs/oracle_consensus.md`, README, changelog, roadmap, architecture and
+examples index.
+
+Behavior implemented: Safety, schema, semantic, temporal, differential,
+detection, statistical, evidence and provenance checks recompute their results
+from actual canonical events, expectations, local harness observations and
+optional repetitions/representations. Eligibility checks remain separate from
+diagnostic support for the detection-gap claim. Safety/provenance rejection
+prevents downstream analysis; missing required evidence prevents confirmation;
+opposing diagnostics remain ambiguous. Confidence describes resolution of finite
+checks and never claims a probability. Each result links to the same complete
+input digest and hashes its own canonical content. Safe artifact output retains
+the input evidence; blocked inputs are omitted.
+
+Tests added: 41 focused cases cover real delayed/timely harness observations,
+diagnostic disagreement, safety gates across every input group, provenance
+tampering and missing digests, required evidence, missing timestamps/keys,
+retained precision, window boundaries, ontology and representation loss,
+small/mixed/unknown repetitions, duplicate identities, copied-model validation,
+bounds, benign controls, low-confidence gates, ordering permutations and artifact
+content/digests. The full suite passed 617 tests with one expected Windows
+symlink-permission skip and 95% combined statement/branch coverage.
+
+Docs/examples updated: The [oracle contract](oracle_consensus.md) documents
+check roles, decisions, combination rules, evidence paths, confidence scope,
+limits and safety. The [example](../examples/oracle_consensus.py) evaluates an
+actual rule-harness alert at 2 seconds against a 1-second expectation, plus a
+timely 0.5-second control. README and planning indexes link to this implemented
+behavior.
+
+Artifacts generated: Source Python 3.13 and installed-wheel Python 3.12 examples
+produced byte-identical outputs under `runs/v2/V2-06-source-proof` and
+`runs/v2/V2-06-wheel-proof`. The delayed case was `confirmed`; the timely
+control was `suppressed_false_positive`.
+
+| Case / artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| delayed/oracle_consensus.json | 12843 | `388e874d9c2df38d91e7b52af08817c06cb4a9c50b272be811e678663ef34fcd` |
+| delayed/oracle_decisions.jsonl | 5853 | `20cdcfc12c5c0c22689209a10c07d68bff71c0ba8d3281f5f77503b2e4665c0e` |
+| delayed/oracle_matrix.json | 1592 | `5dd68964c4d2e52c5e3686af7325649be3eb918e955747868399eca57727afd2` |
+| delayed/uncertainty_report.json | 309 | `06f34b9621e675b489a4f6f03875b2ce744d514c8adf6093f3add93ac8c917b2` |
+| timely/oracle_consensus.json | 12867 | `042416197fdddc743345a532e2e56a232797b8ce9bd95f1cc989ba7d142a3a90` |
+| timely/oracle_decisions.jsonl | 5827 | `32423a397bd06bafe266c5cffbdb6202a7a76a05fb822c164a4245a9e5b33bcc` |
+| timely/oracle_matrix.json | 1591 | `1a421cba3ad0f820e81c984545da2caa063e0f88ed7b92e5d9de0e29376bff69` |
+| timely/uncertainty_report.json | 333 | `c4575c8140b015b5bb516480e410adc490ea8d20d99d0f9da1ef34631d840862` |
+
+The proof wheel is 152275 bytes (SHA-256
+`b3af949f37e4a755ac42aa1f042568dd64e69d6c9ce1cf78ec658269e81814db`);
+the sdist is 345443 bytes (SHA-256
+`3dac9fafeb0f239486b490d546e5dbd506ec986726a0a3460a53730f5ad6bd7d`).
+All three oracle module files in the installed wheel match the committed source.
+
+Commands run: `ruff check .`, `ruff format --check .`,
+`mypy src/dvi_sentinel`, focused pytest, full
+`python -m coverage run -m pytest -q --junitxml=...`,
+`python -m coverage report --fail-under=90`, `python -m build`, source and
+installed-wheel example runs, wheel installation and dependency check,
+`dvi doctor --json` outside the checkout, artifact/member hash comparisons,
+documentation link validation, publication-content scan and `git diff --check`.
+
+Results: Focused tests passed 41/41; full local tests passed 617 with one
+platform skip in 222.32 seconds; coverage was 95%. Ruff and strict mypy passed.
+The package import resolved from the isolated runtime's site-packages,
+17 installed packages had compatible dependencies and doctor reported `ready`.
+All eight example artifacts matched byte-for-byte. Local proof logs, JUnit
+results, coverage data and the hash manifest remain under ignored `runs/v2/`.
+
+Safety review: Pure immutable data models and pure analyzers; the example is
+a bounded local artifact writer using fixed filenames and a new local directory.
+Inputs are revalidated before analysis, including copied model values; all
+primary/repeated detections and representation records pass existing policy
+checks. Limits are 128 input events, 128 detections per observation, 128 unique
+repetitions, 3 representations, 32 configured evidence paths, 2 MiB canonical
+input, 9 results and 32 MiB output. No network, subprocess, external detector,
+query, plugin, expression execution or live-target capability was introduced.
+Existing V1 models, commands and dependencies remain unchanged.
+
+Known limitations: Checks may share a fixture and matcher; they are not
+statistically independent samples. Repeat counts show local repeatability and
+confidence is not a population estimate. Hashes prove content linkage, not source
+authenticity. Temporal checks evaluate retained time/key evidence and preserve
+unknowns for absent alerts or references. Benign/control context applies to the
+bounded fixture as a whole and does not establish causal attribution to one alert.
+Differential checks corroborate representations without duplicating matcher votes.
+Integrated V2 CLI/report wiring and population statistics belong to later cards.
+
+Commit: `6a6ea612385df9ed33c6a1ec2337948f2a61a95c` —
+`feat(oracles): add multi-oracle consensus engine`.
+
+CI status: [GitHub Actions run 35551658481](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35551658481)
+passed both `core (3.12)` and `core (3.13)` jobs for the exact implementation
+commit, including the test/coverage gates, package build, isolated install,
+CLI fixture run and benchmarks.
+
+Next card: V2-07 bounded combinatorial exploration and coverage accounting.
