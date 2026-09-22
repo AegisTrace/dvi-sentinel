@@ -845,3 +845,111 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-10 Counterfactual Failure Mining.
+
+## V2-10 ? Counterfactual Failure Mining
+
+Card: V2-10.
+
+Purpose: Find inclusion-minimal sets of safe transformations associated with a
+missed detection in a measured local rule fixture, with conditional effect rankings.
+
+Acceptance criteria: Detected baseline, single changes, covering-array combinations,
+every proper-subset control before minimality, actual harness/matcher observations,
+local effect rankings, explicit confidence/limitations, four deterministic artifacts,
+behavioral tests, runnable controls, docs, package proof and green Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/counterfactual_models.py`, `counterfactuals.py`,
+`tests/test_v2_counterfactuals.py`, `examples/counterfactuals.py`,
+`docs/counterfactual_causality.md`, README, changelog, roadmap, architecture and
+examples index.
+
+Behavior implemented: A pinned, bounded request passes policy and ontology gates
+before actual local rule evaluation. Singles run before seeded covering-array
+combinations. Subset controls share one case/event budget and evaluation cache.
+Every bounded subset is accounted for, including rejected, unselected, unknown and
+budget-skipped cases. All proper subsets must detect before an observed miss is
+inclusion-minimal; non-monotonic outcomes cannot evade this control. Rankings use
+verified local minimal-set membership and descriptive paired miss deltas, retaining
+unavailable comparisons and excluding identical-input pairs from the mean. Findings
+state conditional local necessity and preserve evidence links and limitations.
+
+Tests added: 42 focused cases cover single/combined/irrelevant changes, robust
+controls, seed/declaration-order determinism, missed/ambiguous baselines, one-dimension
+studies, case/event budgets, no-op denominators, unsafe/semantically invalid inputs,
+pins, replay drift, unknown controls, non-monotonic outcomes, complete proper-subset
+verification, budget-unresolved minimality, six-dimension bounds, propagated errors,
+artifact tampering, input/output bounds and the executable three-control example.
+
+Docs/examples updated: The [counterfactual contract](counterfactual_causality.md)
+defines measured search, inclusion-minimality, descriptive effects, confidence,
+budgets and reproduction. The [example](../examples/counterfactuals.py) runs a
+sensor-dependent rule, independent sensor/vendor rules and a robust category rule.
+Each accounts for eight subsets and evaluates seven. The first two yield verified
+one- and two-dimension minimal sets; the robust control yields no observed failure.
+
+Artifacts generated: Source Python 3.13 and installed-wheel Python 3.12 outputs
+matched byte-for-byte in `runs/v2/V2-10-source-proof` and
+`runs/v2/V2-10-wheel-proof`, with four artifacts for each of three local controls.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| combination/causal_rankings.json | 3503 | `17e45e1f95310b6d13ae323c27a46df03e151a7eda5869902e366e28edafde9d` |
+| combination/counterfactual_summary.json | 48628 | `197880a3267a22c0e79c8e077e76385627751f1ace6c95504c38518a41030ba1` |
+| combination/counterfactuals.jsonl | 40875 | `c2260014e5d989f89aca08703653d2654ef257e7024463fd44869fa09f6476d3` |
+| combination/minimal_failure_set.json | 977 | `2b040a337cc973ab9b799d6d45faf287d0f2439f19e3d1d410c3c7b69eec1093` |
+| robust/causal_rankings.json | 3273 | `62b59aed88065cd10e83d5bac9bd2c45c9bd295b75cee1686463e65e5d0a9554` |
+| robust/counterfactual_summary.json | 44797 | `02e74ee1e41fb38d349eb9a4e891d3f949861a8a2db9ae36aa9856137a71f375` |
+| robust/counterfactuals.jsonl | 38482 | `c0085f6abaf4c1bfcb08ef01b9e8e30fb19e4af2c348df8d4acb91a2190f1dd1` |
+| robust/minimal_failure_set.json | 108 | `12cdadecbf9cb5575e3f9638b92a45104bc629383a4330d852ee7e1cf0611fb5` |
+| single/causal_rankings.json | 3373 | `347f841bcb2e661e49da8cce66fcc62df44225854c5de32b27c3301d69f9400a` |
+| single/counterfactual_summary.json | 40756 | `31d08115238fcd6a6ea7809cb64e8eb3da3514139852112df90deca9d9903ee7` |
+| single/counterfactuals.jsonl | 32827 | `4bb8ef8cea5ded81c0f7ae885e37ad75fdbbfc751d03bdafff365128c0700ffc` |
+| single/minimal_failure_set.json | 1627 | `dd620fb96da251f30a9f4418d343ce2b1f402984a1a03befda0e96673ebe9f42` |
+
+The proof wheel is 183996 bytes (SHA-256
+`d4d136dc2f7f970f793b08e07d7aed573b066f89442ed2039d48f3d9a3b46515`);
+the sdist is 406116 bytes (SHA-256
+`b42c0074178f9588af2a5e5e10b0636f0dfc5c051632b276d670fd63279139d8`).
+Both new module files in the wheel match the implementation source.
+
+Commands run: Ruff lint/format, strict mypy, focused pytest, full coverage pytest
+with JUnit and the 90% floor, isolated build with uv, source and installed-wheel
+examples, isolated installation/dependency check, doctor/import checks outside
+the checkout, artifact/member hash comparisons, archive exclusions, Markdown
+links, publication-content scan, import/data-flow review and Git whitespace checks.
+
+Results: Focused tests passed 42/42. Full local regression passed 765 tests with
+one expected Windows symlink-permission skip in 261.51 seconds, at 94% combined
+statement/branch coverage. Lint, formatting and strict mypy passed. All 12 example
+artifacts matched across runtimes. Doctor reported `ready`, imports resolved from
+site-packages and all 17 runtime packages had compatible dependencies. Checked
+213 local links across 44 Markdown files before this completion record. Logs,
+JUnit, coverage and hashes remain under ignored `runs/v2/`.
+
+Safety review: Category D immutable models and a category A pure analyzer reuse
+existing local rule evaluation, policy, safe probe materialization, independent
+invariants, ontology and covering selection. The category W example writes fixed
+filenames under a new validated local directory. No network, subprocess, arbitrary
+callback, external detector or dependency was added. Bounds are 256 KiB per input,
+eight source events, six binary dimensions, eight local rules, 64 subsets,
+128 events/2 MiB per transformed candidate, 64 detector evaluations, 4096 evaluated
+events and 32 MiB combined artifacts. Rejected unsafe input content is omitted.
+V1 commands, contracts and release history remain unchanged.
+
+Known limitations: Findings describe this local fixture, not universal causes or
+production effectiveness. Minimality is inclusion-based within measured controls,
+not proof of the globally smallest set or discovery of all sets. Unselected subsets
+remain untested. Paired effects are dependent descriptive observations, not causal
+probabilities or statistical confidence intervals. Invalid/unknown requested cases
+leave the study incomplete even when separately verified findings remain available.
+JSON validation checks structure/linkage, not detector replay or authenticity.
+These artifacts do not replace a V1 run bundle or certify a V2 release.
+
+Commit: `2feadae24f35792bf6dd2d816a990aefe8e78762` ?
+`feat(counterfactuals): mine local failure contributors`.
+
+CI status: [GitHub Actions run 35731519035](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35731519035)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-11 Delta Debugging Shrinker Upgrade.
