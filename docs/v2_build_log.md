@@ -953,3 +953,123 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-11 Delta Debugging Shrinker Upgrade.
+
+## V2-11 — Delta Debugging Shrinker Upgrade
+
+Card: V2-11.
+
+Purpose: Minimize local failures while preserving declared semantics, actual finding
+class and independently measured nine-oracle consensus.
+
+Acceptance criteria: Event removal, smaller timestamp offsets, restored metadata,
+source aliases and optional correlation changes; protected semantics, finding and
+consensus; immediate stop on uncertainty; complete deterministic attempts and
+budgets; four artifacts, behavioral tests, docs/example, package proof and green CI.
+
+Files changed: `src/dvi_sentinel/consensus_shrinking_models.py`,
+`consensus_shrinking.py`, `reductions.py`, `tests/test_shrinking.py`,
+`tests/test_v2_counterfactuals.py`, `examples/oracle_shrinking.py`, failure-shrinking
+and counterfactual docs, README, changelog, roadmap, architecture and examples index.
+
+Behavior implemented: The opt-in mode reuses V1 proposals and independent
+invariants, fixed local rule execution, matching and V2 oracle consensus. Requests
+pin complete bounded inputs and explicitly protect original event identities.
+Coarse-to-fine event removal must preserve a newly measured surviving baseline;
+existing V1 reductions then simplify changes. Actual remaining fields must retain
+the declared finding class and matcher reason. Confirmed consensus must preserve
+state/confidence and every oracle's decision, confidence and reason codes. A strict
+cost decreases on acceptance. Uncertainty/disagreement stops immediately. Shared
+budgets and content-cached observations retain exact evaluation/event counts;
+all attempted distinct proposals retain parent/content links and decisions.
+
+Tests added: 50 cases cover four real shrinking controls, exact 10.001 ms timing,
+chunk rejection followed by smaller removals, protected identities, measured
+baseline controls, actual remaining class and matcher reason, oracle disagreement,
+changed confidence despite equal state, unsafe/nonsimplifying proposals, complete
+trace/cache accounting, all budget types, integrity/safety ordering, unknown meaning
+and precision, robust/missed/invalid inputs, deterministic artifacts, tampering,
+input/output bounds, propagated errors and the runnable example. A V2-10 integration
+case proves a missing-alert finding cannot gain unsupported confirmed consensus.
+
+Docs/examples updated: The [shrinking contract](failure_shrinking.md) describes
+explicit event scope, the opt-in API, preservation, uncertainty, trace and budgets.
+The [counterfactual contract](counterfactual_causality.md) links the stricter evidence
+gate. The [four-control example](../examples/oracle_shrinking.py) reduces six events
+to one in each fixture. Alias and correlation use two attempts/four evaluations;
+metadata uses four/six and restores the irrelevant vendor change; timing uses
+95/81 and reaches the measured 10.001 ms boundary against a 10 ms expectation.
+
+Artifacts generated: All 16 artifacts matched byte-for-byte between source Python
+3.13 in `runs/v2/V2-11-source-proof` and installed-wheel Python 3.12 in
+`runs/v2/V2-11-wheel-proof`.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| alias/oracle_preservation.json | 24362 | `7c3c28d8fe2525c9c40efa4db65dd6f8415d4a11fdbde1e1f41ea88156a49def` |
+| alias/shrinking_trace.jsonl | 24309 | `13c29cf58cd74e082ba05fbad40f8eae99bde67c97026ce78232531096fb7520` |
+| alias/shrunk_case.json | 84472 | `19249754464e8c38c9155631547170f30a67120ac8a86f2e7db91baa211386ef` |
+| alias/shrunk_case.md | 546 | `11417e697ae97509bb3dfaa509412ea921a2ac366e4465ce2bd4dc1751571ae2` |
+| correlation/oracle_preservation.json | 24305 | `b70c17eca78805c3796641bff0b9cd31d724ae1c7799009ccf3186e3e33344ae` |
+| correlation/shrinking_trace.jsonl | 26134 | `070c026099bf3d5ff8f8b1161af2144a682781257b18ea7d84223e513c450e8e` |
+| correlation/shrunk_case.json | 87100 | `3fde5920a6605cdbe00bc0e8a93914a5bb9ac6153fbbaef41299fdfdf58d6534` |
+| correlation/shrunk_case.md | 566 | `dcef7b58e738f1a296ad0db010132d1e2e314861228baaa4fd1311d49ce70669` |
+| metadata/oracle_preservation.json | 24796 | `e69693dc0506a4c5be048df31b7e145844e42e2f679dec8e1b81829d4e835d43` |
+| metadata/shrinking_trace.jsonl | 76191 | `6bf3ff18110d3bc2b3bc0b8db25972dcef43284f4673f1a6280a35c8cbcf3f9e` |
+| metadata/shrunk_case.json | 136816 | `1ef9be8424f788ef7aac7edf0bfdb9c919f9aafd340260929abc1e5094c1db05` |
+| metadata/shrunk_case.md | 565 | `aef41b1e76dde02a44e71055d470449b670dd9845b07ba31bc38a6c3945511f8` |
+| timing/oracle_preservation.json | 44864 | `f5706cd1875d339113e719712ee46d5b87f1dbf6cf373664604195f4b49d2f2d` |
+| timing/shrinking_trace.jsonl | 1883468 | `2441e9cc465a96cea6db920181d72f38d5c3c402c39c7299dd71f036233557bc` |
+| timing/shrunk_case.json | 1941837 | `a1bad4d6ad1ab3a0321de5ef5e42e4ff4f6f60e53f4c09182342cff5f5712fb4` |
+| timing/shrunk_case.md | 560 | `841e8c83d9a1599469c5b67749414f95deb869cc55162f9e6e438cb00fadf671` |
+
+The proof wheel is 193244 bytes (SHA-256
+`cc6fcbba1d823d5bdf2529a3b720169dc1076be9954431c5c393570ff97de282`);
+the sdist is 424417 bytes (SHA-256
+`e731e4beafb538ce7fd38303c2597a262389b56249daf0f703624373485ecc14`).
+All three changed runtime modules match the wheel's packaged source.
+
+Commands run: Focused pytest, Ruff lint/format, strict mypy, full coverage pytest
+with JUnit and the 90% floor, isolated build with uv, source/installed-wheel examples,
+package installation/dependency check, doctor/import checks outside the checkout,
+artifact/member hashes, archive exclusions, Markdown links, publication-content
+scan, import/data-flow review and Git whitespace checks.
+
+Results: Focused shrinking/counterfactual regression passed 103 tests. The final
+lineage-validation change passed all 10 tamper checks. Full local regression then
+passed 815 tests with one expected Windows symlink-permission skip in 320.55 seconds,
+at 94% combined statement/branch coverage. Ruff lint/format and strict mypy passed
+across 177 Python files and 78 runtime source files respectively. All 16 example
+artifacts matched across runtimes. Doctor reported `ready`, imports resolved from
+site-packages, and all 17 installed runtime packages had compatible dependencies.
+Checked 242 local links across 52 Markdown files before this completion record.
+Logs, JUnit, coverage and hashes remain under ignored `runs/v2/`.
+
+Safety review: Category D immutable models and category A analyzers/reducers use
+only validated values and the existing fixed local rule harness. Category W example
+output uses fixed filenames beneath a new validated local directory. No network,
+subprocess, arbitrary callback, external detector, executable fixture content or
+dependency was added. Bounds are 16 original/64 candidate events, eight local rules,
+256 KiB input, 128 attempted reductions, 258 actual evaluations, 4096 evaluated
+events and 32 MiB combined artifacts. Unsafe source inputs are omitted; rejected
+unsafe proposals retain no candidate content or observations. V1 APIs, invariants,
+artifact names and release history remain compatible.
+
+Known limitations: Event relevance is explicitly scoped by protected IDs, not
+inferred from incident meaning. Removed original events change that scope, and
+each surviving baseline must independently detect. One V1 family/catalog probe is
+supported per study. Minimum claims are local to supported reductions; order can
+affect the result and no global minimum or universal cause is claimed. Missing-alert
+timing and any other unresolved oracle stop shrinking. Confidence is check
+resolution, not statistical certainty; optional repetitions are never fabricated.
+JSON validation checks links/derivations, not detector replay, exhaustive trace
+production or authenticity. Reproduce from pinned input. These files do not replace
+a V1 run bundle or certify the V2 release.
+
+Commit: `4b5e3daf08c92c1d873b11c26b468449475fe3f3` —
+`feat(shrinking): preserve oracle consensus while minimizing failures`.
+
+CI status: [GitHub Actions run 35755384215](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35755384215)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-12 Statistical Confidence Layer.
