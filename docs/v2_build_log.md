@@ -745,3 +745,103 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-09 Cross-Representation Metamorphic Testing.
+
+## V2-09 — Cross-Representation Metamorphic Testing
+
+Card: V2-09.
+
+Purpose: Measure preservation of meaning, exact fields and context through eight
+existing fixture/profile representations, with field-linked differences and unknowns.
+
+Acceptance criteria: Actual generation/normalization of all eight paths, nine
+required finding classes, baseline comparisons and a complete deterministic
+pairwise matrix, unsupported-evidence unknowns, four artifacts, behavioral tests,
+docs, executable example, package proof and green Python 3.12/3.13 CI.
+
+Files changed: `src/dvi_sentinel/metamorphic_models.py`, `metamorphic.py`,
+`tests/test_v2_cross_representation.py`, `examples/cross_representation.py`,
+`docs/cross_representation_testing.md`, README, changelog, roadmap, architecture
+and examples index.
+
+Behavior implemented: A pinned, bounded canonical event is encoded or compared
+with supplied representation bytes. The analyzer reuses V1 JSONL/CSV/EVE adapters,
+V2-03 Zeek-like/ECS-like/OCSF-like/OTel-like/Sigma-metadata profiles, V1 field
+differences and V2 ontology equivalence. Measurements retain bytes, projections,
+normalization, semantic decisions and exact expected/observed fields. Findings
+carry the input digest, logical field path and evidence pointer. Matrix rows are
+canonical and complete. Shared pairwise losses remain visible against the source;
+unknowns never become agreement, including on the diagonal. Safety or integrity
+rejections omit input content and block comparison.
+
+Tests added: 37 focused cases cover a common subset agreeing across all seven
+event representations, actual precision/context/semantic/severity/correlation
+losses, equivalent timezone spellings versus measured drift, arbitrary time shifts,
+equal/conflicting aliases, unsupported profile fields, Sigma metadata, parser and
+encoder limits, incomplete/multiple events, unresolved ontology, changed identities,
+permutation determinism, policy/integrity ordering, unexpected errors, input/output
+bounds, artifact tampering, evidence pointers and the runnable example.
+
+Docs/examples updated: The [comparison contract](cross_representation_testing.md)
+defines executed paths, finding evidence, matrix semantics, limits and reproduction.
+The [example](../examples/cross_representation.py) executes eight representations
+and 64 matrix cells for a synthetic flow. JSONL, CSV and EVE agree with the source;
+four profile projections expose actual context/precision loss; Sigma remains
+unknown as event evidence. The 72 diagnostic rows include related traces and do
+not represent 72 independent failures.
+
+Artifacts generated: Source Python 3.13 and installed-wheel Python 3.12 outputs
+matched byte-for-byte in `runs/v2/V2-09-source-proof` and
+`runs/v2/V2-09-wheel-proof`.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| representation_diff.json | 21688 | `c5737eebf58907e61dddf813c12e80616d634928166dbc318eaaa412db26832a` |
+| adapter_disagreement.jsonl | 5050 | `db342dd89b4df1042a14dbc050eae0699f165b39ba2b521ef572110b17a0dae5` |
+| cross_profile_matrix.json | 68991 | `caa5ce8094ed832af051a9ba3878494c4550f1883ab24021ea68048e4d78c797` |
+| metamorphic_report.json | 140107 | `25f8fc0b703d0f934bf8db1224c79e1af6ded00bfb09e5f05baee6104bd5e49e` |
+
+The proof wheel is 174633 bytes (SHA-256
+`05f1b22a995794e3f38493ade8bca1e8d3486717ece28578a49e47c9b466a35c`);
+the sdist is 388746 bytes (SHA-256
+`22396e71e9146c716bba3bd9214c69b524568c7c9b814fad703a39cdddc7f7a8`).
+Both new module files in the wheel match the committed source.
+
+Commands run: Ruff lint/format, strict mypy, focused pytest, full coverage pytest
+with JUnit and the 90% floor, isolated build with uv, source and installed-wheel
+examples, isolated installation/dependency check, doctor/import checks outside
+the checkout, artifact/member hash comparisons, archive exclusions, Markdown
+links, publication-content scan, import/data-flow review and Git whitespace checks.
+
+Results: Focused tests passed 37/37. Full local regression passed 723 tests with
+one expected Windows symlink-permission skip in 279.44 seconds, at 94% combined
+statement/branch coverage. Lint, formatting and strict mypy passed. All four
+artifacts matched across runtimes. Doctor reported `ready`, imports resolved from
+site-packages and all 17 runtime packages had compatible dependencies. Checked
+200 local links across 43 Markdown files. Logs, JUnit, coverage and hashes remain
+under ignored `runs/v2/`.
+
+Safety review: Pure immutable input/output models and a bounded pure analyzer
+reuse existing structural policy, parsers, profile mappings and ontology checks.
+No network, subprocess, executable mappings, callback, external detector or new
+dependency was added. Bounds are one event, eight representations, 64 KiB per
+supplied representation, 256 KiB per complete request, 64 matrix cells, 4096
+findings and 32 MiB combined artifacts. Existing parser/profile size bounds apply.
+The example writes fixed filenames under a new validated local directory. V1
+commands, models, encoders, parsers and release history remain unchanged.
+
+Known limitations: These are explicit local subsets, not standard compliance or
+detector-effectiveness tests. One event is analyzed per request. Unknown Sigma
+event reconstruction and existing CSV empty-vendor rejection remain visible.
+Pairwise agreement can share loss relative to the source. Time classifications
+describe measured spellings/truncation patterns, not universal causes. Related
+diagnostics are not independent samples. Parsing a report validates structural
+links, not analyzer replay or authenticity; reproduce from pinned inputs.
+
+Commit: `3998fd655cf082cf27982e441c9936ef92b45b44` —
+`feat(metamorphic): compare equivalent telemetry representations`.
+
+CI status: [GitHub Actions run 35684263532](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35684263532)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-10 Counterfactual Failure Mining.
