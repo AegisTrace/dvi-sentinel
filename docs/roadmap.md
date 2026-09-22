@@ -22,7 +22,9 @@ accounting and explained budgets. The [semantic coverage engine](semantic_covera
 tracks twelve measured dimensions, novelty retention and unknown evidence without
 duplicate inflation. The [cross-representation analyzer](cross_representation_testing.md)
 measures field/meaning loss through eight fixture/profile paths with an explicit
-pairwise matrix and unsupported-evidence unknowns. Counterfactuals, population statistics, graphs
+pairwise matrix and unsupported-evidence unknowns. The [counterfactual miner](counterfactual_causality.md)
+adds measured local rule controls, verified minimal transformation sets and
+descriptive paired effect rankings. Population statistics, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
 

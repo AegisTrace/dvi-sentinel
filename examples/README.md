@@ -75,3 +75,10 @@ fixture/profile paths and compares all 64 pairs for a synthetic event. Run
 four artifacts with actual field/meaning differences, context loss and unknowns.
 The [comparison contract](../docs/cross_representation_testing.md) explains the
 distinction between pairwise agreement, source fidelity and unsupported evidence.
+
+The [counterfactual example](counterfactuals.py) executes single-change, combined-change
+and robust local controls. Run
+`python examples/counterfactuals.py --out runs/v2/counterfactual-proof` for four
+artifacts per control. The [counterfactual contract](../docs/counterfactual_causality.md)
+explains proper-subset minimality, descriptive paired effects, conditional language
+and explicit execution budgets.

@@ -4,6 +4,10 @@
 
 ### Added
 
+- Local counterfactual failure mining with measured baseline/single/combination
+  observations, complete proper-subset controls, conditional minimal failure sets
+  and deterministic descriptive effect rankings. Four artifacts preserve actual
+  harness/matcher evidence, unknowns, invalid candidates and execution budgets.
 - Cross-representation metamorphic comparisons through eight existing fixture/profile
   paths, field-linked findings, retained normalization evidence and a deterministic
   pairwise matrix. Four artifacts distinguish observed losses from unsupported or

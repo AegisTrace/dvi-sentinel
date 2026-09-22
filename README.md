@@ -185,6 +185,11 @@ eight fixture/profile paths with field-linked losses and a complete pairwise mat
 [Metamorphic tests](tests/test_v2_cross_representation.py) and an
 [eight-path example](examples/cross_representation.py) preserve unknowns and distinguish
 semantic agreement from exact context retention.
+The [counterfactual miner](docs/counterfactual_causality.md) tests single and combined
+safe changes against local rules, verifies every proper subset before claiming
+minimality, and ranks descriptive paired effects. [Tests](tests/test_v2_counterfactuals.py)
+and [three local controls](examples/counterfactuals.py) exercise conditional findings,
+unknown evidence and shared execution budgets.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
