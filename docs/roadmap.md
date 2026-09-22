@@ -20,7 +20,9 @@ The [constraint exploration engine](constraint_exploration.md) adds finite
 pairwise/t-way selection with actual invariant filtering, feasible-interaction
 accounting and explained budgets. The [semantic coverage engine](semantic_coverage.md)
 tracks twelve measured dimensions, novelty retention and unknown evidence without
-duplicate inflation. Counterfactuals, population statistics, graphs
+duplicate inflation. The [cross-representation analyzer](cross_representation_testing.md)
+measures field/meaning loss through eight fixture/profile paths with an explicit
+pairwise matrix and unsupported-evidence unknowns. Counterfactuals, population statistics, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
 

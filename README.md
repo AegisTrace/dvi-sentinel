@@ -180,6 +180,11 @@ dimensions from actual local analyses, retains new observations and prevents
 duplicate inflation. [Coverage tests](tests/test_v2_coverage.py) and a
 [timely/late/duplicate example](examples/semantic_coverage.py) verify growth and
 the conservative evidence gate.
+The [cross-representation analyzer](docs/cross_representation_testing.md) compares
+eight fixture/profile paths with field-linked losses and a complete pairwise matrix.
+[Metamorphic tests](tests/test_v2_cross_representation.py) and an
+[eight-path example](examples/cross_representation.py) preserve unknowns and distinguish
+semantic agreement from exact context retention.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

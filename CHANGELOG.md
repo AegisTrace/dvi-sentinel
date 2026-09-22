@@ -4,6 +4,10 @@
 
 ### Added
 
+- Cross-representation metamorphic comparisons through eight existing fixture/profile
+  paths, field-linked findings, retained normalization evidence and a deterministic
+  pairwise matrix. Four artifacts distinguish observed losses from unsupported or
+  ambiguous evidence; pairwise agreement does not hide shared loss against the source.
 - Measured semantic discovery coverage across twelve dimensions, seeded novelty
   retention, exact union growth and a conservative evidence-resolution gate.
   Four artifacts retain actual analysis evidence and explain duplicate, unknown

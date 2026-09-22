@@ -68,3 +68,10 @@ dimensions for timely, late and duplicate observations. Run
 coverage, growth, queue and retention artifacts. The
 [coverage contract](../docs/semantic_coverage.md) explains novelty, unknowns and
 the scope of its evidence-resolution gate.
+
+The [cross-representation example](cross_representation.py) executes eight existing
+fixture/profile paths and compares all 64 pairs for a synthetic event. Run
+`python examples/cross_representation.py --out runs/v2/representation-proof` for
+four artifacts with actual field/meaning differences, context loss and unknowns.
+The [comparison contract](../docs/cross_representation_testing.md) explains the
+distinction between pairwise agreement, source fidelity and unsupported evidence.

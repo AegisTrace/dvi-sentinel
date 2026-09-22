@@ -7,7 +7,9 @@ V2 is in development. This document records the scope lock from the owner's
 [V2-05 temporal correlation](temporal_correlation.md) and
 [V2-06 oracle consensus](oracle_consensus.md) and
 [V2-07 constraint exploration](constraint_exploration.md) and
-[V2-08 semantic coverage](semantic_coverage.md); subsequent cards remain planned.
+[V2-08 semantic coverage](semantic_coverage.md) and
+[V2-09 cross-representation testing](cross_representation_testing.md);
+subsequent cards remain planned.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
 [V1 architecture](architecture.md) remains the implemented foundation.
@@ -86,7 +88,7 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-06 | Independent safety, schema, semantic, temporal, differential, detection, statistical, evidence and provenance decisions; preserved disagreement. **Implemented on main; see [oracle contract](oracle_consensus.md).** | D, A, W |
 | V2-07 | Finite pairwise/t-way exploration, invalid-combination pruning, deterministic budgets and explained skips. **Implemented on main; see [exploration contract](constraint_exploration.md).** | D, A, W |
 | V2-08 | Measured semantic coverage, novelty retention and reproducible growth without duplicate inflation. **Implemented on main; see [coverage contract](semantic_coverage.md).** | D, A, W |
-| V2-09 | Cross-representation relations with field-linked losses and explicit unsupported profile features. | D, A, W |
+| V2-09 | Cross-representation relations with field-linked losses and explicit unsupported profile features. **Implemented on main; see [comparison contract](cross_representation_testing.md).** | D, A, W |
 | V2-10 | Single/combined safe counterfactuals, minimal tested failure sets and conditional local effect rankings. | D, A, W |
 | V2-11 | Bounded reductions preserving semantics, finding class and oracle consensus with a complete attempt trace. | D, A, W |
 | V2-12 | Wilson and seeded bootstrap intervals, denominator/sample warnings, seed stability and stated calibration limits. | D, A, W |
