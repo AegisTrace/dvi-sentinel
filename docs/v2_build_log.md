@@ -846,7 +846,7 @@ including test/coverage, package, isolated-install, CLI fixture and benchmark ga
 
 Next card: V2-10 Counterfactual Failure Mining.
 
-## V2-10 ? Counterfactual Failure Mining
+## V2-10 — Counterfactual Failure Mining
 
 Card: V2-10.
 
@@ -945,7 +945,7 @@ leave the study incomplete even when separately verified findings remain availab
 JSON validation checks structure/linkage, not detector replay or authenticity.
 These artifacts do not replace a V1 run bundle or certify a V2 release.
 
-Commit: `2feadae24f35792bf6dd2d816a990aefe8e78762` ?
+Commit: `2feadae24f35792bf6dd2d816a990aefe8e78762` —
 `feat(counterfactuals): mine local failure contributors`.
 
 CI status: [GitHub Actions run 35731519035](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35731519035)
