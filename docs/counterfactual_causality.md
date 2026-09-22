@@ -80,7 +80,9 @@ All observed misses appear in `FailureSet` records. Only verified minimal sets
 become `CounterfactualFinding` records. Several distinct minimal sets may exist.
 The search does not guarantee a globally smallest undiscovered set or discovery
 of all minimal sets. This card reduces sets of transformations; event/field delta
-debugging belongs to the later shrinker upgrade.
+debugging is available through the [V2-11 oracle-aware shrinker](failure_shrinking.md).
+That stricter mode requires confirmed multi-oracle evidence. A missing-alert case
+with unknown timing stays unresolved instead of acquiring a stronger claim.
 
 ## Effects, rankings and confidence
 

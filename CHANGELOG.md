@@ -4,6 +4,10 @@
 
 ### Added
 
+- Opt-in oracle-aware failure shrinking using V1 reductions and invariants, explicit
+  protected event scopes, measured baseline controls and preserved finding/consensus
+  signatures. Four artifacts retain every attempted reduction and shared budgets;
+  unresolved or disagreeing evidence stops minimization immediately.
 - Local counterfactual failure mining with measured baseline/single/combination
   observations, complete proper-subset controls, conditional minimal failure sets
   and deterministic descriptive effect rankings. Four artifacts preserve actual

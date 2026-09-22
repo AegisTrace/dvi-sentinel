@@ -24,7 +24,9 @@ duplicate inflation. The [cross-representation analyzer](cross_representation_te
 measures field/meaning loss through eight fixture/profile paths with an explicit
 pairwise matrix and unsupported-evidence unknowns. The [counterfactual miner](counterfactual_causality.md)
 adds measured local rule controls, verified minimal transformation sets and
-descriptive paired effect rankings. Population statistics, graphs
+descriptive paired effect rankings. The [oracle-aware shrinker](failure_shrinking.md)
+adds protected event scopes, actual baseline controls, preserved finding/consensus
+signatures and complete bounded reduction traces. Population statistics, graphs
 and report integration must each earn an implemented claim through their card's
 tests and proof. The items below remain unsupported until explicitly delivered.
 

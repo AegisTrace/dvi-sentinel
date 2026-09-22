@@ -10,6 +10,9 @@ from dvi_sentinel.probe_models import ProbeSpec
 from dvi_sentinel.probe_sources import semantic_projection, source_variant
 from dvi_sentinel.probe_transforms import permission, specifications
 from dvi_sentinel.scenario import VariationPolicy
+from dvi_sentinel.score_models import FragilityClass
+from dvi_sentinel.serialization import digest
+from dvi_sentinel.taxonomy import PROBE_CLASSES
 from dvi_sentinel.variation_models import (
     EventLineage,
     Family,
@@ -173,3 +176,118 @@ def reductions(
                 (*events[:index], replacement, *events[index + 1 :]),
                 lineage,
             )
+
+
+def surviving_originals(
+    original: tuple[TelemetryEvent, ...], lineage: tuple[EventLineage, ...]
+) -> tuple[TelemetryEvent, ...]:
+    """Explicit V2 scope; callers separately protect required original identities."""
+    ids = {ref.original_event_id for ref in lineage if ref.role == "original"}
+    return tuple(event for event in original if event.event_id in ids)
+
+
+def scoped_reductions(
+    original: tuple[TelemetryEvent, ...],
+    events: tuple[TelemetryEvent, ...],
+    lineage: tuple[EventLineage, ...],
+    family: Family,
+    policy: VariationPolicy,
+    protected: tuple[str, ...],
+    *,
+    representation: bool = False,
+) -> Iterator[Reduction]:
+    """Coarse-to-fine event deletion followed by the existing V1 reductions."""
+    removable = tuple(event.event_id for event in events if event.event_id not in protected)
+    size = len(removable)
+    seen: set[frozenset[str]] = set()
+    while size:
+        for start in range(0, len(removable), size):
+            removed = frozenset(removable[start : start + size])
+            if removed in seen:
+                continue
+            seen.add(removed)
+            yield (
+                "remove_events:" + digest("|".join(sorted(removed)))[:24],
+                tuple(event for event in events if event.event_id not in removed),
+                tuple(ref for ref in lineage if ref.event_id not in removed),
+            )
+        size = (size + 1) // 2 if size > 1 else 0
+    yield from reductions(
+        surviving_originals(original, lineage),
+        events,
+        lineage,
+        family,
+        policy,
+        representation=representation,
+    )
+
+
+def reduction_cost(
+    original: tuple[TelemetryEvent, ...],
+    events: tuple[TelemetryEvent, ...],
+    lineage: tuple[EventLineage, ...],
+) -> tuple[int, int, int]:
+    """Strict order: event count, changed components/order, absolute timing offset."""
+    indexed = {event.event_id: event for event in original}
+    refs = {ref.event_id: ref.original_event_id for ref in lineage}
+    components = 0
+    time_us = 0
+    for event in events:
+        before = indexed.get(refs.get(event.event_id) or "")
+        if before is None:
+            continue
+        time_us += abs((event.timestamp - before.timestamp) // timedelta(microseconds=1))
+        components += event.timestamp != before.timestamp
+        components += sum(
+            getattr(event, field) != getattr(before, field)
+            for field in ("labels", "tags", "correlation_id", "confidence")
+        )
+        components += event.raw.sensor != before.raw.sensor
+        components += event.raw.vendor != before.raw.vendor
+        components += event.raw.model_dump(exclude={"sensor", "vendor"}) != before.raw.model_dump(
+            exclude={"sensor", "vendor"}
+        )
+    positions = {event.event_id: i for i, event in enumerate(original)}
+    order = [positions[event.event_id] for event in events if event.event_id in positions]
+    components += sum(left > right for i, left in enumerate(order) for right in order[i + 1 :])
+    return len(events), components, time_us
+
+
+def changed_classes(
+    original: tuple[TelemetryEvent, ...],
+    events: tuple[TelemetryEvent, ...],
+    lineage: tuple[EventLineage, ...],
+    family: Family,
+    probe: ProbeSpec | None,
+) -> tuple[FragilityClass, ...]:
+    """Classify actual remaining changes, rather than trusting the original label."""
+    classes: set[FragilityClass] = set()
+    indexed = {event.event_id: event for event in original}
+    refs = {ref.event_id: ref for ref in lineage}
+    for event in events:
+        ref = refs[event.event_id]
+        if ref.role != "original":
+            classes.add("noise_sensitivity" if ref.role == "noise" else "volume_sensitivity")
+            continue
+        before = indexed[ref.original_event_id or ""]
+        if probe and probe.name in SOURCE_PROBES:
+            if event != before:
+                classes.add(PROBE_CLASSES[probe.finding_class])
+        else:
+            if event.timestamp != before.timestamp:
+                classes.add("timestamp_timezone")
+            if event.correlation_id != before.correlation_id:
+                classes.add("correlation_key_dependency")
+            if (
+                event.raw.sensor != before.raw.sensor
+                or event.raw.vendor != before.raw.vendor
+                or any(
+                    getattr(event, field) != getattr(before, field)
+                    for field in ("labels", "tags", "confidence")
+                )
+            ):
+                classes.add("optional_field_dependency")
+    scope = surviving_originals(original, lineage)
+    if family == "ordering" and [e.event_id for e in events] != [e.event_id for e in scope]:
+        classes.add("ordering")
+    return tuple(sorted(classes))

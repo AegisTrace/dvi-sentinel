@@ -12,6 +12,8 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 from pydantic import ValidationError
 
+from dvi_sentinel.consensus_shrinking import shrink_with_oracles
+from dvi_sentinel.consensus_shrinking_models import OracleShrinkInput
 from dvi_sentinel.counterfactual_models import (
     CounterfactualBudget,
     CounterfactualDimension,
@@ -28,8 +30,10 @@ from dvi_sentinel.harness_models import (
     RuleHarnessConfig,
 )
 from dvi_sentinel.models import RawSource
+from dvi_sentinel.reductions import validate_reduction
 from dvi_sentinel.scenario import VariationPolicy
 from dvi_sentinel.serialization import canonical_json
+from dvi_sentinel.variation_models import EventLineage, VariationCase
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples/counterfactuals.py"
 fixture = runpy.run_path(str(EXAMPLE))["fixture"]
@@ -546,3 +550,39 @@ def test_example_executes_three_controls_and_refuses_existing_output(tmp_path):
     assert robust.state == "no_failure_observed" and not robust.findings
     second = subprocess.run(command, text=True, capture_output=True)
     assert second.returncode != 0 and "new local directory" in second.stderr
+
+
+def test_mined_missing_alert_does_not_become_oracle_confirmed_by_shrinking():
+    source = fixture("single")
+    mined = mine(source)
+    finding = mined.findings[0]
+    case = next(c for c in mined.cases if c.case_id == finding.case_id)
+    refs = tuple(
+        EventLineage(event_id=e.event_id, original_event_id=e.event_id, role="original")
+        for e in source.events
+    )
+    request = OracleShrinkInput(
+        original=source.events,
+        case=VariationCase(
+            id=case.case_id,
+            family="dropout",
+            parameters=(),
+            events=case.events,
+            lineage=refs,
+            preservation=validate_reduction(
+                source.events, case.events, refs, source.policy, "dropout"
+            ),
+            distance=1.0,
+        ),
+        policy=source.policy,
+        expected=source.expected,
+        harness=source.harness,
+        protected_event_ids=tuple(e.event_id for e in source.events),
+    )
+    report = shrink_with_oracles(request, expected_digest=request.stable_digest())
+    assert report.initial.match.status == "missed"
+    assert report.initial.consensus.state == "not_enough_evidence"
+    assert report.state == "unknown" and not report.trace
+    assert report.final == report.initial
+    temporal = next(d for d in report.initial.consensus.decisions if d.oracle_id == "temporal")
+    assert temporal.decision == "unknown" and temporal.reason_codes == ("alert_evidence_missing",)

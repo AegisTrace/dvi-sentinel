@@ -82,3 +82,11 @@ and robust local controls. Run
 artifacts per control. The [counterfactual contract](../docs/counterfactual_causality.md)
 explains proper-subset minimality, descriptive paired effects, conditional language
 and explicit execution budgets.
+
+The [oracle-aware shrinking example](oracle_shrinking.py) runs metadata, timing,
+schema-alias and correlation controls. Run
+`python examples/oracle_shrinking.py --out runs/v2/oracle-shrinking-proof` for
+four artifacts per control. Each reduces six events to one protected event while
+preserving the measured finding and confirmed oracle consensus. The
+[shrinking contract](../docs/failure_shrinking.md) defines scope, budgets, traces
+and the immediate stop on unresolved evidence.

@@ -190,6 +190,11 @@ safe changes against local rules, verifies every proper subset before claiming
 minimality, and ranks descriptive paired effects. [Tests](tests/test_v2_counterfactuals.py)
 and [three local controls](examples/counterfactuals.py) exercise conditional findings,
 unknown evidence and shared execution budgets.
+The [oracle-aware shrinker](docs/failure_shrinking.md) extends V1 reductions with
+protected event scopes, actual baseline controls and preservation of the finding
+class and nine-oracle consensus. Its [four-control example](examples/oracle_shrinking.py)
+minimizes event, time, metadata, alias and correlation changes with complete attempt
+traces, shared budgets and an immediate stop on uncertainty.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
