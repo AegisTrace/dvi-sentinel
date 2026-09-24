@@ -1073,3 +1073,115 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-12 Statistical Confidence Layer.
+
+## V2-12 — Statistical Confidence Layer
+
+Card: V2-12 Statistical Confidence Layer.
+
+Purpose: Add honest statistical uncertainty to measured local scores while
+preserving V1 scoring and regression decisions.
+
+Acceptance criteria: Wilson detection/miss intervals, deterministic seeded latency
+bootstrap, explicit denominators and sample warnings, seed stability, paired effect
+uncertainty, six confidence classes and calibration notes; finding/family/run
+attachments; authoritative integrity gates; four artifacts, tests, docs/example,
+package proof and green CI.
+
+Files changed: `src/dvi_sentinel/confidence_math.py`, `confidence_models.py`,
+`confidence.py`, `tests/test_v2_confidence.py`, `examples/statistical_confidence.py`,
+`docs/statistical_confidence.md`, README, changelog, roadmap, V2 architecture and
+examples index. Existing V1 runtime files remain compatible.
+
+Behavior implemented: Each bounded seed run retains its original V1 metrics and
+uses detected plus missed as its resolved Wilson denominator. Unknown/invalid
+cases remain explicit, with worst-case missing-outcome identification bounds.
+Detected-alert latency retains observations and seeded mean/p50/p95 bootstrap
+replicates. Case-level seed agreement detects opposite failures even when aggregate
+rates match. Findings keep their actual one-case sample; seeds and bootstrap
+replicates never inflate denominators. Confidence labels require declared sampling
+assumptions, warn about finite/dependent fixtures and never override integrity.
+Paired recovery/loss effects retain approximate Bonferroni-Wilson uncertainty and
+the exact existing V1 comparison decision. Full report validation rechecks gates,
+matching, numerical evidence, classifications, warnings and comparison derivations.
+
+Tests added: 82 cases include known Wilson values and complement properties,
+empty and invalid denominators, deterministic/bootstrap boundary controls, missing
+and invalid outcomes, singleton findings, aggregate-equal but case-disagreeing
+seeds, partial/incompatible cohorts, all six precision classes, small/large
+regressions, recovery/unchanged effects, uncertainty with unavailable pairs,
+safety/provenance ordering, changed matcher/input evidence, canonical ordering,
+artifact consistency, numerical/report tampering, duplicate fixtures, changed
+expectations, request bounds and the runnable example's output protections.
+
+Docs/examples updated: The [statistical contract](statistical_confidence.md)
+explains the sampling unit, formulas, primary references, policy thresholds,
+calibration limits, safety boundary and artifact reproduction. The
+[local example](../examples/statistical_confidence.py) executes robust and
+sensor-dependent rules over three seeds, with 16 sensor changes and 16 unchanged
+controls per seed plus an excluded baseline. Each current run detects 16/32,
+has a 95% Wilson interval of approximately [0.3363, 0.6637], and remains
+`low_confidence` under the default finite-fixture assumption. Each run's paired
+effect is -0.5 with an approximate interval [-0.6842, -0.1801]; V1 remains regressed.
+Actual finding attachments are `insufficient_sample`.
+
+Artifacts generated: All four artifacts matched byte-for-byte between source
+Python 3.13 in `runs/v2/V2-12-source-proof-final` and installed-wheel Python 3.12
+in `runs/v2/V2-12-wheel-proof`.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| confidence.json | 1612228 | `9d95a5f546761eb1ac55fc981889bcbee7d6d456d0215be7f37515d670d37f40` |
+| score_distribution.json | 195671 | `57a8dbe0cb1fb35c5a3c124d4624a8a0d4496b5fe84018db466dff84d0fc91f7` |
+| seed_stability.json | 9587 | `42a6108422bd6b34e909093b24795d6b925882c4261e2c1465d966190078de49` |
+| statistical_warnings.json | 36554 | `c7b89aa8be35485832d7d28aa77aafe59ffb78759ac85b835b8b6ccc8ae60258` |
+
+The proof wheel is 204327 bytes (SHA-256
+`5006ce53828ea34cec8ff77f3c47e1cea666501dcd35686d05c66422bc212fb5`);
+the sdist is 447127 bytes (SHA-256
+`83887cb2f1ab722d0e441c9ab7e1a02856e5a45f8e22b044cc2b1ee1ff1effb2`).
+All three new runtime modules match the wheel; the statistical documentation,
+example and tests match the sdist. Archives exclude private/generated content.
+
+Commands run: Focused pytest; Ruff lint/format; strict mypy; full coverage pytest
+with JUnit and the 90% floor; isolated build with uv; source and installed-wheel
+examples; isolated package/dependency/import/doctor checks; artifact/member hashes;
+archive exclusions; Markdown links; publication-content and import/data-flow
+review; Git whitespace checks.
+
+Results: Focused checks covered the new statistics and existing V1
+scoring/comparison behavior. Full regression passed 897 tests with one expected Windows
+symlink-permission skip in 440.28 seconds, at 94% combined statement/branch coverage.
+Ruff lint/format passed across 183 Python files, and strict mypy passed all 81
+runtime source files. All four artifacts matched across runtimes. Doctor reported
+`ready`; imports resolved from site-packages and all 17 runtime packages had
+compatible dependencies. Checked 254 local links across 53 Markdown files before
+this completion record. Logs, JUnit, coverage and hashes remain under ignored
+`runs/v2/`.
+
+Safety review: Category D bounded data models and category A numerical/analyzer
+modules use existing V1 matching/scoring/comparison and safety/provenance oracles.
+Every actual proof is gated before matching or analysis; blocked inputs are omitted
+from output. Category W example output uses fixed names in a new validated local
+directory. No network, subprocess, callback, external detector, executable fixture
+content or dependency was added to runtime. Bounds are eight runs per side,
+128 records per run, 512 total records, eight events/detections per record, 4 MiB
+input, 100..1000 bootstrap replicates and 32 MiB combined artifacts.
+
+Known limitations: These are conditional finite-fixture estimates, not calibrated
+population probabilities or release certification. IID declarations are unverified;
+seeds do not add independent trials. Wilson coverage is approximate and bootstrap
+coverage is pointwise/uncorrected, with explicit small/degenerate-sample warnings.
+Latency conditions on detected alerts. Preservation/configuration evidence comes
+from the producer; statistics do not replay transformations or authenticate it.
+Only canonical V1 variant snapshots are supported here. JSON validation reproduces
+analysis from retained evidence, not detector execution. Standalone export slices
+must be linked to the full report. V2 CLI/report integration remains a later card.
+
+Commit: `54ee6c83f0d5a5aa8ef3c380740445379c4d3dc2` —
+`feat(confidence): add statistical uncertainty metrics`.
+
+CI status: [GitHub Actions run 35951883958](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35951883958)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-13 Drift and Regression Memory.
