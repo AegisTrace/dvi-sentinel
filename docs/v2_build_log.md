@@ -1185,3 +1185,127 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-13 Drift and Regression Memory.
+
+## V2-13 — Drift and Regression Memory
+
+Card: V2-13 Drift and Regression Memory.
+
+Purpose: Retain bounded local run history and explain current changes against the
+immediate predecessor and an explicitly named baseline with conservative
+confidence-aware regression gates.
+
+Acceptance criteria: Immutable pinned history and baseline registration;
+current/previous and named-baseline comparisons; detector/version/contract and
+schema-profile compatibility; all seven drift classes; confidence-aware gates
+that retain V1 failures and never pass unknowns; four artifacts, bounded local
+reload, tests, docs/example, package proof and green CI.
+
+Files changed: `src/dvi_sentinel/regression_memory_models.py`,
+`regression_memory.py`, `regression_memory_io.py`,
+`tests/test_v2_regression_memory.py`, `examples/regression_memory.py`,
+`docs/regression_comparison.md`, `docs/statistical_confidence.md`, README,
+changelog, roadmap, V2 architecture and examples index.
+
+Behavior implemented: Ordered pinned records retain current-only seed batches.
+Appending an identical record and registering an identical baseline are idempotent;
+replacement identities, earlier ordinals and baseline rebinding are rejected.
+Every retained record is checked for integrity, safety, provenance and observation
+consistency before analysis. Detector identity, declared comparison contract,
+version-definition consistency, supported exact profile stamps, statistical
+settings, seed sets, expectations and existing V1 pair compatibility constrain
+comparisons. Incompatible pairs expose reasons without numerical paired effects.
+
+Transitions distinguish `stable_strong`, `still_fragile`, `newly_fragile`,
+`recovered`, `unstable`, `incompatible` and `unknown`. Paired effects and uncertainty
+reuse V2-12 calculations. Any retained V1 regression fails; otherwise passing
+requires complete controls and observations, resolved seed agreement, the declared
+confidence floor and run/family plausible-drop bounds. A named baseline can veto
+the predecessor result. Earlier historical regressions remain visible without
+permanently vetoing recovery. Missing comparisons and insufficient precision remain
+unknown. A strict local reader resumes externally pinned memory; report validation
+rechecks linked evidence and rederives classifications and gates.
+
+Tests added: 57 cases cover all seven transitions, partial recovery, churn and seed
+disagreement; passing and unresolved confidence thresholds and inclusive policy
+boundaries; unknown/empty/control evidence; baseline veto and recovery after past
+failure; incompatible metadata, V1 pairs and reused detector versions; missing,
+self and future references; immutable append/registration and idempotent retries;
+all pin and safety gates before matching; observation/report tampering; artifact
+round trips and resumed history; duplicate JSON, unsafe paths and bounded input,
+record counts and output; and the real runnable example with overwrite protection.
+
+Docs/examples updated: The [history contract](regression_comparison.md) documents
+compatibility, the baseline API, policy, classifications, artifact links, reload
+and limitations. The [statistical contract](statistical_confidence.md) explains
+how history consumes uncertainty. The [local example](../examples/regression_memory.py)
+executes four fixed rule-harness runs over three seeds each, with 32 variants per
+seed plus an excluded baseline. Robust/fragile/fragile/robust history produces
+`newly_fragile/fail`, `still_fragile/pass`, then `recovered/pass`. The explicit
+release baseline remains the first run and gives `stable_strong/pass` for the last.
+The example declares a low confidence floor and 0.15 plausible-drop tolerance for
+these conditional finite fixtures; these choices do not change the default policy.
+
+Artifacts generated: All four artifacts matched byte-for-byte between source
+Python 3.13 in `runs/v2/V2-13-source-proof-final` and installed-wheel Python 3.12
+in `runs/v2/V2-13-wheel-proof`. Reloaded memory preserves the pinned history and
+explicit baseline registry.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| trend_report.json | 5324694 | `44270fc43f9b9ac0cda0b087bf9f5a8e416742d1b5ec86b51503b34986fbdf00` |
+| regression_memory.json | 2098824 | `d82b02bcb3102cd165713e8651c803acc04315093337224f1ef5fe1cdeedbed9` |
+| baseline_registry.json | 350 | `8b454a7b63240cba5d4624e5ac03f83016cd085772734aa1465b50362b8377e1` |
+| comparison_with_uncertainty.json | 240132 | `317a946f27aebea07300828a9a0f9b78e5173e276405c15141e20ed417c72644` |
+
+The proof wheel is 212747 bytes (SHA-256
+`fdd89a969a6a3195eed87bf538e1d435cd77587157b429521c0ffcacae7401b2`);
+the sdist is 467069 bytes (SHA-256
+`47c503a0a576ff68938e2fd8341d5a0761b289f0dbeb3766d67d83a2a7336978`).
+All three new runtime modules match the wheel. Both example modules, the updated
+regression/statistical docs and the new tests match the sdist. Archive exclusions
+remain clean.
+
+Commands run: Focused pytest; Ruff lint/format; strict mypy; full coverage pytest
+with JUnit and the 90% floor; isolated build with uv; source and installed-wheel
+examples; isolated dependency/import/doctor checks; artifact and archive-member
+hashes; archive exclusions; Markdown links; publication-content and import/data-flow
+review; Git whitespace checks.
+
+Results: Full regression passed 954 tests with one expected Windows symlink-privilege
+skip in 555.73 seconds, at 94% combined statement/branch coverage. Focused tests
+covered all 57 new cases. Ruff lint/format passed across 188 files, and strict mypy
+passed all 84 runtime source files. All four artifacts matched across runtimes.
+Doctor reported `ready`; imports resolved from isolated site-packages and all 17
+runtime packages had compatible dependencies. Checked 270 local links across 53
+Markdown files before this completion record. Logs, JUnit, coverage, hashes and
+package proofs remain under ignored `runs/v2/`.
+
+Safety review: Category D immutable data models and category A analysis consume
+bounded evidence through existing confidence, matching, comparison and safety/
+provenance contracts. Category R reload uses strict JSON and confined plain local
+paths; category W example output uses fixed filenames beneath a new validated local
+directory. Every retained record is preflighted before analysis. No runtime network,
+subprocess, arbitrary callback, external detector or dependency was added. Bounds
+are eight history records, 16 named baselines, 512 total case proofs, 4 MiB memory/
+request, an 8 MiB reader envelope and 32 MiB combined artifacts. Existing V2-12
+per-run and statistical work bounds remain in force.
+
+Known limitations: Explicit ordinals do not authenticate chronology. Detector
+versions/contracts and schema usage are pinned producer declarations; only exact
+supported built-in profile stamps are accepted, with no inferred version migration.
+Hashes establish consistency, not authorship. No automatic promotion, history
+eviction or profile retrieval is performed. Only canonical V1 seed batches are
+supported. Sampling assumptions and finite-fixture uncertainty retain V2-12 limits;
+a passing comparison can retain known fragility and is not release certification.
+The reader and example are bounded local files, not a transactional history database
+or a defense against hostile concurrent filesystem changes. Full V2 CLI/report
+integration remains a later card.
+
+Commit: `5658ad98abb6555eb92830c7a444e8e8285c4053` —
+`feat(regression): add drift and regression memory`.
+
+CI status: [GitHub Actions run 35978869342](https://github.com/AegisTrace/dvi-sentinel/actions/runs/35978869342)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-14 Detection Knowledge Graph.
