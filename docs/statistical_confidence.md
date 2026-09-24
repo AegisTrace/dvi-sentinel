@@ -188,3 +188,14 @@ Data models are category D, numerical/analyzer modules category A, and the examp
 writer category W. It writes fixed filenames exclusively into a new validated local
 directory. No dependency is added. These outputs are separate library evidence;
 V2 CLI/report integration and release certification remain later cards.
+
+## Historical comparisons
+
+The [V2 regression memory layer](regression_comparison.md#v2-drift-and-regression-memory)
+retains these confidence inputs/reports for pinned ordered records and explicit
+named baselines. It checks detector/profile/version contracts, preserves V1
+regressions and applies a separate minimum-precision/plausible-drop gate.
+Finding singleton intervals remain diagnostic; only complete run/family evidence
+can satisfy that gate. Unknown or incompatible history never silently passes.
+See the [four-run example](../examples/regression_memory.py) for persisted regression,
+unchanged fragility and recovery with a fixed baseline.

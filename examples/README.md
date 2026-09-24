@@ -97,3 +97,11 @@ detector regression over 32 variants for each of three seeds. Run
 artifacts with Wilson rates, detected-alert latency bootstrap, seed agreement and
 paired effect intervals. The [confidence contract](../docs/statistical_confidence.md)
 explains conditional denominators, finite fixture assumptions and unchanged V1 gates.
+
+The [regression memory example](regression_memory.py) records robust, fragile,
+unchanged-fragile and recovered local runs while preserving a named baseline.
+Run `python examples/regression_memory.py --out runs/v2/regression-memory-proof`
+for four artifacts and a verified reload. The
+[history contract](../docs/regression_comparison.md#v2-drift-and-regression-memory)
+explains detector/profile compatibility, immutable bindings, conditional gate
+policy and the difference between existing fragility and a new regression.

@@ -29,8 +29,10 @@ adds protected event scopes, actual baseline controls, preserved finding/consens
 signatures and complete bounded reduction traces. The
 [statistical confidence layer](statistical_confidence.md) adds conditional Wilson
 intervals, seeded bootstrap, seed agreement and paired effect uncertainty with
-explicit sampling assumptions. Drift memory, graphs and report integration must
-each earn an implemented claim through their card's tests and proof. The items below remain unsupported until explicitly delivered.
+explicit sampling assumptions. The [regression memory layer](regression_comparison.md)
+adds immutable named baselines, compatible detector/profile history, trend classes
+and confidence-aware gates. Graphs and report integration must each earn an
+implemented claim through their card's tests and proof. The items below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 

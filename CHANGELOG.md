@@ -4,6 +4,10 @@
 
 ### Added
 
+- Pinned local regression memory with immutable named baselines, detector/version
+  and schema-profile compatibility, observed drift classifications and conservative
+  confidence-aware gates. Four artifacts preserve trends, paired uncertainty and
+  reloadable history; unknown evidence cannot pass and V1 regressions remain failures.
 - Conditional statistical confidence with Wilson detection/miss intervals, seeded
   latency bootstrap, per-case seed agreement and paired regression uncertainty.
   Four artifacts attach explicit denominators and calibration limits to findings,

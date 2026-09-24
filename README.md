@@ -200,6 +200,10 @@ intervals, seeded latency bootstrap, case-level seed agreement and paired regres
 uncertainty. Its [local example](examples/statistical_confidence.py) and
 [tests](tests/test_v2_confidence.py) retain explicit denominators, unknowns, sampling
 assumptions and unchanged V1 regression decisions.
+The [regression memory layer](docs/regression_comparison.md#v2-drift-and-regression-memory)
+adds immutable named baselines, compatible detector/profile history and uncertainty-aware
+regression gates. Its [four-run example](examples/regression_memory.py) persists and
+reloads a regression/recovery trend with a fixed baseline.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),
