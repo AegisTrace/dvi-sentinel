@@ -195,6 +195,11 @@ protected event scopes, actual baseline controls and preservation of the finding
 class and nine-oracle consensus. Its [four-control example](examples/oracle_shrinking.py)
 minimizes event, time, metadata, alias and correlation changes with complete attempt
 traces, shared budgets and an immediate stop on uncertainty.
+The [statistical confidence layer](docs/statistical_confidence.md) adds Wilson rate
+intervals, seeded latency bootstrap, case-level seed agreement and paired regression
+uncertainty. Its [local example](examples/statistical_confidence.py) and
+[tests](tests/test_v2_confidence.py) retain explicit denominators, unknowns, sampling
+assumptions and unchanged V1 regression decisions.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

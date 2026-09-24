@@ -150,6 +150,12 @@ Search and shrinking declare event, case, combination and evaluation limits befo
 execution. Exhaustion is a result with reasons, not evidence that all cases passed.
 No new reader/writer may weaken V1 path confinement or consume unverified bundles.
 
+The implemented [statistical confidence contract](statistical_confidence.md) adds
+per-seed Wilson rates, latency bootstrap, paired unit agreement and regression
+effect bounds. Models and report validation rederive numerical evidence from
+pinned observations; the pure analyzer reuses V1 matching/scoring/comparison and
+authoritative safety/provenance oracles. No execution or dependency is added.
+
 ## Artifacts, presentation and release
 
 Emit artifacts only from actual validated inputs and measured analysis. A required

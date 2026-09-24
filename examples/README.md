@@ -90,3 +90,10 @@ four artifacts per control. Each reduces six events to one protected event while
 preserving the measured finding and confirmed oracle consensus. The
 [shrinking contract](../docs/failure_shrinking.md) defines scope, budgets, traces
 and the immediate stop on unresolved evidence.
+
+The [statistical confidence example](statistical_confidence.py) measures a local
+detector regression over 32 variants for each of three seeds. Run
+`python examples/statistical_confidence.py --out runs/v2/confidence-proof` for four
+artifacts with Wilson rates, detected-alert latency bootstrap, seed agreement and
+paired effect intervals. The [confidence contract](../docs/statistical_confidence.md)
+explains conditional denominators, finite fixture assumptions and unchanged V1 gates.

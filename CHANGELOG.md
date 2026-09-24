@@ -4,6 +4,10 @@
 
 ### Added
 
+- Conditional statistical confidence with Wilson detection/miss intervals, seeded
+  latency bootstrap, per-case seed agreement and paired regression uncertainty.
+  Four artifacts attach explicit denominators and calibration limits to findings,
+  families and runs while preserving safety/provenance and V1 regression decisions.
 - Opt-in oracle-aware failure shrinking using V1 reductions and invariants, explicit
   protected event scopes, measured baseline controls and preserved finding/consensus
   signatures. Four artifacts retain every attempted reduction and shared budgets;
