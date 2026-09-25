@@ -1434,3 +1434,132 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-15 Provenance DAG and Artifact Integrity Upgrade.
+
+## V2-15 — Provenance DAG and Artifact Integrity Upgrade
+
+Card: V2-15 Provenance DAG and Artifact Integrity Upgrade.
+
+Purpose: Bind local artifact bytes to explicit parent hashes, propagate integrity
+failure through derived evidence, and verify a noncircular report summary.
+
+Acceptance criteria: All twelve blueprint artifact kinds; typed deterministic DAG
+and derived hashes; parent references, missing-parent and tamper propagation;
+orphan inspection warnings and publication failures; complete lineage/index/
+integrity artifacts; versioned bundle integration and legacy compatibility;
+report references; bounded local verification; genuine example and package proof.
+
+Files changed: `lineage_models.py`, `lineage.py`, `provenance_bundle.py`,
+`artifact_models.py`, `artifact_store.py`, `local_fixtures.py`, `report_models.py`,
+`report_rendering.py`, `reports.py`, artifact, graph and memory-reader tests, the lineage example,
+run-artifact and V2-report docs, README, changelog, roadmap, architecture and examples index.
+
+Behavior implemented: An opt-in schema-2 manifest requires a canonical scenario
+capture and all three integrity-control files. Every payload has a kind, exact
+content hash/size, explicit source flag and ordered parent content/lineage hashes.
+Derived identity changes transitively with its ancestors. Cycles, duplicates,
+missing nodes, mismatched references and untracked files fail. A pure inspection
+context permits orphan warnings; all bundle consumers use the failing context.
+Missing or altered bytes invalidate every descendant, including when the manifest
+has been rehashed. Core run parent recipes are reconstructed during verification;
+additional producer evidence requires explicit declarations.
+
+The lineage index and saved integrity report are rederived from the canonical DAG.
+Schema-2 reports bind an evidence-only DAG projection and reference the full DAG
+by filename. The full DAG then binds report bytes; the final manifest hashes all
+payload/control files. Verification checks the summary and rendered views.
+Regeneration preserves extra producer declarations and captures baseline evidence
+before calculating the summary. V1 bundles remain supported and V1 report bytes
+omit the new optional field. External manifest pins still detect coherent rewrites.
+
+The existing file reader now rejects nested junctions, and inventory traversal
+never descends links/junctions. Captured bytes are bounded independently of the
+manifest's declared sizes. These changes retain staged publication, verified
+explicit overwrite and rollback behavior.
+
+Tests added: 57 cases cover all required kinds; randomized deterministic identities;
+ancestor propagation and unchanged child content; missing/tampered parents;
+orphan context; cycles, duplicate/missing nodes and inventories; strict source,
+path/order/kind/hash rules; disjoint inventories and byte/count bounds; in-memory
+copy revalidation; manifest versions and control completeness; materialized-view
+reproduction; fixed recipe reparenting; explicit additional artifacts; report and
+scenario tampering after coherent rehashing; stable regeneration with regression
+baselines; metadata-only path confinement; junction traversal and actual byte caps;
+external pins; genuine example output and overwrite refusal. Existing V1 artifact,
+report, rollback and security tests remain regression constraints.
+
+Docs/examples updated: [Run artifacts](run_artifacts.md#v2-artifact-lineage-opt-in)
+defines roots, parent recipes, file granularity, extension declarations, controls,
+versions and failure semantics. [V2 report provenance](report_v2.md) explains the
+summary projection and migration. The [example](../examples/artifact_lineage.py)
+executes a real run, nine oracle decisions and the existing V1 benchmark suite,
+captures its source inputs and emits a verified report bundle. It exercises all
+twelve required kinds with 45 DAG nodes and 147 parent links.
+
+Artifacts generated: All 49 files match byte-for-byte between source Python 3.13
+(`runs/v2/V2-15-source-proof-final`) and installed-wheel Python 3.12
+(`runs/v2/V2-15-wheel-proof`). The synthetic example fixes its recorded timestamps.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| provenance_dag.json | 42368 | `2410045ae3053c4364192455287139e5406ff3dc9283f0ac504ed95014a9fba8` |
+| artifact_lineage.json | 14954 | `a2449bdfdcc873fd5c5c7f66c4473e78f9095aeadb78f16bc60895c3001226a4` |
+| integrity_report.json | 187 | `b5e36340dcb023fc3ee057530ec495d58c5127e9cce465ec8fc4c20e30919441` |
+| report.json | 162750 | `cc784521ecb28a30ea54f674bce222c6147593bb49360ab2355e26dd85472875` |
+| report.html | 29820 | `9531f238cac9ba2daa3eed9fb2472a3228b92b8ff4f3d04a6b66f4f8320a18b0` |
+| manifest.json | 6632 | `a6cef4bb6d001c838d6407e73be565705aa0acfef3fcded8f91bbc283234f7f3` |
+
+The `dvi_sentinel-2.0.0.dev0-py3-none-any.whl` archive is 232391 bytes, SHA-256
+`16915b07c4bb5e8b995752df8a3c813940e7e95d4ba1f5002699b62f64706253`.
+
+The `dvi_sentinel-2.0.0.dev0.tar.gz` archive is 507905 bytes, SHA-256
+`88c974f09ce9b1dc46a85595afe1669e0eb716d80985b786b28d269311a773d6`.
+
+All nine affected runtime modules match source, wheel and isolated installation.
+All twenty changed runtime/doc/example/test files match the sdist, and archives
+exclude private/generated content.
+
+Commands run: Focused pytest; Ruff lint/format; strict mypy; full coverage pytest
+with JUnit and the 90% floor; isolated wheel/sdist build with uv; isolated install,
+dependency and doctor checks; source and installed-wheel examples; artifact/archive
+hash comparison; Markdown link checks; publication-content and import/data-flow
+review; Git whitespace checks. The initial full run was deliberately stopped when
+the inventory review found the junction traversal gap, then restarted after its fix. The broader run then identified an older memory-reader
+test expecting its own junction diagnostic. The shared reader now rejects sooner;
+the corrected test asserts the machine-readable policy rejection and prohibits
+any file open. Its focused rerun passed before the final full run.
+
+Results: Final full regression passed 1065 tests with one expected Windows
+symlink-privilege skip in 714.19 seconds, at 94.62% combined statement/branch coverage. Focused final tests passed 136 cases in 126.43 seconds.
+Ruff lint/format passed across 199 files; strict mypy passed 90 runtime files.
+All 49 example files matched across runtimes. Doctor reported ready; isolated
+imports resolved from site-packages and all 17 runtime packages were compatible.
+Checked 305 local links across 55 Markdown files before this completion record.
+Proof logs, JUnit, coverage, hashes and audit data remain under ignored `runs/v2/`.
+
+Safety review: Category D bounded immutable lineage/report/manifest models;
+category A pure hashing, topological traversal, ancestry and report analysis;
+category R/W existing confined reader/store and local example. No network,
+subprocess, dynamic plugin, external detector or runtime dependency was added.
+DAG metadata never drives file reads. Limits remain 128 artifacts, 32 MiB per
+artifact, 128 MiB actual bundle bytes and 1 MiB manifest. DAGs allow at most 128
+nodes/parents per node; disjoint bounded inventories can report 256 invalid paths.
+Integrity controls count toward bundle budgets. Link/junction traversal is blocked.
+
+Known limitations: Hashes establish consistency, not authorship or detector replay;
+a coherent complete rewrite/version downgrade requires an external manifest pin.
+DAG nodes bind files; existing record/pointer digests retain finer evidence identity.
+Additional producer relationships are declared lineage, not independently rerun
+algorithms. Legacy regression migration requires the original baseline bundle
+when regenerating reports; archived-only baselines are not migrated automatically. The saved integrity report records publication, so current status needs
+verification. The trusted local single-writer filesystem contract does not defend
+against hostile concurrent path replacement. V2-16 benchmarks, V2-17 complete
+report integration and V2-18 combined CLI remain later cards; no release is claimed.
+
+Commit: `320ef7db32a9facc46ca8b4bfb3567ea16c770f5` —
+`feat(provenance): add artifact lineage DAG`.
+
+CI status: [GitHub Actions run 36142059161](https://github.com/AegisTrace/dvi-sentinel/actions/runs/36142059161)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including lint/types, full tests/coverage, package, isolated install, CLI and benchmark gates.
+
+Next card: V2-16 Expert Benchmark Suite.
