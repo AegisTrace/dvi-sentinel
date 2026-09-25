@@ -68,3 +68,104 @@ Limits: 128 artifacts, 32 MiB per artifact, 128 MiB total, 1 MiB manifest,
 and 2 MiB per captured source fixture. The artifact writer never executes the
 saved invocation or reads an arbitrary git working tree; callers may supply a
 known 40-character commit ID.
+
+## V2 artifact lineage (opt-in)
+
+V2-15 adds an explicit schema-2 bundle extension. Existing schema-1 bundles and
+CLI output remain supported; no DAG is inferred when reading legacy evidence.
+Call `with_artifact_lineage(contents, declarations=...)` before `write_artifacts`
+to upgrade freshly assembled run evidence. Then `write_reports` adds schema-2
+reports and refreshes the DAG using the same staged, verified publication path.
+The [runnable example](../examples/artifact_lineage.py) exercises all twelve
+required kinds using a real run, independent oracle decisions and the existing
+V1 benchmark suite:
+
+```sh
+python examples/artifact_lineage.py --out runs/v2/artifact-lineage-proof
+```
+
+The destination must be new. Timestamps are fixed synthetic fixture metadata in
+this example so source and installed-wheel runs can be compared byte-for-byte.
+It does not implement the planned V2-16 benchmark suite or V2-18 CLI integration.
+
+| File | V2 contract |
+| --- | --- |
+| `scenario.json` | Canonical scenario copied from the verified run configuration; declared source root |
+| `provenance_dag.json` | Schema-1 DAG inside a schema-2 bundle; sorted file nodes with artifact kind, content hash/size, source declaration, parent content/lineage hashes and derived lineage identity |
+| `artifact_lineage.json` | Exact DAG byte hash and sorted transitive ancestor paths for every node |
+| `integrity_report.json` | Recomputed bundle-context result, DAG byte hash, checked count, invalidated paths and explained issue codes |
+
+The manifest covers these control files and every payload. The DAG covers every
+payload except the manifest and its three integrity controls: including their
+own hashes would create recursion. These exclusions are exact fixed names, not
+caller-selected paths. Schema-2 manifests require all three controls and the
+scenario capture. Schema-1 manifests reject the controls rather than silently
+ignoring an extension. Keep an external final manifest pin to detect a coherent
+rewrite, including a complete version downgrade.
+
+### Parent identities and required kinds
+
+Each node's lineage SHA-256 hashes its canonical artifact entry, kind, source flag
+and ordered parent references. Each parent reference contains both its byte hash
+and its lineage hash. A changed ancestor therefore changes every descendant's
+lineage identity even when the descendant's payload bytes are unchanged. Nodes,
+parents, ancestors, roots and diagnostics use deterministic ordering; DAGs reject
+cycles, duplicate paths, unknown kinds, mismatched parent hashes and missing nodes.
+
+The supported kinds include scenario, input fixture, normalized events, schema
+projection, variation case, oracle decision, match result, score result,
+counterfactual result, shrunk case, report and benchmark result. Auxiliary kinds
+identify run metadata, observations, configuration and analysis. The DAG operates
+at file granularity: a JSONL node binds all its records. Existing run variation
+fingerprints and report file/line/pointer references retain finer case/evidence
+identity; there is no claim that every JSONL record is a separate DAG vertex.
+
+Core dependency recipes are reconstructed by the verifier. Normalized events
+reference captured telemetry and scenario; variations reference normalization and
+scenario; observations reference variations and detector inputs; matches reference
+observations, variations and scenario. Scores bind matches, variations, probes and
+optional differential evidence. Shrink outputs bind their source case/observations,
+and human shrink views bind the recorded minimum. Reports bind their evidence;
+HTML/Markdown bind the typed JSON report. The run metadata binds its captured
+configuration, fixtures, normalization and variation plan without creating a cycle.
+
+Additional artifact producers must supply `LineageSpec` declarations. A declaration
+names a portable local path, kind, source flag and sorted parent paths. Only
+scenario, input-fixture and configuration kinds may be declared source roots;
+derived nodes require parents at publication. Unknown extras are never guessed
+from their filenames. The supplied bytes must exactly cover the declarations.
+For optional producer artifacts the declared relationship is integrity metadata,
+not an independent proof that their algorithms were executed correctly. The
+example captures every input listed by the actual benchmark results and checks
+its hash; benchmark/oracle parents are explicit producer declarations.
+
+### Integrity decisions and confinement
+
+`verify_lineage(dag, contents, context="inspection")` is a pure inspection API over
+bounded in-memory bytes. An unreferenced source or parentless derived artifact is
+an `orphan` warning. Bundle context treats an orphan as an error and propagates
+failure to descendants. Missing/changed bytes and untracked artifacts are always
+errors. Every descendant of an invalid parent is marked `parent_invalid`, even
+when its own bytes still match. The inspection mode is never used by publication,
+report consumption or bundle verification.
+
+`verify_artifacts` checks lineage even when file hashes already failed, returning
+transitive diagnostics. It recomputes both materialized views, verifies the fixed
+run dependency recipes and scenario capture, and checks report summaries and
+rendered views. Core V1 semantic/score verification still runs on intact evidence;
+no detector is executed by verification. The on-disk integrity report is evidence
+of the last verified publication, not a live status file. Later tampering is reported
+by the verifier without overwriting that evidence.
+
+DAG paths never initiate reads. The store reads only validated manifest entries
+under its validated local output root, using the existing byte limits. It rejects
+links/junctions in path components, checks inventory, and bounds the actual captured
+bytes as well as declared sizes. All control files count against 128 artifacts,
+32 MiB per file and 128 MiB total; the manifest remains limited to 1 MiB.
+Pure DAG inputs allow at most 128 nodes and 128 parents per node. Verification can
+report up to 256 invalidated paths when two bounded inventories are disjoint.
+
+Hashes establish consistency, not authorship. A fully recomputed rewrite requires
+an independent manifest pin to detect. This remains a trusted local filesystem,
+single-writer contract, not protection against hostile concurrent path replacement.
+See [V2 report provenance](report_v2.md) for the noncircular report summary.

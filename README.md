@@ -208,6 +208,11 @@ The [detection knowledge graph](docs/knowledge_graph.md) links a pinned counterf
 study to its observations, transformation checks, local causes and untested review
 actions. Its [example](examples/knowledge_graph.py) and [tests](tests/test_v2_graph.py)
 verify source references, explicit weak edges and deterministic JSON views.
+The [artifact lineage DAG](docs/run_artifacts.md#v2-artifact-lineage-opt-in) binds
+parent content and lineage hashes, propagates integrity failures, and adds
+[report provenance summaries](docs/report_v2.md) to opt-in schema-2 bundles. Its
+[example](examples/artifact_lineage.py) captures real run, oracle and benchmark
+evidence while preserving legacy bundle verification.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

@@ -4,11 +4,12 @@ import hashlib
 import os
 import shutil
 import tempfile
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 
 from dvi_sentinel.artifact_contract import validate_contract
 from dvi_sentinel.artifact_models import (
+    LINEAGE_FILES,
     MAX_ARTIFACT_BYTES,
     MAX_ARTIFACTS,
     MAX_BUNDLE_BYTES,
@@ -20,6 +21,7 @@ from dvi_sentinel.artifact_models import (
     portable_path,
 )
 from dvi_sentinel.local_fixtures import read_fixture
+from dvi_sentinel.provenance_bundle import verify_bundle_lineage
 from dvi_sentinel.serialization import canonical_json, parse_json
 
 
@@ -33,6 +35,19 @@ def _root(path: Path) -> Path:
     if any(part.is_symlink() or part.is_junction() for part in (path, *path.parents)):
         raise ArtifactError("DVI-ARTIFACT-PATH: symlink destinations are unsupported")
     return path.resolve()
+
+
+def _inventory(root: Path) -> Iterator[Path]:
+    """Yield lazily for the caller's count bound; never descend through a link/junction."""
+    pending = [root]
+    while pending:
+        directory = pending.pop()
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                path = Path(entry.path)
+                yield path
+                if not path.is_symlink() and not path.is_junction() and path.is_dir():
+                    pending.append(path)
 
 
 def verify_artifacts(
@@ -55,9 +70,16 @@ def verify_artifacts(
             )
         manifest = ArtifactManifest.model_validate(parse_json(encoded))
         run_id = manifest.run_id
+        captured: dict[str, bytes] = {}
+        captured_size = 0
         for entry in manifest.artifacts:
             try:
                 contents = read_fixture(root, entry.path, limit=MAX_ARTIFACT_BYTES)
+                captured_size += len(contents)
+                if captured_size > MAX_BUNDLE_BYTES:
+                    issue("DVI-ARTIFACT-SIZE", entry.path, "Actual bundle bytes exceed 128 MiB")
+                    break
+                captured[entry.path] = contents
                 if len(contents) != entry.size_bytes:
                     issue("DVI-ARTIFACT-SIZE", entry.path, "Artifact length differs from manifest")
                 if hashlib.sha256(contents).hexdigest() != entry.sha256:
@@ -75,7 +97,7 @@ def verify_artifacts(
             for parent in Path(name).parents
             if parent != Path(".")
         }
-        for index, path in enumerate(root.rglob("*")):
+        for index, path in enumerate(_inventory(root)):
             if index > MAX_ARTIFACTS * 3:
                 issue(
                     "DVI-ARTIFACT-EXTRA",
@@ -97,6 +119,8 @@ def verify_artifacts(
                     relative,
                     "Unlisted file, directory, or symlink is present",
                 )
+        if manifest.schema_version == "2":
+            issues.extend(verify_bundle_lineage(captured))
         record = RunRecord.model_validate(
             parse_json(read_fixture(root, "run.json", limit=MAX_ARTIFACT_BYTES))
         )
@@ -160,7 +184,10 @@ def write_artifacts(
     )
     record = RunRecord.model_validate(parse_json(contents.get("run.json", b"")))
     manifest = ArtifactManifest(
-        tool_version=record.tool_version, run_id=record.run_id, artifacts=entries
+        schema_version="2" if contents.keys() & LINEAGE_FILES else "1",
+        tool_version=record.tool_version,
+        run_id=record.run_id,
+        artifacts=entries,
     )
     root.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix=".dvi-stage-", dir=root.parent))

@@ -1,12 +1,19 @@
 """Inspectable report data and direct evidence references, without graph machinery."""
 
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import Field, field_validator
+from pydantic import (
+    Field,
+    SerializerFunctionWrapHandler,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 from dvi_sentinel.artifact_models import ArtifactEntry, RunRecord, portable_path
 from dvi_sentinel.comparison_models import ComparisonResult
 from dvi_sentinel.differential_models import DifferentialReport
+from dvi_sentinel.lineage_models import LineageSummary
 from dvi_sentinel.models import Identifier, NonEmpty, Sha256, ValueModel
 from dvi_sentinel.probe_models import AssumptionProbe
 from dvi_sentinel.score_models import CaseAssessment, ResilienceFrontier
@@ -47,7 +54,7 @@ class ProvenanceReport(ValueModel):
 
 
 class ReportDocument(ValueModel):
-    schema_version: Literal["1"] = "1"
+    schema_version: Literal["1", "2"] = "1"
     run: RunRecord
     frontier: ResilienceFrontier
     cases: tuple[CaseAssessment, ...]
@@ -57,3 +64,17 @@ class ReportDocument(ValueModel):
     regression: ComparisonResult | None
     provenance: ProvenanceReport
     limitations: tuple[NonEmpty, ...]
+    lineage: LineageSummary | None = None
+
+    @model_serializer(mode="wrap")
+    def serialize_version(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        values: dict[str, Any] = handler(self)
+        if self.schema_version == "1":
+            values.pop("lineage", None)
+        return values
+
+    @model_validator(mode="after")
+    def lineage_version(self) -> "ReportDocument":
+        if (self.schema_version == "2") != (self.lineage is not None):
+            raise ValueError("schema-2 reports require a provenance DAG summary")
+        return self

@@ -34,8 +34,9 @@ adds immutable named baselines, compatible detector/profile history, trend class
 and confidence-aware gates. The [detection knowledge graph](knowledge_graph.md)
 links local counterfactual findings to measured controls, source references and
 untested review actions, with deterministic views and explicit weak relationships.
-Provenance DAG and report integration must each earn an implemented claim through
-their card's tests and proof. The items below remain unsupported until explicitly delivered.
+The [provenance DAG](run_artifacts.md#v2-artifact-lineage-opt-in) now adds versioned
+parent hashes, transitive integrity checks and a scoped [report summary](report_v2.md).
+The complete V2 benchmark and report integration remain later cards. The items below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 

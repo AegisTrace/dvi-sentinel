@@ -4,6 +4,11 @@
 
 ### Added
 
+- Opt-in schema-2 artifact bundles with deterministic parent-hash DAGs, transitive
+  integrity failures, ancestry and verification artifacts, and noncircular report
+  provenance summaries. Core dependencies and rendered report views are verified;
+  legacy bundles remain readable and unknown producer artifacts require declarations.
+
 - Typed detection knowledge graphs from pinned local counterfactual studies, linking
   findings and proposed review actions to observations, source artifacts and tested
   causes. Four JSON views preserve weak edges, diagnostic disagreement and untested

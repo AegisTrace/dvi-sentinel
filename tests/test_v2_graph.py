@@ -35,6 +35,8 @@ from dvi_sentinel.knowledge_graph_models import (
     WeakEdges,
 )
 from dvi_sentinel.knowledge_graph_projection import _Builder, select_pointer
+from dvi_sentinel.lineage import artifact_lineage, build_lineage, encoded, verify_lineage
+from dvi_sentinel.lineage_models import LineageSpec, ProvenanceDAG
 from dvi_sentinel.models import EntityRef, RawSource
 from dvi_sentinel.run_artifacts import json_bytes
 from dvi_sentinel.scenario import VariationPolicy
@@ -42,6 +44,201 @@ from dvi_sentinel.serialization import canonical_json, digest, parse_json
 
 ROOT = Path(__file__).resolve().parents[1]
 fixture = runpy.run_path(str(ROOT / "examples/counterfactuals.py"))["fixture"]
+
+
+def lineage_chain(payload=b"source"):
+    kinds = (
+        "scenario",
+        "input_fixture",
+        "normalized_events",
+        "schema_projection",
+        "variation_case",
+        "oracle_decision",
+        "match_result",
+        "score_result",
+        "counterfactual_result",
+        "shrunk_case",
+        "report",
+        "benchmark_result",
+    )
+    specs = tuple(
+        LineageSpec(
+            path=f"{i:02}.json",
+            kind=kind,
+            source=i < 2,
+            parents=() if i < 2 else (("00.json", "01.json") if i == 2 else (f"{i - 1:02}.json",)),
+        )
+        for i, kind in enumerate(kinds)
+    )
+    contents = {s.path: payload + str(i).encode() for i, s in enumerate(specs)}
+    return contents, specs, build_lineage(contents, specs)
+
+
+@settings(max_examples=20)
+@given(st.binary(max_size=100))
+def test_lineage_all_artifact_kinds_have_order_independent_hashes(payload):
+    contents, specs, dag = lineage_chain(payload)
+    assert verify_lineage(dag, contents).valid
+    reversed_dag = build_lineage(dict(reversed(list(contents.items()))), tuple(reversed(specs)))
+    assert encoded(dag) == encoded(reversed_dag)
+    index = artifact_lineage(dag)
+    assert index.dag_sha256 == sha256(encoded(dag)).hexdigest()
+    assert index.entries[-1].ancestors == tuple(f"{i:02}.json" for i in range(11))
+    for node in dag.nodes[2:]:
+        assert node.parents
+        assert node.lineage_sha256 == digest(
+            node.model_dump(mode="json", exclude={"lineage_sha256"})
+        )
+
+
+@pytest.mark.parametrize("missing", [False, True])
+def test_lineage_changed_or_missing_parent_invalidates_every_descendant(missing):
+    contents, _, dag = lineage_chain()
+    if missing:
+        del contents["02.json"]
+    else:
+        contents["02.json"] += b"changed"
+    report = verify_lineage(dag, contents)
+    assert not report.valid
+    assert report.invalidated == tuple(f"{i:02}.json" for i in range(2, 12))
+    assert report.issues[0].code == ("missing" if missing else "changed")
+    assert all(i.code == "parent_invalid" for i in report.issues[1:])
+
+
+def test_lineage_parent_change_changes_derived_identity_but_not_child_bytes():
+    contents, specs, first = lineage_chain()
+    contents["00.json"] += b"different"
+    second = build_lineage(contents, specs)
+    assert first.nodes[1] == second.nodes[1]
+    for left, right in zip(first.nodes[2:], second.nodes[2:], strict=True):
+        assert left.artifact == right.artifact
+        assert left.lineage_sha256 != right.lineage_sha256
+
+
+@pytest.mark.parametrize("source", [False, True])
+def test_orphan_is_inspection_warning_and_bundle_failure(source):
+    contents, specs, _ = lineage_chain()
+    contents["orphan.json"] = b"orphan"
+    specs += (
+        LineageSpec(
+            path="orphan.json", kind="input_fixture" if source else "analysis", source=source
+        ),
+    )
+    dag = build_lineage(contents, specs)
+    inspection = verify_lineage(dag, contents, context="inspection")
+    assert inspection.valid and inspection.issues[0].severity == "warning"
+    publication = verify_lineage(dag, contents)
+    assert not publication.valid and publication.invalidated == ("orphan.json",)
+
+
+@pytest.mark.parametrize("failure", ["cycle", "missing", "duplicate", "inventory", "empty"])
+def test_lineage_bad_topology_and_inventory_rejected(failure):
+    contents, specs, _ = lineage_chain()
+    if failure == "cycle":
+        specs = (specs[0].model_copy(update={"source": False, "parents": ("11.json",)}), *specs[1:])
+    elif failure == "missing":
+        specs = specs[1:]
+    elif failure == "duplicate":
+        specs += (specs[-1],)
+    elif failure == "inventory":
+        contents["extra.json"] = b"untracked"
+    else:
+        specs = ()
+    with pytest.raises(ValueError, match="DVI-LINEAGE"):
+        build_lineage(contents, specs)
+
+
+@pytest.mark.parametrize("failure", ["hash", "parent", "order", "unknown_kind", "missing"])
+def test_lineage_typed_dag_rejects_forged_nodes(failure):
+    _, _, dag = lineage_chain()
+    data = dag.model_dump(mode="json")
+    if failure == "hash":
+        data["nodes"][0]["lineage_sha256"] = "0" * 64
+    elif failure == "parent":
+        node = data["nodes"][2]
+        node["parents"][0]["lineage_sha256"] = "0" * 64
+        node["lineage_sha256"] = digest({k: v for k, v in node.items() if k != "lineage_sha256"})
+    elif failure == "order":
+        data["nodes"].reverse()
+    elif failure == "unknown_kind":
+        data["nodes"][0]["kind"] = "unrecognized"
+    else:
+        data["nodes"].pop(0)
+    with pytest.raises(ValueError):
+        ProvenanceDAG.model_validate(data)
+
+
+@pytest.mark.parametrize(
+    "path", ["../outside.json", "/outside.json", "c:/outside", "a\\b", "con.txt"]
+)
+def test_lineage_rejects_nonportable_artifact_and_parent_paths(path):
+    with pytest.raises(ValueError):
+        LineageSpec(path=path, kind="analysis")
+    with pytest.raises(ValueError):
+        LineageSpec(path="safe.json", kind="analysis", parents=(path,))
+
+
+@pytest.mark.parametrize(
+    "spec",
+    [
+        {"path": "a.json", "kind": "report", "source": True},
+        {"path": "a.json", "kind": "scenario", "source": True, "parents": ("b.json",)},
+        {"path": "a.json", "kind": "analysis", "parents": ("a.json",)},
+        {"path": "a.json", "kind": "analysis", "parents": ("c.json", "b.json")},
+        {"path": "a.json", "kind": "analysis", "parents": ("b.json", "b.json")},
+    ],
+)
+def test_lineage_source_and_parent_contracts(spec):
+    with pytest.raises(ValueError):
+        LineageSpec.model_validate(spec)
+
+
+def test_lineage_untracked_bytes_and_context_rejected():
+    contents, _, dag = lineage_chain()
+    result = verify_lineage(dag, contents | {"extra.json": b"other"})
+    assert not result.valid and result.issues[-1].code == "untracked"
+    with pytest.raises(ValueError, match="CONTEXT"):
+        verify_lineage(dag, contents, context="release-ish")
+
+
+def test_lineage_large_disjoint_inventory_reports_all_missing_and_untracked():
+    sources = {f"original/{i:03}.json": b"source" for i in range(128)}
+    specs = tuple(LineageSpec(path=p, kind="input_fixture", source=True) for p in sources)
+    dag = build_lineage(sources, specs)
+    swapped = {f"swapped/{i:03}.json": b"different" for i in range(128)}
+    result = verify_lineage(dag, swapped)
+    assert not result.valid and len(result.invalidated) == 256
+    assert sum(i.code == "missing" for i in result.issues) == 128
+    assert sum(i.code == "untracked" for i in result.issues) == 128
+
+
+def test_lineage_consumers_revalidate_in_memory_copies():
+    contents, _, dag = lineage_chain()
+    forged = dag.model_copy(
+        update={
+            "nodes": (dag.nodes[0].model_copy(update={"lineage_sha256": "0" * 64}), *dag.nodes[1:])
+        }
+    )
+    for consumer in (lambda: verify_lineage(forged, contents), lambda: artifact_lineage(forged)):
+        with pytest.raises(ValueError, match="HASH"):
+            consumer()
+
+
+def test_lineage_count_and_byte_limits(monkeypatch):
+    import dvi_sentinel.lineage as module
+
+    with pytest.raises(ValueError, match="BOUNDS"):
+        build_lineage({f"{i}.json": b"" for i in range(129)}, ())
+    monkeypatch.setattr(module, "MAX_ARTIFACT_BYTES", 3)
+    monkeypatch.setattr(module, "MAX_BUNDLE_BYTES", 5)
+    specs = (
+        LineageSpec(path="a.json", kind="scenario", source=True),
+        LineageSpec(path="b.json", kind="report", parents=("a.json",)),
+    )
+    assert build_lineage({"a.json": b"12", "b.json": b"123"}, specs)
+    for data in ({"a.json": b"1234"}, {"a.json": b"123", "b.json": b"123"}):
+        with pytest.raises(ValueError, match="BOUNDS"):
+            build_lineage(data, specs)
 
 
 def mine(request=None):

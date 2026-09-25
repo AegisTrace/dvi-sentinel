@@ -5,6 +5,7 @@ from pathlib import Path
 
 from dvi_sentinel.artifact_contract import read_jsonl, read_model
 from dvi_sentinel.artifact_models import (
+    LINEAGE_FILES,
     MAX_ARTIFACT_BYTES,
     ArtifactEntry,
     ArtifactManifest,
@@ -15,9 +16,17 @@ from dvi_sentinel.artifact_models import (
 from dvi_sentinel.artifact_store import ArtifactError, verify_artifacts, write_artifacts
 from dvi_sentinel.comparison import compare_snapshots
 from dvi_sentinel.comparison_models import ComparisonSnapshot, ComparisonThresholds
+from dvi_sentinel.lineage import build_lineage
+from dvi_sentinel.lineage_models import ProvenanceDAG
 from dvi_sentinel.local_fixtures import read_fixture
 from dvi_sentinel.models import TelemetryEvent
 from dvi_sentinel.provenance import build_provenance
+from dvi_sentinel.provenance_bundle import (
+    evidence_summary,
+    extra_specifications,
+    run_specifications,
+    with_artifact_lineage,
+)
 from dvi_sentinel.report_models import ReportDocument
 from dvi_sentinel.report_rendering import render_html, render_markdown
 from dvi_sentinel.run_artifacts import json_bytes
@@ -57,7 +66,7 @@ def build_reports(
     thresholds: ComparisonThresholds | None = None,
 ) -> dict[str, bytes]:
     manifest = _verified(directory)
-    entries = {a.path: a for a in manifest.artifacts if a.path not in REPORT_FILES}
+    entries = {a.path: a for a in manifest.artifacts if a.path not in REPORT_FILES | LINEAGE_FILES}
     record = read_model(directory, "run.json", RunRecord)
     score = read_model(directory, "score.json", ResilienceFrontier)
     snapshot = read_model(directory, "comparison.json", ComparisonSnapshot)
@@ -93,7 +102,23 @@ def build_reports(
         snapshot.differential,
         score,
     )
+    lineage = None
+    if manifest.schema_version == "2":
+        evidence = {
+            name: files[name]
+            if name in files
+            else read_fixture(directory, name, limit=MAX_ARTIFACT_BYTES)
+            for name in entries
+            if name not in REPORT_FILES
+        }
+        prior_dag = read_model(directory, "provenance_dag.json", ProvenanceDAG)
+        dag = build_lineage(
+            evidence, run_specifications(evidence) + extra_specifications(prior_dag, evidence)
+        )
+        lineage = evidence_summary(dag)
     document = ReportDocument(
+        schema_version="2" if lineage else "1",
+        lineage=lineage,
         run=record,
         frontier=score,
         cases=snapshot.assessments,
@@ -135,4 +160,8 @@ def write_reports(
         for a in manifest.artifacts
         if a.path not in REPORT_FILES
     }
-    return write_artifacts(directory, contents | reports, overwrite=True)
+    combined = contents | reports
+    if manifest.schema_version == "2":
+        dag = read_model(directory, "provenance_dag.json", ProvenanceDAG)
+        combined = with_artifact_lineage(combined, declarations=extra_specifications(dag, combined))
+    return write_artifacts(directory, combined, overwrite=True)

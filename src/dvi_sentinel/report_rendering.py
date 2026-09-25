@@ -196,6 +196,25 @@ def sections(report: ReportDocument) -> tuple[Section, ...]:
         )
     )
     regression = report.regression
+    if report.lineage is not None:
+        lineage = report.lineage
+        items.append(
+            Section(
+                "lineage",
+                "Artifact lineage and integrity",
+                (
+                    f"Provenance DAG: {lineage.dag_artifact}.",
+                    f"Evidence DAG SHA-256: {lineage.evidence_sha256}",
+                    f"{lineage.artifacts} evidence artifacts; {lineage.parent_links} parent links;"
+                    f" {len(lineage.roots)} declared source roots.",
+                    "The summary excludes presentation and integrity-control files to avoid"
+                    " circular hashes. The final manifest covers every file; the full DAG"
+                    " also binds these reports to their evidence parents.",
+                    "A changed or missing parent invalidates descendants. Hashes establish"
+                    " recorded consistency, not authorship or an independent detector replay.",
+                ),
+            )
+        )
     items.append(
         Section(
             "regression",

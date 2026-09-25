@@ -1,5 +1,7 @@
 import hashlib
 import os
+import subprocess
+import sys
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -13,11 +15,332 @@ from dvi_sentinel.artifact_models import REQUIRED_ARTIFACTS, ArtifactManifest
 from dvi_sentinel.artifact_store import ArtifactError, verify_artifacts, write_artifacts
 from dvi_sentinel.harness import FixtureHarness
 from dvi_sentinel.harness_models import FixtureCase, FixtureResults, HarnessRequest
+from dvi_sentinel.lineage import build_lineage, lineage_artifacts
+from dvi_sentinel.lineage_models import LineageSpec, ProvenanceDAG
+from dvi_sentinel.provenance_bundle import (
+    evidence_summary,
+    run_specifications,
+    with_artifact_lineage,
+)
+from dvi_sentinel.report_models import ReportDocument
+from dvi_sentinel.reports import build_reports, write_reports
 from dvi_sentinel.run_artifacts import FixtureCapture, build_run_artifacts, json_bytes
 from dvi_sentinel.scenario import Scenario
 from dvi_sentinel.serialization import canonical_json, parse_json
 
 NOW = datetime(2026, 9, 10, tzinfo=UTC)
+
+
+def test_versioned_bundle_lineage_and_report_regeneration(tmp_path, evidence):
+    legacy = bundle(evidence)
+    v2 = with_artifact_lineage(legacy)
+    root = tmp_path / "v2"
+    write_artifacts(root, v2)
+    assert parse_json((root / "manifest.json").read_bytes())["schema_version"] == "2"
+    report = build_reports(root)
+    document = ReportDocument.model_validate_json(report["report.json"])
+    dag = ProvenanceDAG.model_validate_json(v2["provenance_dag.json"])
+    assert document.schema_version == "2" and document.lineage == evidence_summary(dag)
+    assert b"provenance_dag.json" in report["report.html"]
+    assert b"Artifact lineage and integrity" in report["report.md"]
+    written = write_reports(root)
+    assert (
+        written.valid
+        and verify_artifacts(root, expected_manifest_digest=written.manifest_digest).valid
+    )
+    assert write_reports(root, overwrite=True).manifest_digest == written.manifest_digest
+    assert build_reports(root) == report
+    final_dag = ProvenanceDAG.model_validate_json((root / "provenance_dag.json").read_bytes())
+    assert evidence_summary(final_dag) == document.lineage
+    assert (
+        next(n for n in final_dag.nodes if n.artifact.path == "report.html").parents[0].path
+        == "report.json"
+    )
+    for path, data in legacy.items():
+        assert (root / path).read_bytes() == data
+
+
+@pytest.mark.parametrize("rehashed", [False, True])
+def test_bundle_dag_tamper_propagates_even_after_manifest_rehash(tmp_path, evidence, rehashed):
+    root = tmp_path / "v2"
+    files = with_artifact_lineage(bundle(evidence))
+    write_artifacts(root, files)
+    name = "fixtures/telemetry-000.jsonl"
+    changed = files[name] + b"\n"
+    if rehashed:
+        rewrite_manifest(root, name, changed)
+    else:
+        (root / name).write_bytes(changed)
+    result = verify_artifacts(root)
+    issues = {(i.path, i.code) for i in result.issues}
+    assert not result.valid
+    assert (name, "DVI-LINEAGE-CHANGED") in issues
+    assert ("score.json", "DVI-LINEAGE-PARENT_INVALID") in issues
+    assert ("comparison.json", "DVI-LINEAGE-PARENT_INVALID") in issues
+
+
+def test_bundle_missing_parent_propagates_without_reading_unlisted_paths(
+    tmp_path, evidence, monkeypatch
+):
+    import dvi_sentinel.artifact_store as store
+
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    (root / "normalized_events.jsonl").unlink()
+    seen = []
+    original = store.read_fixture
+
+    def confined(base, path, **kwargs):
+        assert base == root.resolve()
+        seen.append(path)
+        return original(base, path, **kwargs)
+
+    monkeypatch.setattr(store, "read_fixture", confined)
+    result = verify_artifacts(root)
+    assert not result.valid
+    assert any(i.code == "DVI-LINEAGE-MISSING" for i in result.issues)
+    assert any(
+        i.path == "score.json" and i.code == "DVI-LINEAGE-PARENT_INVALID" for i in result.issues
+    )
+    assert all(".." not in p and not Path(p).is_absolute() for p in seen)
+
+
+@pytest.mark.parametrize(
+    "missing", ["provenance_dag.json", "artifact_lineage.json", "integrity_report.json"]
+)
+def test_schema_two_requires_all_lineage_controls(tmp_path, evidence, missing):
+    files = with_artifact_lineage(bundle(evidence))
+    del files[missing]
+    with pytest.raises(ValueError, match="provenance DAG"):
+        write_artifacts(tmp_path / "no-output", files)
+    assert not (tmp_path / "no-output").exists()
+
+
+@pytest.mark.parametrize("name", ["artifact_lineage.json", "integrity_report.json"])
+def test_rehashed_materialized_lineage_views_are_rederived(tmp_path, evidence, name):
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    rewrite_manifest(root, name, b"{}\n")
+    result = verify_artifacts(root)
+    assert not result.valid and any(i.code == "DVI-LINEAGE-VIEW" for i in result.issues)
+
+
+def test_legacy_manifest_and_report_versions_remain_supported(tmp_path, evidence):
+    root = tmp_path / "legacy"
+    write_artifacts(root, bundle(evidence))
+    assert parse_json((root / "manifest.json").read_bytes())["schema_version"] == "1"
+    document = ReportDocument.model_validate_json(build_reports(root)["report.json"])
+    assert document.schema_version == "1" and document.lineage is None
+    assert "lineage" not in parse_json(build_reports(root)["report.json"])
+    assert write_reports(root).valid
+    for version, lineage in (("2", None), ("1", {"invalid": "summary"})):
+        with pytest.raises(ValueError):
+            ReportDocument.model_validate(
+                document.model_dump() | {"schema_version": version, "lineage": lineage}
+            )
+
+
+def test_version_one_cannot_smuggle_dag_and_version_two_cannot_silently_drop_it(tmp_path, evidence):
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    data = parse_json((root / "manifest.json").read_bytes())
+    data["schema_version"] = "1"
+    (root / "manifest.json").write_text(canonical_json(data), encoding="utf-8")
+    assert not verify_artifacts(root).valid
+    data["schema_version"] = "2"
+    data["artifacts"] = [a for a in data["artifacts"] if a["path"] != "provenance_dag.json"]
+    (root / "manifest.json").write_text(canonical_json(data), encoding="utf-8")
+    assert not verify_artifacts(root).valid
+
+
+def test_fixed_dependency_recipe_cannot_be_coherently_reparented(tmp_path, evidence):
+    root = tmp_path / "v2"
+    files = with_artifact_lineage(bundle(evidence))
+    write_artifacts(root, files)
+    data = {
+        k: v
+        for k, v in files.items()
+        if k not in {"provenance_dag.json", "artifact_lineage.json", "integrity_report.json"}
+    }
+    specs = tuple(
+        s.model_copy(update={"parents": ("scenario.json",)}) if s.path == "score.json" else s
+        for s in run_specifications(data)
+    )
+    forged = build_lineage(data, specs)
+    for name, value in lineage_artifacts(forged, data).items():
+        rewrite_manifest(root, name, value)
+    result = verify_artifacts(root)
+    assert not result.valid and any(i.code == "DVI-LINEAGE-CONTRACT" for i in result.issues)
+
+
+def test_unknown_extra_artifact_requires_declared_parents(tmp_path, evidence):
+    files = bundle(evidence) | {"extra.json": b"declared local evidence"}
+    with pytest.raises(ValueError, match="INVENTORY"):
+        with_artifact_lineage(files)
+    with pytest.raises(ValueError, match="INTEGRITY"):
+        with_artifact_lineage(
+            files, declarations=(LineageSpec(path="extra.json", kind="analysis"),)
+        )
+    declarations = (
+        LineageSpec(path="extra.json", kind="oracle_decision", parents=("matches.jsonl",)),
+    )
+    root = tmp_path / "v2"
+    assert write_artifacts(root, with_artifact_lineage(files, declarations=declarations)).valid
+    assert write_reports(root).valid
+
+
+def test_scenario_and_report_summary_cannot_drift(tmp_path, evidence):
+    files = bundle(evidence)
+    with pytest.raises(ValueError, match="SCENARIO"):
+        with_artifact_lineage(files | {"scenario.json": b"{}"})
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(files))
+    write_reports(root)
+    contents = {
+        p.relative_to(root).as_posix(): p.read_bytes()
+        for p in root.rglob("*")
+        if p.is_file() and p.name != "manifest.json"
+    }
+    report = parse_json(contents["report.json"])
+    report["lineage"]["evidence_sha256"] = "0" * 64
+    contents["report.json"] = (canonical_json(report) + "\n").encode()
+    with pytest.raises(ValueError, match="provenance summary"):
+        with_artifact_lineage(contents)
+
+
+def test_lineage_external_pin_still_detects_coherent_rewrite(tmp_path, evidence):
+    root = tmp_path / "v2"
+    first = write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    second = write_artifacts(
+        root, with_artifact_lineage(bundle(evidence, NOW + timedelta(seconds=1))), overwrite=True
+    )
+    assert second.valid and first.manifest_digest != second.manifest_digest
+    assert not verify_artifacts(root, expected_manifest_digest=first.manifest_digest).valid
+
+
+@pytest.mark.parametrize(
+    "name", ["report.json", "report.md", "report.html", "provenance.json", "scenario.json"]
+)
+def test_rehashed_dag_does_not_bypass_report_or_scenario_contract(tmp_path, evidence, name):
+    from dvi_sentinel.artifact_models import LINEAGE_FILES
+
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    write_reports(root)
+    contents = {
+        p.relative_to(root).as_posix(): p.read_bytes()
+        for p in root.rglob("*")
+        if p.is_file() and p.name not in LINEAGE_FILES | {"manifest.json"}
+    }
+    if name == "report.json":
+        report = parse_json(contents[name])
+        report["lineage"]["evidence_sha256"] = "0" * 64
+        contents[name] = (canonical_json(report) + "\n").encode()
+    else:
+        contents[name] += b"\n"
+    forged = build_lineage(contents, run_specifications(contents))
+    for path, data in (contents | lineage_artifacts(forged, contents)).items():
+        rewrite_manifest(root, path, data)
+    result = verify_artifacts(root)
+    assert not result.valid and any(i.code == "DVI-LINEAGE-CONTRACT" for i in result.issues)
+
+
+def test_lineage_regression_report_preserves_baseline_source_roots(tmp_path, evidence):
+    prior, current = tmp_path / "prior", tmp_path / "current"
+    for root in (prior, current):
+        write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    first = write_reports(current, previous=prior)
+    assert first.valid
+    assert write_reports(current, overwrite=True).manifest_digest == first.manifest_digest
+
+
+@pytest.mark.parametrize(
+    "path", ["../private.json", "https://example.invalid/data", "fixtures/absent.json"]
+)
+def test_forged_dag_never_causes_a_metadata_only_file_read(tmp_path, evidence, monkeypatch, path):
+    import dvi_sentinel.artifact_store as store
+
+    root = tmp_path / "v2"
+    files = with_artifact_lineage(bundle(evidence))
+    write_artifacts(root, files)
+    data = parse_json(files["provenance_dag.json"])
+    data["nodes"][0]["artifact"]["path"] = path
+    rewrite_manifest(root, "provenance_dag.json", (canonical_json(data) + "\n").encode())
+    original = store.read_fixture
+
+    def read_only_manifest_entries(base, relative, **kwargs):
+        assert relative in files or relative == "manifest.json"
+        assert relative != path
+        return original(base, relative, **kwargs)
+
+    monkeypatch.setattr(store, "read_fixture", read_only_manifest_entries)
+    assert not verify_artifacts(root).valid
+
+
+def test_nested_junction_is_rejected_before_fixture_open(tmp_path, evidence, monkeypatch):
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    junction = root / "fixtures"
+    real = Path.is_junction
+    monkeypatch.setattr(Path, "is_junction", lambda self: self == junction or real(self))
+    scandir = os.scandir
+
+    def no_junction_traversal(path):
+        assert Path(path) != junction
+        return scandir(path)
+
+    monkeypatch.setattr(os, "scandir", no_junction_traversal)
+    verified = verify_artifacts(root)
+    assert not verified.valid
+    assert any(
+        i.code == "DVI-ARTIFACT-MISSING" and i.path.startswith("fixtures/") for i in verified.issues
+    )
+
+
+def test_verifier_bounds_actual_captured_bytes_not_only_manifest_sizes(
+    tmp_path, evidence, monkeypatch
+):
+    import dvi_sentinel.artifact_store as store
+
+    root = tmp_path / "v2"
+    write_artifacts(root, with_artifact_lineage(bundle(evidence)))
+    monkeypatch.setattr(store, "MAX_BUNDLE_BYTES", 1)
+    result = verify_artifacts(root)
+    assert not result.valid
+    assert any(i.explanation == "Actual bundle bytes exceed 128 MiB" for i in result.issues)
+
+
+def test_lineage_example_has_all_twelve_required_kinds_and_refuses_overwrite(tmp_path):
+    project = Path(__file__).parents[1]
+    destination = tmp_path / "example"
+    command = [
+        sys.executable,
+        str(project / "examples/artifact_lineage.py"),
+        "--out",
+        str(destination),
+    ]
+    first = subprocess.run(command, cwd=project, capture_output=True, text=True, check=True)
+    assert "lineage verified" in first.stdout
+    assert verify_artifacts(destination).valid
+    dag = ProvenanceDAG.model_validate_json((destination / "provenance_dag.json").read_bytes())
+    assert {n.kind for n in dag.nodes} >= {
+        "scenario",
+        "input_fixture",
+        "normalized_events",
+        "schema_projection",
+        "variation_case",
+        "oracle_decision",
+        "match_result",
+        "score_result",
+        "counterfactual_result",
+        "shrunk_case",
+        "report",
+        "benchmark_result",
+    }
+    original = (destination / "manifest.json").read_bytes()
+    second = subprocess.run(command, cwd=project, capture_output=True, text=True)
+    assert second.returncode != 0 and "DVI-ARTIFACT-EXISTS" in second.stderr
+    assert (destination / "manifest.json").read_bytes() == original
 
 
 def bundle(evidence, when=NOW):

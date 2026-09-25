@@ -13,7 +13,8 @@ V2 is in development. This document records the scope lock from the owner's
 [V2-11 oracle-aware shrinking](failure_shrinking.md),
 [V2-12 statistical confidence](statistical_confidence.md) and
 [V2-13 regression memory](regression_comparison.md) and
-[V2-14 detection knowledge graph](knowledge_graph.md);
+[V2-14 detection knowledge graph](knowledge_graph.md) and
+[V2-15 artifact lineage](run_artifacts.md#v2-artifact-lineage-opt-in);
 subsequent cards remain planned.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
@@ -99,7 +100,7 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-12 | Wilson and seeded bootstrap intervals, denominator/sample warnings, seed stability and stated calibration limits. **Implemented on main; see [confidence contract](statistical_confidence.md).** | D, A, W |
 | V2-13 | Explicit local baseline registry, compatible history and confidence-aware drift/regression classifications. **Implemented on main; see [history contract](regression_comparison.md).** | D, R, A, W |
 | V2-14 | Deterministic typed graph with findings connected to source evidence and recommendations to supported causes. **Implemented on main; see [graph contract](knowledge_graph.md).** | D, A, W |
-| V2-15 | Parent-child artifact DAG, tamper propagation, missing-parent decisions and bounded bundle verification. | D, R, A, W |
+| V2-15 | Parent-child artifact DAG, tamper propagation, missing-parent decisions and bounded bundle verification. **Implemented on main; see [lineage contract](run_artifacts.md#v2-artifact-lineage-opt-in).** | D, R, A, W |
 | V2-16 | Real fragile/control fixtures across all 16 specified benchmark families, with independent acceptance oracles. | D, R, A, W, C |
 | V2-17 | Verified-bundle JSON/Markdown/HTML reports, explicit absent sections and a self-contained report archive. | D, A, W |
 | V2-18 | Integrated ontology, mapping, intent, temporal, oracle, exploration, explanation, confidence, graph and benchmark CLI. | C, R, W |
@@ -112,9 +113,10 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 The blueprint order is fixed; later-card concepts are not permission to prebuild
 their engines. V2-06 can assess currently available evidence using V1 manifests
 and measured observations. V2-12 supplies conditional statistical estimates and
-V2-13 uses them for bounded history comparisons. Until V2-15 supplies DAG evidence,
-an oracle must report unavailable requirements as unknown/not-applicable and must
-not invent lineage. Later integrations consume the actual retained evidence.
+V2-13 uses them for bounded history comparisons. V2-15 supplies explicit opt-in DAG
+evidence; legacy bundles retain unavailable lineage. Oracles must keep unavailable
+requirements unknown/not-applicable. Later integrations consume actual retained
+evidence rather than inventing lineage.
 
 Engine cards use tested library/example paths and genuine artifacts before the
 combined V2 CLI arrives. V2-16's benchmark exit behavior requires a small executable

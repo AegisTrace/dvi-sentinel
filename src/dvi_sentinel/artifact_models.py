@@ -12,6 +12,7 @@ from dvi_sentinel.variation_models import VariationCase
 MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
 MAX_BUNDLE_BYTES = 128 * 1024 * 1024
 MAX_ARTIFACTS = 128
+LINEAGE_FILES = {"provenance_dag.json", "artifact_lineage.json", "integrity_report.json"}
 REQUIRED_ARTIFACTS = {
     "run.json",
     "score.json",
@@ -104,7 +105,7 @@ class ArtifactEntry(ValueModel):
 
 
 class ArtifactManifest(ValueModel):
-    schema_version: Literal["1"] = "1"
+    schema_version: Literal["1", "2"] = "1"
     product: Literal["dvi-sentinel"] = "dvi-sentinel"
     tool_version: NonEmpty
     run_id: Identifier
@@ -119,6 +120,11 @@ class ArtifactManifest(ValueModel):
             )
         if not set(paths) >= REQUIRED_ARTIFACTS:
             raise ValueError("manifest is missing a required artifact")
+        if self.schema_version == "2":
+            if not set(paths) >= LINEAGE_FILES | {"scenario.json"}:
+                raise ValueError("schema-2 manifest requires complete provenance DAG artifacts")
+        elif set(paths) & LINEAGE_FILES:
+            raise ValueError("lineage artifacts require manifest schema version 2")
         if sum(entry.size_bytes for entry in self.artifacts) > MAX_BUNDLE_BYTES:
             raise ValueError("artifact bundle exceeds 128 MiB")
         return self

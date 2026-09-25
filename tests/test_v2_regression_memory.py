@@ -15,6 +15,7 @@ from dvi_sentinel.confidence_models import ConfidenceInput, ConfidenceSettings
 from dvi_sentinel.matching import match_detection
 from dvi_sentinel.models import RawSource
 from dvi_sentinel.oracle_models import OracleEvidence
+from dvi_sentinel.policy import PolicyError
 from dvi_sentinel.regression_memory import (
     analyze_drift,
     append_record,
@@ -577,13 +578,22 @@ def test_reader_rejects_duplicate_keys_and_byte_overflow(tmp_path):
 
 def test_reader_rejects_linked_roots_and_children(tmp_path, monkeypatch):
     (tmp_path / "memory.json").write_text("{}")
+
+    def denied_open(*args, **kwargs):
+        raise AssertionError("linked roots/children must be rejected before opening a file")
+
+    monkeypatch.setattr(Path, "open", denied_open)
     original = Path.is_junction
     monkeypatch.setattr(Path, "is_junction", lambda p: p == tmp_path or original(p))
     with pytest.raises(ValueError, match="plain local root"):
         load_regression_memory(tmp_path, "memory.json", expected_digest="0" * 64)
     monkeypatch.setattr(Path, "is_junction", lambda p: p.name == "memory.json" or original(p))
-    with pytest.raises(ValueError, match="linked paths"):
+    # The shared reader now rejects nested junctions before the memory-specific guard.
+    with pytest.raises(PolicyError) as rejected:
         load_regression_memory(tmp_path, "memory.json", expected_digest="0" * 64)
+    assert rejected.value.decisions[0].rule_id == "DVI-POL-002"
+    assert rejected.value.decisions[0].decision == "reject"
+    assert rejected.value.decisions[0].path == "memory.json"
 
 
 def test_identity_size_and_append_pin_bounds():

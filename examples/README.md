@@ -111,3 +111,11 @@ and budget-limited studies into four graph views and their exact source artifact
 Run `python examples/knowledge_graph.py --out runs/v2/knowledge-graph-proof` with a
 new directory. The [graph contract](../docs/knowledge_graph.md) explains evidence
 paths, tested cause controls, untested recommendations and explicit weak edges.
+
+The [artifact lineage example](artifact_lineage.py) captures a real local run,
+independent oracle decisions and the existing V1 benchmark suite in a schema-2
+bundle, then renders and verifies its report. Run
+`python examples/artifact_lineage.py --out runs/v2/artifact-lineage-proof` with a
+new destination. The [lineage contract](../docs/run_artifacts.md#v2-artifact-lineage-opt-in)
+and [report summary](../docs/report_v2.md) explain parent hashes, integrity
+propagation, explicit producer declarations and the external manifest pin.

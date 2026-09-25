@@ -36,7 +36,7 @@ def local_file(root: Path, relative: str) -> Path:
     candidate = base
     for part in parts:
         candidate /= part
-        if candidate.is_symlink():
+        if candidate.is_symlink() or candidate.is_junction():
             raise reject("DVI-POL-002", relative, "symlink fixture paths are unsupported")
     if not candidate.resolve().is_relative_to(base):
         raise reject("DVI-POL-002", relative, "fixture escapes the scenario directory")
