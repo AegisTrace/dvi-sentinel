@@ -4,6 +4,10 @@
 
 ### Added
 
+- Typed detection knowledge graphs from pinned local counterfactual studies, linking
+  findings and proposed review actions to observations, source artifacts and tested
+  causes. Four JSON views preserve weak edges, diagnostic disagreement and untested
+  remedies with deterministic identities and strict source/topology validation.
 - Pinned local regression memory with immutable named baselines, detector/version
   and schema-profile compatibility, observed drift classifications and conservative
   confidence-aware gates. Four artifacts preserve trends, paired uncertainty and

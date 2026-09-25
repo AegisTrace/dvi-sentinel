@@ -204,6 +204,10 @@ The [regression memory layer](docs/regression_comparison.md#v2-drift-and-regress
 adds immutable named baselines, compatible detector/profile history and uncertainty-aware
 regression gates. Its [four-run example](examples/regression_memory.py) persists and
 reloads a regression/recovery trend with a fixed baseline.
+The [detection knowledge graph](docs/knowledge_graph.md) links a pinned counterfactual
+study to its observations, transformation checks, local causes and untested review
+actions. Its [example](examples/knowledge_graph.py) and [tests](tests/test_v2_graph.py)
+verify source references, explicit weak edges and deterministic JSON views.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

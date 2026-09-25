@@ -105,3 +105,9 @@ for four artifacts and a verified reload. The
 [history contract](../docs/regression_comparison.md#v2-drift-and-regression-memory)
 explains detector/profile compatibility, immutable bindings, conditional gate
 policy and the difference between existing fragility and a new regression.
+
+The [knowledge graph example](knowledge_graph.py) traces combined-change, robust
+and budget-limited studies into four graph views and their exact source artifact.
+Run `python examples/knowledge_graph.py --out runs/v2/knowledge-graph-proof` with a
+new directory. The [graph contract](../docs/knowledge_graph.md) explains evidence
+paths, tested cause controls, untested recommendations and explicit weak edges.

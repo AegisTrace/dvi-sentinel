@@ -31,8 +31,11 @@ signatures and complete bounded reduction traces. The
 intervals, seeded bootstrap, seed agreement and paired effect uncertainty with
 explicit sampling assumptions. The [regression memory layer](regression_comparison.md)
 adds immutable named baselines, compatible detector/profile history, trend classes
-and confidence-aware gates. Graphs and report integration must each earn an
-implemented claim through their card's tests and proof. The items below remain unsupported until explicitly delivered.
+and confidence-aware gates. The [detection knowledge graph](knowledge_graph.md)
+links local counterfactual findings to measured controls, source references and
+untested review actions, with deterministic views and explicit weak relationships.
+Provenance DAG and report integration must each earn an implemented claim through
+their card's tests and proof. The items below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 
