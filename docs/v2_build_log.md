@@ -1309,3 +1309,128 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
 
 Next card: V2-14 Detection Knowledge Graph.
+
+## V2-14 — Detection Knowledge Graph
+
+Card: V2-14 Detection Knowledge Graph.
+
+Purpose: Trace one pinned local counterfactual study from its findings and proposed
+review actions to observations, tested cause controls and exact source evidence.
+
+Acceptance criteria: Typed node/edge vocabulary; every finding has event/observation
+evidence and a source-artifact path; every recommendation has a tested local cause;
+executed transformations link to recorded invariant checks; explicit weak edges;
+deterministic identities and serialization; strict topology, source and report
+validation; four JSON graph views, genuine example, tests, docs, package proof and CI.
+
+Files changed: `src/dvi_sentinel/knowledge_graph_models.py`, `knowledge_graph.py`,
+`knowledge_graph_projection.py`, `tests/test_v2_graph.py`,
+`examples/knowledge_graph.py`, `docs/knowledge_graph.md`, README, changelog,
+roadmap, V2 architecture and examples index.
+
+Behavior implemented: The pure builder accepts the existing V2-10 summary contract
+with an external canonical source pin. All retained original/candidate events,
+observations, expectations and the inert harness declaration are preflighted before
+matching or analysis. Recorded matches are recomputed from the actual observations.
+Canonical ontology and rule-intent projections, independent oracle decisions,
+recorded transformation checks and verified minimal failure sets supply the graph.
+No generic caller-supplied edge list or detector execution is accepted.
+
+Full content hashes identify nodes and edges, including source references and weak
+support reasons. JSON pointers and selected-value digests identify exact canonical
+source slices. Full report validation rederives the graph and summary, rejecting
+coherently rehashed graph inventions. Typed topology rejects duplicates, dangling
+endpoints, disconnected/orphan nodes and missing finding, cause or invariant links.
+The recommendation view retains its complete outgoing cause/evidence closure.
+Missing pins and blocked source studies export empty graphs with explicit states;
+malformed or over-budget data fails without silent truncation.
+
+Tests added: 54 cases cover actual finding-to-observation/event/artifact paths,
+minimal cause controls and untested remedies, transformation/invariant links,
+source pointers/hashes, explicit weakness, shared export anchors, determinism,
+robust/incomplete/missed/unknown baselines, missing/mismatched pins, global safety
+preflight, changed matches, no detector execution or external I/O, report and
+coherently rehashed graph tampering, typed topology and missing required edges,
+identity collisions, pointer escaping, real invariant rejection, paired recovery,
+diagnostic disagreement, explicit entities, collection/byte/work bounds and the
+runnable example's artifacts/overwrite protection. Ambiguous exact-plus-contained
+signature expectations independently exercise the unknown-baseline path.
+
+Docs/examples updated: The [graph contract](knowledge_graph.md) defines input
+scope, evidence references, each node/edge type, weak reasons, unknowns, source
+validation, artifact consumption and bounds. The
+[local example](../examples/knowledge_graph.py) runs combined-change, robust and
+one-evaluation-budget controls, then projects the actual retained studies.
+
+| Example | Nodes | Edges | Findings | Recommendations | Weak edges |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Combined sensor/vendor change | 398 | 892 | 1 | 1 | 198 |
+| Robust control | 385 | 848 | 0 | 0 | 178 |
+| One-evaluation budget | 82 | 182 | 0 | 0 | 32 |
+
+Artifacts generated: All 15 files matched byte-for-byte between source Python 3.13
+in `runs/v2/V2-14-source-proof-final` and installed-wheel Python 3.12 in
+`runs/v2/V2-14-wheel-proof`: four graph views plus their exact source study in each
+of three example directories. The combined-change fixture's files are:
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| counterfactual_summary.json | 48628 | `197880a3267a22c0e79c8e077e76385627751f1ace6c95504c38518a41030ba1` |
+| detection_graph.json | 983795 | `8863eb9bab9550406964b700ab9ce39fa8f0a17c4fbd56a5096289a225f504be` |
+| weak_edges.json | 131556 | `60daa8d0715943987132069fca15365b5a7c425ffc4678d3f60ea354caa2f1a2` |
+| recommendation_graph.json | 405764 | `9b8b096c3f71c7de3be680d4f3c0a354b859eac5d89925918177a5e750b118ce` |
+| graph_summary.json | 1362 | `a7392f969d5e16611732b2b521b45307af8db48fd7cc2e459deee53379c1b263` |
+
+The proof wheel is 224431 bytes (SHA-256
+`325b14da912f2d8b76aab6a62b71875226d0d8b881ad8af55c30c012960ec616`);
+the sdist is 489395 bytes (SHA-256
+`c67c974b16f64dc9f7d010ff64ecd26606a3e2f838f9d5a2796fbc1121c10d0f`).
+All three new runtime modules match the wheel and isolated installation. The graph
+docs, both example modules, new tests and runtime modules match the sdist. Archives
+exclude private/generated content.
+
+Commands run: Focused pytest and explicit unknown-baseline follow-up; Ruff lint/
+format; strict mypy; full coverage pytest with JUnit and the 90% floor; isolated
+build with uv; source and installed-wheel examples; isolated dependency/import/
+doctor checks; artifact and archive-member hashes; archive exclusions; Markdown
+links; publication-content and import/data-flow review; Git whitespace checks.
+
+Results: Full regression passed 1008 tests with one expected Windows
+symlink-privilege skip in 637.26 seconds, at 94% combined statement/branch coverage.
+Ruff lint/format passed across 194 files and strict mypy passed all 87 runtime
+source files. Focused checks passed all 54 new cases; four no-finding controls
+passed again after strengthening the unknown-baseline assertion. All 15 artifacts
+matched across runtimes. Doctor reported `ready`; imports resolved from isolated
+site-packages and all 17 runtime packages had compatible dependencies. Checked
+286 local links across 54 Markdown files before this completion record. Logs,
+JUnit, coverage, hashes and package proofs remain under ignored `runs/v2/`.
+
+Safety review: Category D bounded immutable models and category A pure graph
+projection reuse existing counterfactual, ontology, intent, matching and oracle
+contracts. Category W example output uses fixed names beneath a new validated
+local directory. Complete source preflight precedes analysis, including unsafe
+content in later cases. No network, subprocess, callback, renderer, graph service,
+external detector or dependency was added to runtime. Bounds are 64 cases,
+128 retained candidate events, 256 detections, 4 MiB source, 8192 nodes, 32768 edges
+and 32 MiB combined graph output. Existing original-input and nested limits remain.
+
+Known limitations: This input adapter covers one counterfactual study, not all
+V1/V2 bundles. Hashes establish consistency, not authorship or detector replay.
+Source/adapter metadata and transformation preservation remain recorded producer
+evidence. Canonical ontology and rule-field projection are limited local contracts,
+not full schema or whole-rule semantics. Minimal causes and paired effects are
+conditional local associations. Recommendations explicitly remain untested review/
+retest actions. Weak edges express support limitations, not calibrated probability;
+`built` is graph construction state, not a release or detection gate. Export slices
+need full-report anchors and reproduction. The example's fixed local files are
+not a transactional database or a defense against hostile concurrent filesystem
+changes. Provenance DAG and integrated reports/CLI remain later cards.
+
+Commit: `594f4969f0c5a7bfca5d15ceeed59178fdb2be37` —
+`feat(graph): build detection knowledge graph`.
+
+CI status: [GitHub Actions run 36089506326](https://github.com/AegisTrace/dvi-sentinel/actions/runs/36089506326)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including test/coverage, package, isolated-install, CLI fixture and benchmark gates.
+
+Next card: V2-15 Provenance DAG and Artifact Integrity Upgrade.
