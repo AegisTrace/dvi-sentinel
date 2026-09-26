@@ -1681,4 +1681,13 @@ hostile concurrent replacement is outside scope. A filesystem write failure can
 leave a partial new directory, which exit 2 does not certify. Full V2 report and
 combined CLI integration remain V2-17 and V2-18; no V2 release is claimed.
 
-Commit and exact supported-Python CI evidence will be recorded after verification.
+Commit: `849ad7fe96361f3030d9f41f8f26ca40c51aa992` —
+`feat(benchmarks): add expert fragility benchmark suite`.
+
+CI status: [GitHub Actions run 36260053316](https://github.com/AegisTrace/dvi-sentinel/actions/runs/36260053316)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including lint/types, full tests/coverage, package, isolated install, CLI and both
+V1 and V2 installed-wheel benchmark gates. All sixteen V2 categories passed on
+both supported runtimes.
+
+Next card: V2-17 Advanced V2 Reports.
