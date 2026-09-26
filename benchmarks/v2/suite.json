@@ -1,0 +1,1254 @@
+{
+  "cases": [
+    {
+      "benchmark_id": "adapter_disagreement-control",
+      "category": "adapter_disagreement",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "adapter_disagreement_rate",
+        "minimum": 0
+      },
+      "expected_state": "agree",
+      "fixtures": [
+        "equivalent.csv",
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "adapter_disagreement-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "adapter_disagreement-control",
+        "--out",
+        "runs/benchmarks/adapter_disagreement-control"
+      ],
+      "scenario": "adapter_disagreement-control.yaml"
+    },
+    {
+      "benchmark_id": "adapter_disagreement-diagnostic",
+      "category": "adapter_disagreement",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "adapter_disagreement"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "adapter_disagreement_rate",
+        "minimum": 1
+      },
+      "expected_state": "disagree",
+      "fixtures": [
+        "changed-action.csv",
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "adapter_disagreement-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "adapter_disagreement-diagnostic",
+        "--out",
+        "runs/benchmarks/adapter_disagreement-diagnostic"
+      ],
+      "scenario": "adapter_disagreement-fragile.yaml"
+    },
+    {
+      "benchmark_id": "benign_noise_sensitivity-control",
+      "category": "benign_noise_sensitivity",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "benign_noise-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "benign_noise_sensitivity-control",
+        "--out",
+        "runs/benchmarks/benign_noise_sensitivity-control"
+      ],
+      "scenario": "benign_noise-control.yaml"
+    },
+    {
+      "benchmark_id": "benign_noise_sensitivity-diagnostic",
+      "category": "benign_noise_sensitivity",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "noise_sensitivity"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 1,
+          "changed_originals": 0,
+          "event_count": 3,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "detection_rate",
+        "minimum": 0
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "benign_noise-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "benign_noise_sensitivity-diagnostic",
+        "--out",
+        "runs/benchmarks/benign_noise_sensitivity-diagnostic"
+      ],
+      "scenario": "benign_noise-fragile.yaml"
+    },
+    {
+      "benchmark_id": "correlation_key_fragility-control",
+      "category": "correlation_key_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "correlation_key-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "correlation_key_fragility-control",
+        "--out",
+        "runs/benchmarks/correlation_key_fragility-control"
+      ],
+      "scenario": "correlation_key-control.yaml"
+    },
+    {
+      "benchmark_id": "correlation_key_fragility-diagnostic",
+      "category": "correlation_key_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "correlation_key_dependency",
+        "optional_field_dependency"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "detection_rate",
+        "minimum": 0
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "correlation_key-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "correlation_key_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/correlation_key_fragility-diagnostic"
+      ],
+      "scenario": "correlation_key-fragile.yaml"
+    },
+    {
+      "benchmark_id": "cross_profile_semantic_loss-control",
+      "category": "cross_profile_semantic_loss",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "agreement_rate",
+        "minimum": 1
+      },
+      "expected_state": "agree",
+      "fixtures": [
+        "v2/dns.jsonl"
+      ],
+      "operation": {
+        "kind": "mapping",
+        "representation": "ecs_like",
+        "supplied_fixture": null
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "cross_profile_semantic_loss-control",
+        "--out",
+        "runs/benchmarks/cross_profile_semantic_loss-control"
+      ],
+      "scenario": "v2/dns.yaml"
+    },
+    {
+      "benchmark_id": "cross_profile_semantic_loss-diagnostic",
+      "category": "cross_profile_semantic_loss",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "adapter_disagreement",
+        "semantic_loss",
+        "unsupported_profile_feature"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": null,
+        "metric": "agreement_rate",
+        "minimum": null
+      },
+      "expected_state": "unknown",
+      "fixtures": [
+        "v2/dns.jsonl"
+      ],
+      "operation": {
+        "kind": "mapping",
+        "representation": "zeek_like",
+        "supplied_fixture": null
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "cross_profile_semantic_loss-diagnostic",
+        "--out",
+        "runs/benchmarks/cross_profile_semantic_loss-diagnostic"
+      ],
+      "scenario": "v2/dns.yaml"
+    },
+    {
+      "benchmark_id": "normalization_loss-control",
+      "category": "normalization_loss",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "agreement_rate",
+        "minimum": 1
+      },
+      "expected_state": "agree",
+      "fixtures": [
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "mapping",
+        "representation": "canonical_jsonl",
+        "supplied_fixture": null
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "normalization_loss-control",
+        "--out",
+        "runs/benchmarks/normalization_loss-control"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "normalization_loss-diagnostic",
+      "category": "normalization_loss",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "adapter_disagreement",
+        "semantic_loss"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "agreement_rate",
+        "minimum": 0
+      },
+      "expected_state": "disagree",
+      "fixtures": [
+        "v2/action_changed.jsonl",
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "mapping",
+        "representation": "canonical_jsonl",
+        "supplied_fixture": "v2/action_changed.jsonl"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "normalization_loss-diagnostic",
+        "--out",
+        "runs/benchmarks/normalization_loss-diagnostic"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "optional_field_dependency-control",
+      "category": "optional_field_dependency",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "optional_field-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "optional_field_dependency-control",
+        "--out",
+        "runs/benchmarks/optional_field_dependency-control"
+      ],
+      "scenario": "optional_field-control.yaml"
+    },
+    {
+      "benchmark_id": "optional_field_dependency-diagnostic",
+      "category": "optional_field_dependency",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "optional_field_dependency"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "detection_rate",
+        "minimum": 0
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "optional_field-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "optional_field_dependency-diagnostic",
+        "--out",
+        "runs/benchmarks/optional_field_dependency-diagnostic"
+      ],
+      "scenario": "optional_field-fragile.yaml"
+    },
+    {
+      "benchmark_id": "oracle_disagreement-control",
+      "category": "oracle_disagreement",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "suppressed_false_positive",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "suppressed_false_positive",
+      "fixtures": [
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "oracle"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "oracle_disagreement-control",
+        "--out",
+        "runs/benchmarks/oracle_disagreement-control"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "oracle_disagreement-diagnostic",
+      "category": "oracle_disagreement",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "oracle_disagreement"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "ambiguous",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "detection_rate",
+        "minimum": 0
+      },
+      "expected_state": "ambiguous",
+      "fixtures": [
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "oracle"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "oracle_disagreement-diagnostic",
+        "--out",
+        "runs/benchmarks/oracle_disagreement-diagnostic"
+      ],
+      "scenario": "v2/oracle_fragile.yaml"
+    },
+    {
+      "benchmark_id": "provenance_tamper_detection-control",
+      "category": "provenance_tamper_detection",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "integrity_rate",
+        "minimum": 1
+      },
+      "expected_state": "intact",
+      "fixtures": [
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "provenance",
+        "mutation": "none"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "provenance_tamper_detection-control",
+        "--out",
+        "runs/benchmarks/provenance_tamper_detection-control"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "provenance_tamper_detection-diagnostic",
+      "category": "provenance_tamper_detection",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "changed",
+        "parent_invalid"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0.99,
+        "metric": "integrity_rate",
+        "minimum": 0
+      },
+      "expected_state": "tampered",
+      "fixtures": [
+        "v2/flow.jsonl"
+      ],
+      "operation": {
+        "kind": "provenance",
+        "mutation": "append_newline"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "provenance_tamper_detection-diagnostic",
+        "--out",
+        "runs/benchmarks/provenance_tamper_detection-diagnostic"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "rule_intent_mismatch-control",
+      "category": "rule_intent_mismatch",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "intent_support_rate",
+        "minimum": 1
+      },
+      "expected_state": "supported",
+      "fixtures": [
+        "v2/flow.jsonl",
+        "v2/intent_flow.yaml"
+      ],
+      "operation": {
+        "intent_fixture": "v2/intent_flow.yaml",
+        "kind": "intent"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "rule_intent_mismatch-control",
+        "--out",
+        "runs/benchmarks/rule_intent_mismatch-control"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "rule_intent_mismatch-diagnostic",
+      "category": "rule_intent_mismatch",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "value_mismatch"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "intent_support_rate",
+        "minimum": 0
+      },
+      "expected_state": "contradicted",
+      "fixtures": [
+        "v2/flow.jsonl",
+        "v2/intent_dns.yaml"
+      ],
+      "operation": {
+        "intent_fixture": "v2/intent_dns.yaml",
+        "kind": "intent"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "rule_intent_mismatch-diagnostic",
+        "--out",
+        "runs/benchmarks/rule_intent_mismatch-diagnostic"
+      ],
+      "scenario": "v2/flow.yaml"
+    },
+    {
+      "benchmark_id": "schema_alias_fragility-control",
+      "category": "schema_alias_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "schema_alias-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "schema_alias_fragility-control",
+        "--out",
+        "runs/benchmarks/schema_alias_fragility-control"
+      ],
+      "scenario": "schema_alias-control.yaml"
+    },
+    {
+      "benchmark_id": "schema_alias_fragility-diagnostic",
+      "category": "schema_alias_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "schema"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "schema_alias-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "schema_alias_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/schema_alias_fragility-diagnostic"
+      ],
+      "scenario": "schema_alias-fragile.yaml"
+    },
+    {
+      "benchmark_id": "sensor_source_drift-control",
+      "category": "sensor_source_drift",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "intent_support_rate",
+        "minimum": 1
+      },
+      "expected_state": "supported",
+      "fixtures": [
+        "v2/intent_sensor.yaml",
+        "v2/sensor_a.jsonl"
+      ],
+      "operation": {
+        "intent_fixture": "v2/intent_sensor.yaml",
+        "kind": "intent"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "sensor_source_drift-control",
+        "--out",
+        "runs/benchmarks/sensor_source_drift-control"
+      ],
+      "scenario": "v2/sensor_a.yaml"
+    },
+    {
+      "benchmark_id": "sensor_source_drift-diagnostic",
+      "category": "sensor_source_drift",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "logsource_mismatch"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "intent_support_rate",
+        "minimum": 0
+      },
+      "expected_state": "contradicted",
+      "fixtures": [
+        "v2/intent_sensor.yaml",
+        "v2/sensor_b.jsonl"
+      ],
+      "operation": {
+        "intent_fixture": "v2/intent_sensor.yaml",
+        "kind": "intent"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "sensor_source_drift-diagnostic",
+        "--out",
+        "runs/benchmarks/sensor_source_drift-diagnostic"
+      ],
+      "scenario": "v2/sensor_b.yaml"
+    },
+    {
+      "benchmark_id": "sequence_window_fragility-control",
+      "category": "sequence_window_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "detected",
+      "fixtures": [
+        "v2/sequence.jsonl",
+        "v2/sequence_change.json"
+      ],
+      "operation": {
+        "change_fixture": "v2/sequence_change.json",
+        "kind": "sequence"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "sequence_window_fragility-control",
+        "--out",
+        "runs/benchmarks/sequence_window_fragility-control"
+      ],
+      "scenario": "v2/sequence_control.yaml"
+    },
+    {
+      "benchmark_id": "sequence_window_fragility-diagnostic",
+      "category": "sequence_window_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "sequence_window_fragility"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 1,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 0,
+        "metric": "detection_rate",
+        "minimum": 0
+      },
+      "expected_state": "missed",
+      "fixtures": [
+        "v2/sequence.jsonl",
+        "v2/sequence_change.json"
+      ],
+      "operation": {
+        "change_fixture": "v2/sequence_change.json",
+        "kind": "sequence"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "sequence_window_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/sequence_window_fragility-diagnostic"
+      ],
+      "scenario": "v2/sequence_fragile.yaml"
+    },
+    {
+      "benchmark_id": "severity_mapping_fragility-control",
+      "category": "severity_mapping_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "severity_mapping-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "severity_mapping_fragility-control",
+        "--out",
+        "runs/benchmarks/severity_mapping_fragility-control"
+      ],
+      "scenario": "severity_mapping-control.yaml"
+    },
+    {
+      "benchmark_id": "severity_mapping_fragility-diagnostic",
+      "category": "severity_mapping_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "severity_normalization"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "severity_mapping-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "severity_mapping_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/severity_mapping_fragility-diagnostic"
+      ],
+      "scenario": "severity_mapping-fragile.yaml"
+    },
+    {
+      "benchmark_id": "statistical_small_sample_warning-control",
+      "category": "statistical_small_sample_warning",
+      "control": true,
+      "expected_confidence_class": "low_confidence",
+      "expected_findings": [
+        "dependent_fixtures",
+        "latency_degenerate",
+        "latency_selection",
+        "seed_stability_unknown"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "measured",
+      "fixtures": [
+        "v2/trials_32.jsonl"
+      ],
+      "operation": {
+        "kind": "statistical"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "statistical_small_sample_warning-control",
+        "--out",
+        "runs/benchmarks/statistical_small_sample_warning-control"
+      ],
+      "scenario": "v2/statistical_32.yaml"
+    },
+    {
+      "benchmark_id": "statistical_small_sample_warning-diagnostic",
+      "category": "statistical_small_sample_warning",
+      "control": false,
+      "expected_confidence_class": "insufficient_sample",
+      "expected_findings": [
+        "dependent_fixtures",
+        "latency_degenerate",
+        "latency_selection",
+        "seed_stability_unknown",
+        "small_sample"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "analysis_only",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "measured",
+      "fixtures": [
+        "v2/trials_4.jsonl"
+      ],
+      "operation": {
+        "kind": "statistical"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "statistical_small_sample_warning-diagnostic",
+        "--out",
+        "runs/benchmarks/statistical_small_sample_warning-diagnostic"
+      ],
+      "scenario": "v2/statistical_4.yaml"
+    },
+    {
+      "benchmark_id": "timestamp_precision_fragility-control",
+      "category": "timestamp_precision_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "timestamp_precision-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "timestamp_precision_fragility-control",
+        "--out",
+        "runs/benchmarks/timestamp_precision_fragility-control"
+      ],
+      "scenario": "timestamp_precision-control.yaml"
+    },
+    {
+      "benchmark_id": "timestamp_precision_fragility-diagnostic",
+      "category": "timestamp_precision_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "timestamp_timezone"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "timestamp_precision-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "timestamp_precision_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/timestamp_precision_fragility-diagnostic"
+      ],
+      "scenario": "timestamp_precision-fragile.yaml"
+    },
+    {
+      "benchmark_id": "timezone_fragility-control",
+      "category": "timezone_fragility",
+      "control": true,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": null,
+        "reason": "no_detection_failure",
+        "status": "not_applicable",
+        "value": null
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "robust",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "timezone-control",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "timezone_fragility-control",
+        "--out",
+        "runs/benchmarks/timezone_fragility-control"
+      ],
+      "scenario": "timezone-control.yaml"
+    },
+    {
+      "benchmark_id": "timezone_fragility-diagnostic",
+      "category": "timezone_fragility",
+      "control": false,
+      "expected_confidence_class": "not_applicable",
+      "expected_findings": [
+        "timestamp_timezone"
+      ],
+      "expected_minimal_reproducer": {
+        "maximum_time_shift_us": 0,
+        "reason": "verified_local_minimum",
+        "status": "minimized",
+        "value": {
+          "added_events": 0,
+          "changed_originals": 1,
+          "event_count": 2,
+          "order_inversions": 0
+        }
+      },
+      "expected_oracle_consensus": "not_applicable",
+      "expected_score_range": {
+        "maximum": 1,
+        "metric": "detection_rate",
+        "minimum": 1
+      },
+      "expected_state": "fragile",
+      "fixtures": [
+        "events.jsonl"
+      ],
+      "operation": {
+        "case_id": "timezone-fragile",
+        "kind": "legacy"
+      },
+      "proof_command": [
+        "python",
+        "examples/run_v2_benchmarks.py",
+        "--case",
+        "timezone_fragility-diagnostic",
+        "--out",
+        "runs/benchmarks/timezone_fragility-diagnostic"
+      ],
+      "scenario": "timezone-fragile.yaml"
+    }
+  ],
+  "event_budget": 256,
+  "schema_version": "2",
+  "seed": 42
+}

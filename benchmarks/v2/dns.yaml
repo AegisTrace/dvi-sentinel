@@ -1,0 +1,36 @@
+schema_version: '1'
+metadata:
+  id: expert:dns
+  title: dns
+  description: Bounded synthetic input for an expert benchmark.
+inputs:
+- path: dns.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: expert-lab
+  signature: synthetic-observation
+  min_severity: 4
+  max_delay_ms: 100
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: expert-lab
+    signature: synthetic-observation
+    title: Synthetic local observation
+    conditions:
+    - field: category
+      operator: exists
+    severity: 4
+variations:
+  families:
+  - metadata
+  max_variants: 8
+  max_jitter_ms: 0
+  optional_fields:
+  - sensor
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

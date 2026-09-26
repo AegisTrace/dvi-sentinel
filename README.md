@@ -213,6 +213,10 @@ parent content and lineage hashes, propagates integrity failures, and adds
 [report provenance summaries](docs/report_v2.md) to opt-in schema-2 bundles. Its
 [example](examples/artifact_lineage.py) captures real run, oracle and benchmark
 evidence while preserving legacy bundle verification.
+The [V2 expert benchmark suite](docs/benchmarks.md#v2-expert-suite) now measures all
+sixteen specified categories as 32 diagnostic/control cases. Its
+[runner](examples/run_v2_benchmarks.py) writes reproducible native evidence, an
+escaped Markdown report and a linked matrix, with failing regression exit codes.
 The remaining capabilities above
 are planned. V1 remains available at the `v1.0.0` tag. See the ordered
 [V2 architecture contract](docs/v2_architecture.md),

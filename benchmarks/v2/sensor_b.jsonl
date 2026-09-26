@@ -1,0 +1,1 @@
+{"action": "observed", "category": "flow", "dst_ip": "198.51.100.2", "dst_port": 443, "event_id": "expert:flow:1", "protocol": "tcp", "sensor": "fixture:sensor-b", "severity": 0, "src_ip": "192.0.2.1", "src_port": 12345, "timestamp": "2026-01-01T00:00:00.000000Z"}

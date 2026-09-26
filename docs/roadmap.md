@@ -36,7 +36,10 @@ links local counterfactual findings to measured controls, source references and
 untested review actions, with deterministic views and explicit weak relationships.
 The [provenance DAG](run_artifacts.md#v2-artifact-lineage-opt-in) now adds versioned
 parent hashes, transitive integrity checks and a scoped [report summary](report_v2.md).
-The complete V2 benchmark and report integration remain later cards. The items below remain unsupported until explicitly delivered.
+The [V2 expert benchmark suite](benchmarks.md#v2-expert-suite) now covers all sixteen
+categories with 32 real diagnostic/control cases and independent acceptance checks.
+Complete V2 report and combined CLI integration remain later cards. The items below
+remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 

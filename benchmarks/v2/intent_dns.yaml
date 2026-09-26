@@ -1,0 +1,9 @@
+intent_id: expert:intent:dns
+title: Local dns intent
+fields:
+- field: category
+  paths:
+  - semantics.category
+  operators:
+  - name: eq
+    value_json: '"dns"'

@@ -50,8 +50,10 @@ jobs:
         run: |
           .venv-package/bin/dvi run examples/foundation_scenario.yaml --out runs/ci --seed 42 --event-budget 256 --json
           .venv-package/bin/dvi ci-check runs/ci --threshold 1 --json
-      - name: Record the expert fixture benchmarks through the installed package
+      - name: Record the V1 fixture benchmarks through the installed package
         run: .venv-package/bin/python examples/run_benchmarks.py --out runs/benchmarks/benchmark_report.json
+      - name: Verify all sixteen V2 expert categories through the installed package
+        run: .venv-package/bin/python examples/run_v2_benchmarks.py --out runs/benchmarks/v2
       - name: Retain local fixture evidence and coverage
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -60,6 +62,7 @@ jobs:
           path: |
             runs/ci/
             runs/benchmarks/benchmark_report.json
+            runs/benchmarks/v2/
             coverage.xml
           retention-days: 7
           if-no-files-found: warn

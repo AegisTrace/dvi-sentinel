@@ -1,0 +1,38 @@
+schema_version: '1'
+metadata:
+  id: expert:sequence_control
+  title: sequence control
+  description: Bounded synthetic input for an expert benchmark.
+inputs:
+- path: sequence.jsonl
+  format: jsonl
+  provenance: synthetic
+expected:
+  detector: expert-lab
+  signature: synthetic-observation
+  min_severity: 4
+  max_delay_ms: 100
+harness:
+  kind: rule_logic
+  rules:
+  - id: observation
+    detector: expert-lab
+    signature: synthetic-observation
+    title: Synthetic local observation
+    conditions:
+    - field: category
+      operator: exists
+    severity: 4
+    min_count: 2
+    window_ms: 20
+    require_time_order: true
+variations:
+  families:
+  - timing
+  max_variants: 8
+  max_jitter_ms: 1
+  optional_fields: []
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

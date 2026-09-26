@@ -4,6 +4,11 @@
 
 ### Added
 
+- Expert V2 fixture suite with 32 diagnostic/control cases across sixteen categories,
+  independent findings/minimum/score/consensus/confidence expectations, retained
+  native evidence and three deterministic linked reports. A bounded example runner
+  and installed-wheel CI checks fail on regressions while preserving true unknowns.
+
 - Opt-in schema-2 artifact bundles with deterministic parent-hash DAGs, transitive
   integrity failures, ancestry and verification artifacts, and noncircular report
   provenance summaries. Core dependencies and rendered report views are verified;

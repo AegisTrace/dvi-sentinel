@@ -1,0 +1,1 @@
+{"action": "query", "category": "dns", "dns_name": "fixture.example", "dst_ip": "198.51.100.2", "dst_port": 53, "event_id": "expert:dns:1", "protocol": "udp", "severity": 0, "src_ip": "192.0.2.1", "src_port": 12345, "timestamp": "2026-01-01T00:00:00.000000Z"}

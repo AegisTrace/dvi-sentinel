@@ -28,7 +28,8 @@ from dvi_sentinel.variations import plan_variations
 from dvi_sentinel.workflow import prepare_scenario
 
 
-def _run_case(root: Path, suite: BenchmarkSuite, case: BenchmarkCase) -> BenchmarkResult:
+def run_benchmark_case(root: Path, suite: BenchmarkSuite, case: BenchmarkCase) -> BenchmarkResult:
+    """Evaluate one declared V1 case, retaining evidence independently of its checks."""
     scenario_bytes = read_fixture(root, case.scenario)
     prepared = prepare_scenario(root / case.scenario)
     scenario, events, harness = prepared.scenario, prepared.events, prepared.harness
@@ -213,6 +214,7 @@ def run_benchmarks(root: Path) -> BenchmarkReport:
         suite_digest=digest(suite),
         seed=suite.seed,
         results=tuple(
-            _run_case(root, suite, case) for case in sorted(suite.cases, key=lambda c: c.id)
+            run_benchmark_case(root, suite, case)
+            for case in sorted(suite.cases, key=lambda c: c.id)
         ),
     )

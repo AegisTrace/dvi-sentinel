@@ -119,3 +119,10 @@ bundle, then renders and verifies its report. Run
 new destination. The [lineage contract](../docs/run_artifacts.md#v2-artifact-lineage-opt-in)
 and [report summary](../docs/report_v2.md) explain parent hashes, integrity
 propagation, explicit producer declarations and the external manifest pin.
+
+The [V2 expert benchmark runner](run_v2_benchmarks.py) executes all sixteen required
+categories as 32 diagnostic/control cases. Run
+`python examples/run_v2_benchmarks.py --out runs/benchmarks/v2` with a new directory
+for the JSON report, Markdown report and evidence-linked matrix. The
+[benchmark contract](../docs/benchmarks.md#v2-expert-suite) explains regression exit
+codes, independently declared expectations and score/uncertainty scopes.

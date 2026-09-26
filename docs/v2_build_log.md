@@ -1563,3 +1563,122 @@ passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
 including lint/types, full tests/coverage, package, isolated install, CLI and benchmark gates.
 
 Next card: V2-16 Expert Benchmark Suite.
+
+## V2-16 — Expert Benchmark Suite
+
+Card: V2-16 Expert Benchmark Suite.
+
+Purpose: Reproduce every declared V2 benchmark category with real local diagnostic
+and control evidence, independent acceptance checks and failing regression exits.
+
+Acceptance criteria: All sixteen categories with unique paired IDs and validated
+scenarios; explicit fixture inventory, findings, minima, score ranges, consensus,
+confidence and inert proof commands; expected values independent of measurement;
+canonical JSON, escaped Markdown and linked matrix; selected/full scope, offline
+bounded execution, meaningful negative tests and source/installed-wheel proof.
+
+Files changed: Five expert benchmark runtime modules, the reusable V1 single-case
+entry point, 32-case manifest and local fixture set, example runner, 68 new tests,
+CI installed-wheel gate, benchmark contract/fixture readme, examples index, README,
+changelog, roadmap, architecture and this record.
+
+Behavior implemented: Exactly one diagnostic/control pair per category. Sixteen
+cases reuse eight existing V1 probe/differential pairs without changing their
+contracts or outputs. Sixteen new cases use actual temporal predicates, detector
+observations, semantic invariants and shrinking, representation comparisons,
+intent/source checks, nine-oracle consensus, conditional statistical analysis and
+artifact lineage verification. Declarative expectations are compared only after
+measurement. The V1 result retains its original supporting checks; V2 acceptance
+is derived independently from measured outputs.
+
+The sequence diagnostic shifts the second event from 10 to 11 milliseconds and
+then minimizes the failure to one microsecond beyond the rule window while
+retaining both originals. The profile diagnostic retains unknown for missing DNS
+evidence. The oracle diagnostic produces real detection/statistical failures and
+a temporal pass, retaining ambiguous consensus. Four trials produce insufficient
+sample evidence; the 32-trial control removes that warning but retains low
+confidence, dependent-fixture and unknown seed-stability limitations. An in-memory
+one-byte source change invalidates nine of ten actual DAG artifacts, including
+unchanged descendants, and fails the saved integrity-view check.
+
+The strict report retains native evidence and source byte hashes/sizes. Its matrix
+binds the complete report hash and per-case evidence hashes/JSON pointers. Summaries
+include explicit numerator/denominator, unknown count, metric scope, minimum
+availability and consensus/confidence scope. A matched expected unknown is a
+successful diagnostic reproduction, not a deployment-safety verdict. Full-suite
+coverage requires all 32 cases; --case explicitly produces selected-case scope.
+
+Tests added: All sixteen pairs, exact findings/ranges/minima/consensus/confidence,
+source pins, deterministic artifacts and roundtrips, matrix references, real
+microsecond minimization, unsupported-profile unknowns, actual disagreeing oracle
+votes, conditional confidence controls, transitive tamper detection, independent
+expectation changes, control-label independence, changed detector inputs, unknown
+intent, malformed or incomplete suites, operation/path/command injection rejection,
+file/aggregate/event/variant limits, network and subprocess prohibition, linked
+roots and nested junction rejection before execution, altered sources, baseline
+eligibility, forged checks/coverage/summaries, escaped Markdown, bounded output,
+overwrite refusal, timing overflow, unresolved timing/baseline/invariant evidence,
+missing reduction availability and CLI exits 0/1/2.
+
+Example proof: Both Python 3.13 source and isolated Python 3.12 wheel executions
+passed all 32 cases and the selected sequence case, producing six byte-identical
+artifacts. The installed-wheel example ran outside the checkout and its imports
+resolved to site-packages. Doctor reported ready and all 17 runtime packages were
+compatible. An independently changed expectation returned exit 1 with evidence;
+reusing its output returned exit 2. Full-suite artifact SHA-256 values:
+
+- benchmark_report.json (2,022,677 bytes):
+  `9c51c7663be56d3a249d48ed98f2f76ef025107e4caf3b4160b775bcf75dc05d`
+- benchmark_report.md (4,357 bytes):
+  `dbe3cd624f323a763f0eca933839fa85b2ce11bf48084094671fee520d862bdf`
+- benchmark_matrix.json (29,605 bytes):
+  `11a7181d81206dd5dd00e92668bbda3b313f04ecea4e7a801c2bedc5915a11e5`
+
+Commands run: Focused pytest, whole-repository Ruff lint/format, strict mypy,
+full coverage pytest with JUnit, isolated build with uv, isolated wheel install
+and dependency checks, doctor/import checks outside the checkout, full and selected
+example runs on both supported Python versions, real failing installed-wheel CLI
+proof, artifact/archive hash comparisons, publication-content and local Markdown
+link checks, AST import/call review and Git whitespace checks.
+
+Results: Final full regression passed 1133 tests with one expected Windows
+symlink-privilege skip in 631.23 seconds, at 94.66% combined
+statement/branch coverage. The final focused run passed 95 cases in 20.80 seconds.
+Ruff lint/format passed across 207 files; strict mypy passed 95 runtime files.
+All six source/wheel artifacts matched across Python 3.13 and 3.12. The installed
+wheel also returned exit 1 for the deliberately unresolved temporal control,
+retaining the real detector observation and an unavailable minimum. Checked 318
+local links across 56 Markdown files; staged publication and import/data-flow
+checks passed. Logs, JUnit, coverage, hashes and audits remain under ignored runs/v2/.
+
+Initial proof runs exposed an omitted severity value in the DNS fixture and
+an overly coarse timing-minimum assertion. The source fixture now declares zero
+severity explicitly, and the minimum oracle independently requires the one-
+microsecond datetime boundary. The initial full run was stopped during final
+review to correct unresolved minimum availability and unknown temporal-state
+projection; four added negative cases preserve those distinctions. Validation was
+restarted after the corrections.
+
+Safety review: Category D expert models; category R/A bounded reader/orchestrator;
+category A existing engine adapters and summary projection; category A/W fixed
+report projections and new-directory writer; category C small argument parser.
+No runtime network, subprocess, dynamic loader, external detector or dependency
+was added. Proof commands are inert and operations are a fixed discriminated set.
+Limits: 32 cases, 128 KiB suite/scenario, 2 MiB fixture, 16 MiB selected unique inputs,
+8 legacy or 64 native events per case, 8 planned variants/noise/duplicates per
+scenario, existing engine budgets, and 32 MiB combined artifacts. Confined local
+reads reject links/junctions/network roots and recheck source bytes after execution.
+
+Known limitations: The cases establish finite fixture behavior, not prevalence,
+standard compliance or production detector robustness. Normalization loss uses a
+supplied changed representation, not an alleged normalizer defect. Sensor-source
+drift is measured against declared intent, not a longitudinal population. Minima
+are relative to supported reductions. Diagnostic scores have incompatible scopes
+and must not be averaged. Non-statistical/non-detection analyses explicitly omit
+unrelated confidence/consensus claims. Hashes establish consistency, not authorship
+or a trusted external replay. The local filesystem has one trusted writer;
+hostile concurrent replacement is outside scope. A filesystem write failure can
+leave a partial new directory, which exit 2 does not certify. Full V2 report and
+combined CLI integration remain V2-17 and V2-18; no V2 release is claimed.
+
+Commit and exact supported-Python CI evidence will be recorded after verification.

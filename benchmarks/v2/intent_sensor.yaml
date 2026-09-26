@@ -1,0 +1,11 @@
+intent_id: expert:intent:sensor
+title: Declared source contract
+fields:
+- field: category
+  paths:
+  - semantics.category
+  operators:
+  - name: eq
+    value_json: '"flow"'
+logsource:
+  sensor: fixture:sensor-a
