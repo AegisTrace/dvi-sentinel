@@ -1851,7 +1851,7 @@ lint/format passed across 219 Python files and strict mypy across 103 runtime mo
 All 62 source/wheel files matched. Direct installed-console execution matched the
 example output for all ten commands, all 32 expert cases passed, deliberate
 regression/input failures returned 1/2 and doctor reported ready. All 17 runtime
-packages were compatible. Package contents, 342 local links across 56 Markdown
+packages were compatible. Package contents, 344 local links across 56 Markdown
 files, publication checks and actual import/call review passed. Full logs, JUnit,
 coverage, source hashes and isolated CLI proofs are retained under ignored runs/v2/.
 
@@ -1874,8 +1874,13 @@ are not run bundles; adding them to a bundle still requires correct producer
 lineage and run-scoped evidence. Completed diagnostic unknowns are not release
 acceptance; existing CI/regression gates retain their blocking semantics.
 
-Commit: pending implementation commit.
+Commit: `5fdf65cf41026a66c2398ab1c29bccbdadbbd48c` -
+`feat(cli): expose V2 semantic intelligence workflow`.
 
-CI status: pending exact implementation-commit verification on Python 3.12 and 3.13.
+CI status: [GitHub Actions run 36923832023](https://github.com/AegisTrace/dvi-sentinel/actions/runs/36923832023)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit.
+Both jobs passed lint/types, full tests/coverage, package/isolated install,
+doctor/legacy CLI, V1 and V2 benchmarks, advanced reports and all ten V2 commands
+through the installed wheel.
 
-Next card: V2-19 CI/CD and Release Hardening, after green CI.
+Next card: V2-19 CI/CD and Release Hardening.
