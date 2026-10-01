@@ -104,7 +104,7 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-15 | Parent-child artifact DAG, tamper propagation, missing-parent decisions and bounded bundle verification. **Implemented on main; see [lineage contract](run_artifacts.md#v2-artifact-lineage-opt-in).** | D, R, A, W |
 | V2-16 | Real diagnostic/control fixtures across all 16 specified benchmark families, with independent acceptance oracles. **Implemented on main; see [benchmark contract](benchmarks.md#v2-expert-suite).** | D, R, A, W, C |
 | V2-17 | Verified-bundle JSON/Markdown/HTML reports, explicit absent sections and a self-contained report archive. | D, A, W |
-| V2-18 | Integrated ontology, mapping, intent, temporal, oracle, exploration, explanation, confidence, graph and benchmark CLI. | C, R, W |
+| V2-18 | Integrated ontology, mapping, intent, temporal, oracle, exploration, explanation, confidence, graph and benchmark CLI. **Implemented on main; see [CLI contract](cli.md#v2-analysis-commands).** | D, C, R, W |
 | V2-19 | Python 3.12/3.13 CI, installed-wheel V2 proof, offline tests and bounded artifact retention. | CI/configuration |
 | V2-20 | Claims tied to executed examples, benchmarks, genuine report output and clear V1/V2 status. | Documentation |
 | V2-21 | Full release proof, visual inspection, claim/safety audits, verified artifacts and green published commit. | Release verification |
@@ -166,7 +166,10 @@ V2-17 now supplies the [advanced report contract](report_v2.md): eighteen sectio
 strict native evidence linked to a verified run, escaped local HTML/Markdown,
 a packaged stylesheet, and a deterministic archive with its own verifiable
 manifest/DAG. The existing report command has an opt-in `--advanced` flag;
-combined analysis execution remains V2-18 work.
+V2-18 exposes the native engines through ten explicit [analysis commands](cli.md#v2-analysis-commands).
+Typed requests select evidence and effective seeds; native artifacts connect stages
+such as explanation to graph. Completion of an analysis does not imply release acceptance.
+The existing run command remains its established scenario workflow.
 
 ## Artifacts, presentation and release
 

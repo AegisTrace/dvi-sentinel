@@ -56,6 +56,8 @@ jobs:
         run: .venv-package/bin/python examples/run_v2_benchmarks.py --out runs/benchmarks/v2
       - name: Verify advanced reports through the installed package
         run: .venv-package/bin/python examples/advanced_report.py --out runs/reports/v2
+      - name: Exercise all ten V2 commands through the installed package
+        run: .venv-package/bin/python examples/v2_cli.py --out runs/cli/v2
       - name: Retain local fixture evidence and coverage
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -66,6 +68,7 @@ jobs:
             runs/benchmarks/benchmark_report.json
             runs/benchmarks/v2/
             runs/reports/v2/
+            runs/cli/v2/
             coverage.xml
           retention-days: 7
           if-no-files-found: warn

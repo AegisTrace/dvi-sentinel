@@ -4,6 +4,11 @@
 
 ### Added
 
+- Ten V2 analysis commands with typed JSON results, native artifact exports,
+  source/artifact hashes, optional input pins, deterministic seed overrides and
+  bounded local I/O. Expert benchmark regressions retain evidence and exit 1;
+  invalid/unsafe/integrity failures exit 2. Existing CLI behavior is preserved.
+
 - Opt-in schema-3 advanced reports with all eighteen V2 sections, native analysis
   scope checks, explicit absent/unknown evidence, escaped local HTML/Markdown,
   a packaged stylesheet and deterministic self-contained ZIP. The existing report

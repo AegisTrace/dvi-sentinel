@@ -1785,3 +1785,97 @@ including lint/types, full tests/coverage, package, isolated install, doctor/CLI
 V1 and V2 benchmarks, and the advanced report installed-wheel example.
 
 Next card: V2-18 V2 CLI Expansion.
+
+## V2-18 - V2 CLI Expansion
+
+Purpose: expose the existing semantic intelligence engines through stable local CLI commands.
+
+Acceptance criteria recorded before implementation: retain all six existing commands;
+add all ten blueprint commands with help, JSON and readable measured output; retain
+uncertainty and native evidence; bound input/output and reject unsafe or changed
+inputs; prove deterministic seeds, regression exit status and installed execution.
+
+Files changed: four new CLI model/I/O/analysis/benchmark modules and command
+registration; CLI tests; a runnable ten-command example; CLI, README, architecture,
+roadmap, report and changelog documentation; installed-wheel CI evidence capture.
+
+Behavior implemented: ontology, map-schema, analyze-rule, temporal, oracles, explore,
+explain, confidence, graph and benchmark. Typed JSON envelopes retain full native
+results, source byte pins and artifact digests; optional new-directory publication
+writes those native artifacts and command_result.json. Input pins are checked before
+analysis and source bytes rechecked before output. Seed overrides are retained in
+effective engine inputs. Benchmark failure summaries name failing checks. Diagnostic
+unknowns remain explicit; failed authoritative gates are rejected before publication.
+
+Tests added: help/JSON on all sixteen commands; native measurements, artifact hashes,
+human summaries, deterministic output, supported and unsupported rule declarations,
+detection subtype preservation, budget omissions and oracle unknowns; malformed,
+unsafe, duplicate, oversized, encoded/device/network/drive-relative and junction
+inputs; wrong source pins, source changes during analysis, output refusal/limits,
+benchmark regressions and unsafe benchmark fixtures; subprocess denial alongside
+the existing offline socket guard.
+
+Docs/examples updated: [CLI contract](cli.md#v2-analysis-commands),
+[runnable example](../examples/v2_cli.py), public feature status and implementation
+boundaries. Commands expose explicit stages: exploration plans; explanation runs
+a declared local rule harness; graph consumes its retained counterfactual artifact.
+No implicit detector or missing evidence is invented; the existing run workflow
+and verified bundle consumers retain their contracts.
+
+Artifacts generated: source Python 3.13 and isolated wheel Python 3.12 produced
+62 byte-identical files. The fixture has two known ontology signals, fourteen
+profile roundtrips (ten lossy, two unknown), unresolved count-based intent, ten
+actual temporal checks, nine oracle decisions, two feasible exploration cases,
+one minimal local volume finding and eleven insufficient-sample confidence groups.
+The knowledge graph contains 354 nodes, 748 edges and 174 weak edges. The selected
+benchmark control passed its declared checks. Selected native artifact SHA-256 values:
+
+- benchmark/benchmark_report.json (34,201 bytes): `2160fdbd3a81be7a305eaefebc3ec2ac1cc35e30a3601d323c8db8bd9fac0cac`
+- confidence/confidence.json (154,796 bytes): `bec54abdaff312b10a8a261fe5c2543841c78d5cabe8b596568e93e97a5227de`
+- explain/counterfactual_summary.json (19,628 bytes): `069f017b03f3569821e1764b411b4994ed36a71a4ee575f9e79f595a9480884a`
+- explore/constraint_plan.json (15,168 bytes): `64b29036bb808f0b02f0c3cf377f52969d89d57ee06cb9bd8ddc6349b051319f`
+- graph/detection_graph.json (786,545 bytes): `47ddb926082db167e300a0f62e1779066fdc94f3c349e165d9359979a6ea8f73`
+
+Commands run: focused pytest and legacy CLI regression; whole-repository Ruff
+lint/format and strict mypy; full coverage pytest/JUnit; isolated wheel/sdist build
+with uv; isolated install/dependency/doctor/import checks outside the checkout;
+source/wheel ten-command example; direct installed dvi execution of every command;
+full 32-case installed CLI benchmark and deliberate exit-1/exit-2 controls; exact
+artifact/package comparison; AST capability review, local links, publication content
+and Git whitespace checks.
+
+Results: 1,231 tests passed with one expected Windows symlink-privilege skip in
+741.63 seconds; combined statement/branch coverage 94.91%. The focused V2 CLI
+run passed 68 cases; the earlier V2/legacy CLI check passed 87. Whole-repository Ruff
+lint/format passed across 219 Python files and strict mypy across 103 runtime modules.
+All 62 source/wheel files matched. Direct installed-console execution matched the
+example output for all ten commands, all 32 expert cases passed, deliberate
+regression/input failures returned 1/2 and doctor reported ready. All 17 runtime
+packages were compatible. Package contents, 342 local links across 56 Markdown
+files, publication checks and actual import/call review passed. Full logs, JUnit,
+coverage, source hashes and isolated CLI proofs are retained under ignored runs/v2/.
+
+The first focused runs corrected test assumptions about derived benchmark properties
+and its measured state. Rule-format checks explicitly supply the supported local
+field taxonomy and logsource; omitted metadata correctly remains unknown. Rich
+human output may wrap by terminal width, while JSON is byte-deterministic.
+
+Safety review: request/result models D; bounded reader/writer R/W and console
+presentation C; analysis and benchmark wrappers C over existing analyzers. Imports
+and calls add no network, subprocess, dynamic plugin or external detector service.
+No runtime dependency was added. Reads reject linked roots and regular-file
+violations before consumption; generated artifact paths remain portable and fixed.
+
+Known limitations: a 4-MiB CLI request ceiling and 128-KiB rule/suite ceiling apply
+alongside stricter native limits. Total output including the envelope is at most
+32 MiB. Filesystem failure can leave a partial new directory; one trusted local
+writer is assumed. Pins prove consistency, not origin. Standalone analysis outputs
+are not run bundles; adding them to a bundle still requires correct producer
+lineage and run-scoped evidence. Completed diagnostic unknowns are not release
+acceptance; existing CI/regression gates retain their blocking semantics.
+
+Commit: pending implementation commit.
+
+CI status: pending exact implementation-commit verification on Python 3.12 and 3.13.
+
+Next card: V2-19 CI/CD and Release Hardening, after green CI.

@@ -234,3 +234,11 @@ explicit missing analyses, local HTML/CSS, Markdown/JSON and a deterministic ZIP
 that extracts to a verifiable bundle. Run `examples/advanced_report.py` for a full
 synthetic example, or use `dvi report <bundle> --advanced --overwrite` on an existing
 verified schema-2 bundle. Legacy report formats remain available.
+
+
+V2-18 exposes ten [analysis commands](docs/cli.md#v2-analysis-commands) for ontology,
+mapping, intent, temporal evidence, oracles, exploration, explanation, confidence,
+graphs and expert benchmarks. Each has typed JSON output, bounded local inputs,
+explicit native artifacts and stable exit codes. The [CLI example](examples/v2_cli.py)
+executes every stage, and [CLI tests](tests/test_v2_cli.py) cover real findings,
+uncertainty, deterministic seeds, rejected inputs and benchmark regressions.

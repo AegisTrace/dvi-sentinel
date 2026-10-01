@@ -92,3 +92,87 @@ schema-2 bundle. Native analyses are optional but, when present, must match the
 run's evidence. This is report consumption, not execution of new analysis stages.
 An existing schema-3 report keeps its format on regeneration without the flag.
 See [V2 report contracts, limits and example](report_v2.md).
+
+## V2 analysis commands
+
+The ten V2 commands run the existing local engines as explicit analysis stages.
+They accept typed JSON inputs, except `analyze-rule`, which accepts a local rule
+declaration plus a typed events file, and `benchmark`, which accepts a suite root.
+`--json` returns a schema-1 command envelope containing the complete native
+`result`, a measured human summary, input byte hashes and native artifact hashes.
+Without that flag the command prints a concise summary. `--out <new-directory>`
+also writes the native artifacts and the same envelope as `command_result.json`.
+Omitting `--out` performs no artifact writes.
+
+| Command | Input and measured output |
+| --- | --- |
+| `ontology <events.json>` | `EventInput`; default ontology extraction, known/unknown signals, bindings and semantic losses. |
+| `map-schema <events.json>` | `EventInput`; all seven local profile roundtrips, explicit field losses and alias paths. These are declared subsets, not full standard compliance. |
+| `analyze-rule <rule> --events <events.json> [--format dvi]` | Native intent YAML/JSON by default; `sigma_metadata` selects the bounded metadata subset and `v1_rule` selects one local rule. Reports evidence support and unsupported conditions. |
+| `temporal <temporal.json>` | `TemporalInput`; time-window, sequence and correlation evidence, with source precision and missing keys retained. |
+| `oracles <oracles.json>` | Native `OracleEvidence`; recomputes nine checks and consensus. Missing evidence stays unresolved. |
+| `explore <explore.json> [--seed N]` | `ExplorationInput`; feasible covering cases, constraints, rejected combinations and budget omissions. Plans cases; does not execute detector observations. |
+| `explain <explain.json> [--seed N]` | Native `CounterfactualInput`; executes its bounded local declarative harness and measures minimal transformation sets and conditional effects. |
+| `confidence <confidence.json> [--seed N]` | Native `ConfidenceInput`; observation-linked rates, bootstrap intervals, seed agreement and comparison uncertainty. The seed overrides only the bootstrap seed. |
+| `graph <counterfactual_summary.json>` | Native `CounterfactualSummary`, such as the artifact from `explain`; validates retained evidence and builds graph/weak-edge/recommendation views. Recommendations remain untested. |
+| `benchmark <root> [--case ID]` | Root containing `v2/suite.json`; defaults to all 32 expert cases. Compares actual measurements with independent expectations and writes report/matrix artifacts. |
+
+Every row supports `--json`, `--out`, `--help` and `--input-sha256 <hex>`.
+The optional pin checks the exact primary input bytes before analysis; for
+`benchmark` it pins `v2/suite.json`. `analyze-rule` additionally supports
+`--events-sha256`. These pins establish content consistency, not authorship.
+Each result records source digests even when no external pin is supplied. Captured
+inputs are checked again before publication; benchmark fixture capture/rechecking
+uses the existing expert runner. Each native input retains its own integrity rules.
+
+`EventInput` is `{"schema_version":"1","events":[...]}`, where every entry is a
+complete canonical `TelemetryEvent` or `DetectionEvent`, including raw provenance.
+Detection subtypes are preserved. `TemporalInput` adds `window_ms` (default 1000),
+`pattern` (default empty) and `precision_digits` (default 0).
+`ExplorationInput` adds the existing `space`, `policy`, optional `budget`, and
+`seed` (default 42). The other inputs use the native models documented in
+[oracles](oracle_consensus.md), [counterfactuals](counterfactual_causality.md),
+[confidence](statistical_confidence.md) and [graphs](knowledge_graph.md).
+Unknown fields are rejected. Input files are standalone requests, not unverified
+run directories; the existing bundle consumer commands still verify their manifests.
+
+The runnable [CLI example](../examples/v2_cli.py) creates these requests from real
+synthetic fixture execution, invokes every command and links `explain` to `graph`:
+
+```sh
+python examples/v2_cli.py --out runs/v2/cli-example
+dvi ontology runs/v2/cli-example/inputs/events.json --json
+dvi map-schema runs/v2/cli-example/inputs/events.json --json
+dvi analyze-rule runs/v2/cli-example/inputs/rule.json --format v1_rule --events runs/v2/cli-example/inputs/events.json --json
+dvi temporal runs/v2/cli-example/inputs/temporal.json --json
+dvi oracles runs/v2/cli-example/inputs/oracles.json --json
+dvi explore runs/v2/cli-example/inputs/explore.json --seed 42 --json
+dvi explain runs/v2/cli-example/inputs/explain.json --seed 42 --out runs/v2/explanation --json
+dvi confidence runs/v2/cli-example/inputs/confidence.json --seed 42 --json
+dvi graph runs/v2/explanation/counterfactual_summary.json --json
+dvi benchmark benchmarks --out runs/v2/benchmark-cli --json
+```
+
+Exit **0** means an analysis completed, including measured losses, local misses or
+diagnostic unknowns. It does not mean a detection is robust or a release is accepted.
+`benchmark` exits **1** when a completed measurement fails a declared expectation;
+its output retains the failed checks and actual evidence. Malformed or unsafe
+inputs, changed hashes, blocked authoritative evidence and invalid destinations
+exit **2** with a concise error. The existing `ci-check`/`compare` release-blocking
+unknown behavior is unchanged. Native diagnostic uncertainty is never converted
+to a passing release verdict.
+
+All request reads reject network roots, links/junctions and device/traversal paths.
+The CLI read ceiling is 4 MiB, with a 128-KiB rule/suite ceiling; lower native limits
+still apply (including 32 mapping/exploration events and eight counterfactual events).
+Combined output, including the envelope, is capped at 32 MiB. Output directories
+must be new; there is no overwrite option. A filesystem failure may leave a partial
+new directory and returns exit 2. Local paths assume one trusted writer; hostile
+concurrent filesystem replacement is outside this contract.
+
+Identical inputs and effective seeds produce identical native artifacts and command
+JSON; output paths and wall-clock timestamps are excluded from these results.
+The benchmark seed belongs to its declared suite. CLI seed overrides are retained
+in the native effective input or plan, alongside the original input byte pin.
+These commands do not silently choose a detector, invent missing evidence, append
+unlinked analyses to a run bundle, or replace the existing `run` workflow.

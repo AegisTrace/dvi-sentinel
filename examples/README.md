@@ -126,3 +126,11 @@ categories as 32 diagnostic/control cases. Run
 for the JSON report, Markdown report and evidence-linked matrix. The
 [benchmark contract](../docs/benchmarks.md#v2-expert-suite) explains regression exit
 codes, independently declared expectations and score/uncertainty scopes.
+
+The [V2 CLI example](v2_cli.py) creates typed requests from real fixture observations
+and invokes all ten analysis commands, including an explanation-to-graph chain.
+Run `python examples/v2_cli.py --out runs/v2/cli-example` with a new destination.
+Each command directory contains its native artifacts and a reproducible command
+result with input/output hashes. The [CLI contract](../docs/cli.md#v2-analysis-commands)
+lists direct commands, input formats, limits and the distinction between completed
+diagnostics and a release acceptance gate.

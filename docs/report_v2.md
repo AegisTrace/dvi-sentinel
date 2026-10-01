@@ -1,7 +1,7 @@
 # Advanced V2 reports and provenance
 
 V2-17 adds an opt-in semantic intelligence report and portable archive on top of
-the V2-15 provenance contract. Combined V2-18 workflow integration remains planned. [V1 reports](reports.md) retain their existing sections and legacy
+the V2-15 provenance contract. [V2 analysis commands](cli.md#v2-analysis-commands) expose the native engines as explicit stages. [V1 reports](reports.md) retain their existing sections and legacy
 schema-1 support. [Artifact lineage](run_artifacts.md#v2-artifact-lineage-opt-in)
 defines the DAG, bounded local reads and integrity decisions.
 
