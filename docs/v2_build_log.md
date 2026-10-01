@@ -1776,8 +1776,12 @@ observations are retained evidence, not independent detector replay. Statistics 
 conditional on captured cohorts; weak graph remedies remain untested. Hash consistency
 does not authenticate authorship. Combined V2 CLI orchestration remains the next card.
 
-Commit: pending implementation commit.
+Commit: `80dcac02d40e179a247748a5a279fd4cd3a53130` -
+`feat(reports): render V2 semantic intelligence reports`.
 
-CI status: pending exact implementation-commit verification on Python 3.12 and 3.13.
+CI status: [GitHub Actions run 36853394684](https://github.com/AegisTrace/dvi-sentinel/actions/runs/36853394684)
+passed both `core (3.12)` and `core (3.13)` for the exact implementation commit,
+including lint/types, full tests/coverage, package, isolated install, doctor/CLI,
+V1 and V2 benchmarks, and the advanced report installed-wheel example.
 
-Next card: V2-18 V2 CLI Expansion, after green CI.
+Next card: V2-18 V2 CLI Expansion.
