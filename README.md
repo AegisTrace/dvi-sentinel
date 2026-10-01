@@ -227,3 +227,10 @@ and CI before the next starts. V2 keeps the same local synthetic/fixture boundar
 Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [code of conduct](CODE_OF_CONDUCT.md). Report vulnerabilities privately through
 the [security policy](SECURITY.md). MIT licensed; copyright AegisTrace.
+
+
+V2-17 adds [advanced reports](docs/report_v2.md) with eighteen evidence sections,
+explicit missing analyses, local HTML/CSS, Markdown/JSON and a deterministic ZIP
+that extracts to a verifiable bundle. Run `examples/advanced_report.py` for a full
+synthetic example, or use `dvi report <bundle> --advanced --overwrite` on an existing
+verified schema-2 bundle. Legacy report formats remain available.

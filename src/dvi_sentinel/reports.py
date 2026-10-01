@@ -3,6 +3,7 @@
 import hashlib
 from pathlib import Path
 
+from dvi_sentinel.advanced_report_evidence import advanced_evidence
 from dvi_sentinel.artifact_contract import read_jsonl, read_model
 from dvi_sentinel.artifact_models import (
     LINEAGE_FILES,
@@ -22,18 +23,20 @@ from dvi_sentinel.local_fixtures import read_fixture
 from dvi_sentinel.models import TelemetryEvent
 from dvi_sentinel.provenance import build_provenance
 from dvi_sentinel.provenance_bundle import (
+    PRESENTATION_FILES,
     evidence_summary,
     extra_specifications,
     run_specifications,
     with_artifact_lineage,
 )
 from dvi_sentinel.report_models import ReportDocument
+from dvi_sentinel.report_package import ARCHIVE_PATH, report_archive, report_assets
 from dvi_sentinel.report_rendering import render_html, render_markdown
 from dvi_sentinel.run_artifacts import json_bytes
 from dvi_sentinel.score_models import ResilienceFrontier
 from dvi_sentinel.shrinking_models import MinimalCounterexample
 
-REPORT_FILES = {"report.json", "report.md", "report.html", "provenance.json", "regression.json"}
+REPORT_FILES = PRESENTATION_FILES
 LIMITATIONS = (
     "Only local synthetic/documentation fixtures are evaluated;"
     " these results do not establish live detector performance.",
@@ -64,8 +67,17 @@ def build_reports(
     *,
     previous: Path | None = None,
     thresholds: ComparisonThresholds | None = None,
+    advanced: bool = False,
 ) -> dict[str, bytes]:
     manifest = _verified(directory)
+    if any(a.path == "report.json" for a in manifest.artifacts):
+        advanced = (
+            advanced or read_model(directory, "report.json", ReportDocument).schema_version == "3"
+        )
+    if advanced and manifest.schema_version != "2":
+        raise ArtifactError(
+            "DVI-REPORT-VERSION: advanced reports require a verified schema-2 bundle"
+        )
     entries = {a.path: a for a in manifest.artifacts if a.path not in REPORT_FILES | LINEAGE_FILES}
     record = read_model(directory, "run.json", RunRecord)
     score = read_model(directory, "score.json", ResilienceFrontier)
@@ -103,6 +115,7 @@ def build_reports(
         score,
     )
     lineage = None
+    evidence: dict[str, bytes] = {}
     if manifest.schema_version == "2":
         evidence = {
             name: files[name]
@@ -112,12 +125,19 @@ def build_reports(
             if name not in REPORT_FILES
         }
         prior_dag = read_model(directory, "provenance_dag.json", ProvenanceDAG)
+        if any(
+            hashlib.sha256(data).hexdigest() != entries[name].sha256
+            or len(data) != entries[name].size_bytes
+            for name, data in evidence.items()
+        ):
+            raise ArtifactError("DVI-REPORT-INTEGRITY: evidence changed during capture")
         dag = build_lineage(
             evidence, run_specifications(evidence) + extra_specifications(prior_dag, evidence)
         )
         lineage = evidence_summary(dag)
     document = ReportDocument(
-        schema_version="2" if lineage else "1",
+        schema_version="3" if advanced else "2" if lineage else "1",
+        advanced=advanced_evidence(evidence) if advanced else None,
         lineage=lineage,
         run=record,
         frontier=score,
@@ -139,6 +159,12 @@ def build_reports(
             "report.html": render_html(document).encode("utf-8"),
         }
     )
+    if advanced:
+        files.update(report_assets())
+        inner = with_artifact_lineage(
+            evidence | files, declarations=extra_specifications(prior_dag, evidence)
+        )
+        files[ARCHIVE_PATH] = report_archive(inner)
     if any(len(data) > MAX_ARTIFACT_BYTES for data in files.values()):
         raise ArtifactError("DVI-REPORT-SIZE: report exceeds 32 MiB")
     return files
@@ -150,11 +176,12 @@ def write_reports(
     previous: Path | None = None,
     overwrite: bool = False,
     thresholds: ComparisonThresholds | None = None,
+    advanced: bool = False,
 ) -> ArtifactVerification:
     manifest = _verified(directory)
     if not overwrite and any(a.path in REPORT_FILES for a in manifest.artifacts):
         raise ArtifactError("DVI-REPORT-EXISTS: existing reports require explicit overwrite")
-    reports = build_reports(directory, previous=previous, thresholds=thresholds)
+    reports = build_reports(directory, previous=previous, thresholds=thresholds, advanced=advanced)
     contents = {
         a.path: read_fixture(directory, a.path, limit=MAX_ARTIFACT_BYTES)
         for a in manifest.artifacts

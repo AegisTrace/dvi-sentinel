@@ -4,6 +4,11 @@
 
 ### Added
 
+- Opt-in schema-3 advanced reports with all eighteen V2 sections, native analysis
+  scope checks, explicit absent/unknown evidence, escaped local HTML/Markdown,
+  a packaged stylesheet and deterministic self-contained ZIP. The existing report
+  command accepts `--advanced`; legacy report serialization remains unchanged.
+
 - Expert V2 fixture suite with 32 diagnostic/control cases across sixteen categories,
   independent findings/minimum/score/consensus/confidence expectations, retained
   native evidence and three deterministic linked reports. A bounded example runner

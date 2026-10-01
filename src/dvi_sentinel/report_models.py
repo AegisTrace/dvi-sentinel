@@ -10,6 +10,7 @@ from pydantic import (
     model_validator,
 )
 
+from dvi_sentinel.advanced_report_models import AdvancedEvidence
 from dvi_sentinel.artifact_models import ArtifactEntry, RunRecord, portable_path
 from dvi_sentinel.comparison_models import ComparisonResult
 from dvi_sentinel.differential_models import DifferentialReport
@@ -54,7 +55,7 @@ class ProvenanceReport(ValueModel):
 
 
 class ReportDocument(ValueModel):
-    schema_version: Literal["1", "2"] = "1"
+    schema_version: Literal["1", "2", "3"] = "1"
     run: RunRecord
     frontier: ResilienceFrontier
     cases: tuple[CaseAssessment, ...]
@@ -65,16 +66,21 @@ class ReportDocument(ValueModel):
     provenance: ProvenanceReport
     limitations: tuple[NonEmpty, ...]
     lineage: LineageSummary | None = None
+    advanced: AdvancedEvidence | None = None
 
     @model_serializer(mode="wrap")
     def serialize_version(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
         values: dict[str, Any] = handler(self)
         if self.schema_version == "1":
             values.pop("lineage", None)
+        if self.schema_version != "3":
+            values.pop("advanced", None)
         return values
 
     @model_validator(mode="after")
     def lineage_version(self) -> "ReportDocument":
-        if (self.schema_version == "2") != (self.lineage is not None):
-            raise ValueError("schema-2 reports require a provenance DAG summary")
+        if (self.schema_version in {"2", "3"}) != (self.lineage is not None):
+            raise ValueError("schema-2/3 reports require a provenance DAG summary")
+        if (self.schema_version == "3") != (self.advanced is not None):
+            raise ValueError("schema-3 reports require typed advanced evidence")
         return self

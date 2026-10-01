@@ -82,3 +82,13 @@ Exit codes are stable:
 Expected input errors produce concise messages without stack traces. `--json`
 returns canonical schema-versioned JSON for command results and execution errors;
 argument-parser usage errors still use Typer's normal stderr output and exit 2.
+
+
+### Advanced V2 report format
+
+`dvi report <run> --advanced [--overwrite] [--baseline <prior>] [--json]` renders
+all eighteen V2 sections and a local stylesheet/portable ZIP from a verified
+schema-2 bundle. Native analyses are optional but, when present, must match the
+run's evidence. This is report consumption, not execution of new analysis stages.
+An existing schema-3 report keeps its format on regeneration without the flag.
+See [V2 report contracts, limits and example](report_v2.md).

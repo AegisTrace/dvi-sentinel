@@ -1691,3 +1691,93 @@ V1 and V2 installed-wheel benchmark gates. All sixteen V2 categories passed on
 both supported runtimes.
 
 Next card: V2-17 Advanced V2 Reports.
+
+## V2-17 - Advanced V2 Reports
+
+Purpose: make a verified, portable semantic intelligence report the public V2 artifact.
+
+Acceptance criteria recorded before implementation: preserve legacy report formats;
+render all eighteen blueprint sections; retain typed native analyses and explicit
+absence/unknowns; link analyses to actual run evidence; produce local HTML/CSS,
+Markdown/JSON and a deterministic ZIP; reject invalid source or presentation data;
+exercise real examples, package/CLI, visual inspection and supported-runtime CI.
+
+Files changed: advanced report models/evidence/sections and report package modules;
+existing report models, rendering, orchestration, lineage and CLI wrapper; local
+HTML/CSS templates; two focused test modules; the advanced report example; report,
+CLI, architecture, roadmap, README/changelog documentation and installed-wheel CI.
+
+Behavior implemented: opt-in report schema 3 on verified schema-2 bundles, exposed
+through `dvi report --advanced` and existing Python report APIs. Existing schema-1/2
+outputs retain their serialized form. Regeneration preserves an existing advanced
+format. Every required section is present, native analyses are scoped to the run,
+unknowns remain unresolved, and readable tables link to complete source evidence.
+Recommendations include the exact source artifact and JSON pointer. Report JSON,
+renderings, assets, provenance and ZIP are checked against captured bytes even after
+hashes/DAGs are regenerated. The ZIP contains a complete independently verifiable
+bundle with its own manifest/DAG and no nested archive.
+
+Tests added: 32 cases covering sections/native values, explicit absent analyses,
+legacy format preservation, exact regeneration, escaped hostile text, local resource
+links and JSON pointers, archive extraction/verification, byte determinism, limits,
+malformed/changed/unrelated analyses, changed source during capture, rehashed report
+claims/assets/ZIP, regression packaging and CLI exits 0/2. The new `--advanced`
+option is the minimal command integration needed to exercise this card; it does
+not implement the V2-18 combined analysis workflow.
+
+Docs/examples updated: [report contract](report_v2.md), [CLI](cli.md), architecture,
+roadmap and feature claims. [The example](../examples/advanced_report.py) runs real
+local engines with all eight optional inputs, plus a missing-analysis control.
+The full fixture records two detected and nine missed variants, unresolved oracle
+consensus, an unknown minimum and insufficient statistical sample size.
+
+Artifacts generated: Python 3.13 source and isolated Python 3.12 wheel runs emitted
+72 byte-identical files across the full/absent examples. The installed CLI regenerated
+the advanced report successfully and refused overwrite without its flag. The absent
+example records its `--without-optional` reproduction argument. Main outputs:
+
+- report.html (35,140 bytes): `c1c63e9e801213525ffe63c522ee75524337526e6dff24efd6ccbdd5f29e10ed`
+- report.json (1,146,529 bytes): `9567fe4cd389748b099dcbf55f7a3b4808e904c873d7ab4124e5742c56623783`
+- report.md (22,772 bytes): `b506408a8a66bbba8c6d8d1fc8b9213df9186c707f0406fa46eea3c53550a7d9`
+- report_assets/report.css (3,156 bytes): `436f74314a3c3f5be57148f0a069943b749b8158e43d6eb688bdecba3a88833d`
+- report_bundle.zip (2,965,903 bytes): `763f2eef58873dec12b73b8dce1b31512fba6cc89e002ae2bc34bdf2c8e68722`
+
+Rendered inspection: the actual final HTML/CSS was viewed in a local loopback browser
+preview. The overview, section navigation, confidence table and recommendation
+source references were readable. The temporary browser tab/server were closed.
+No mobile/print inspection or human approval is claimed. Automated tests resolve
+every HTML fragment/local file link and recommendation JSON pointer after extraction.
+
+Commands run: focused pytest; whole-repository Ruff lint/format and strict mypy;
+full coverage pytest with JUnit; isolated wheel/sdist build with uv; isolated wheel
+install and dependency/doctor/import checks outside the checkout; source/wheel
+full and absent examples; installed report CLI success/refusal; exact artifact
+comparisons; local Markdown link and publication-marker checks; AST import/call
+review; Git whitespace and branch checks.
+
+Results: 1,165 passed and one expected Windows symlink skip in 763.14 seconds;
+combined statement/branch coverage 94.78%. Focused report/CLI tests: 32 passed.
+Ruff lint/format passed for 214 Python files; strict mypy passed for 99 runtime
+modules. Both source and installed-wheel examples and CLI proof passed. All 17
+runtime packages were compatible. Local documentation links resolved and publication
+checks found no attribution trailers or instruction-file additions.
+
+Safety review: models D; evidence/sections/lineage/archive construction A; fixed
+package-resource reads R; report orchestration reuses bounded R/W and atomic
+publication; the existing command wrapper is C. Actual imports/calls add no network,
+subprocess, dynamic plugin or external detector capability. ZIP construction is
+in-memory over confined bytes; runtime never extracts an input archive. The existing
+fixture-only policy and offline-test socket guard remain intact. No runtime dependency
+was added. The final import/call audit and artifact/visual proofs are retained locally.
+
+Known limitations: at most 128 baseline events, 20 displayed table rows and a 32-MiB
+stored ZIP, within existing bundle limits. Temporal predicates and local causal/shrink
+observations are retained evidence, not independent detector replay. Statistics are
+conditional on captured cohorts; weak graph remedies remain untested. Hash consistency
+does not authenticate authorship. Combined V2 CLI orchestration remains the next card.
+
+Commit: pending implementation commit.
+
+CI status: pending exact implementation-commit verification on Python 3.12 and 3.13.
+
+Next card: V2-18 V2 CLI Expansion, after green CI.

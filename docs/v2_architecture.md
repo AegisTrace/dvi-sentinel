@@ -162,6 +162,12 @@ effect bounds. Models and report validation rederive numerical evidence from
 pinned observations; the pure analyzer reuses V1 matching/scoring/comparison and
 authoritative safety/provenance oracles. No execution or dependency is added.
 
+V2-17 now supplies the [advanced report contract](report_v2.md): eighteen sections,
+strict native evidence linked to a verified run, escaped local HTML/Markdown,
+a packaged stylesheet, and a deterministic archive with its own verifiable
+manifest/DAG. The existing report command has an opt-in `--advanced` flag;
+combined analysis execution remains V2-18 work.
+
 ## Artifacts, presentation and release
 
 Emit artifacts only from actual validated inputs and measured analysis. A required

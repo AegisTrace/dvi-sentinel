@@ -38,7 +38,8 @@ The [provenance DAG](run_artifacts.md#v2-artifact-lineage-opt-in) now adds versi
 parent hashes, transitive integrity checks and a scoped [report summary](report_v2.md).
 The [V2 expert benchmark suite](benchmarks.md#v2-expert-suite) now covers all sixteen
 categories with 32 real diagnostic/control cases and independent acceptance checks.
-Complete V2 report and combined CLI integration remain later cards. The items below
+The [advanced report](report_v2.md) now presents all eighteen sections and a
+verifiable portable archive. Combined CLI integration remains a later card. The items below
 remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group

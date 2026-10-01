@@ -20,6 +20,7 @@ class Section:
     paragraphs: tuple[str, ...] = ()
     columns: tuple[str, ...] = ()
     rows: tuple[tuple[str, ...], ...] = ()
+    references: tuple[str, ...] = ()
 
 
 def display(value: object) -> str:
@@ -32,6 +33,10 @@ def display(value: object) -> str:
 
 
 def sections(report: ReportDocument) -> tuple[Section, ...]:
+    if report.advanced is not None:
+        from dvi_sentinel.advanced_report_sections import advanced_sections
+
+        return advanced_sections(report)
     run, score = report.run, report.frontier
     items = [
         Section(
@@ -289,6 +294,8 @@ def render_markdown(report: ReportDocument) -> str:
                 "| " + " | ".join(_markdown(cell) for cell in row) + " |" for row in section.rows
             )
             lines.append("")
+        if section.references:
+            lines.extend(("Sources: " + " · ".join(f"[{p}]({p})" for p in section.references), ""))
     lines.extend(("## Artifact inventory", ""))
     lines.extend(
         f"- [{a.path}]({a.path}) — SHA-256 `{a.sha256}`" for a in report.provenance.artifacts
@@ -297,9 +304,8 @@ def render_markdown(report: ReportDocument) -> str:
 
 
 def render_html(report: ReportDocument) -> str:
-    template = (
-        files("dvi_sentinel").joinpath("templates/report.html.j2").read_text(encoding="utf-8")
-    )
+    name = "advanced_report.html.j2" if report.advanced else "report.html.j2"
+    template = files("dvi_sentinel").joinpath("templates/" + name).read_text(encoding="utf-8")
     environment = Environment(
         autoescape=True, undefined=StrictUndefined, keep_trailing_newline=True
     )

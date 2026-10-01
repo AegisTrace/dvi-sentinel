@@ -25,6 +25,8 @@ PRESENTATION_FILES = {
     "report.html",
     "provenance.json",
     "regression.json",
+    "report_assets/report.css",
+    "report_bundle.zip",
 }
 
 
@@ -127,6 +129,12 @@ def run_specifications(contents: Mapping[str, bytes]) -> tuple[LineageSpec, ...]
     )
     for path in ("report.md", "report.html"):
         add(path, "report", "report.json")
+    add("report_assets/report.css", "report", "report.json")
+    add(
+        "report_bundle.zip",
+        "report",
+        *sorted(contents.keys() - LINEAGE_FILES - {"report_bundle.zip"}),
+    )
     return tuple(sorted(specs, key=lambda s: s.path))
 
 
@@ -171,7 +179,7 @@ def with_artifact_lineage(
     if not integrity.valid:
         raise ValueError("DVI-LINEAGE-INTEGRITY: orphan or invalid artifact cannot be published")
     if PRESENTATION_FILES & files.keys():
-        _verify_report(files, evidence_summary(dag))
+        _verify_report(files | {"provenance_dag.json": encoded(dag)}, evidence_summary(dag))
     files.update(lineage_artifacts(dag, files))
     bound_contents(files)
     return files
@@ -211,7 +219,7 @@ def verify_bundle_lineage(contents: Mapping[str, bytes]) -> tuple[ArtifactIssue,
         if files.get("scenario.json") != (canonical_json(record.configuration) + "\n").encode():
             raise ValueError("scenario differs from run")
         if PRESENTATION_FILES & files.keys():
-            _verify_report(files, evidence_summary(dag))
+            _verify_report(contents, evidence_summary(dag))
     except (KeyError, ValueError, RecursionError):
         issues.append(
             ArtifactIssue(
@@ -230,10 +238,14 @@ def _verify_report(contents: Mapping[str, bytes], summary: LineageSummary) -> No
 
     report = ReportDocument.model_validate(parse_json(contents["report.json"]))
     if (
-        report.schema_version != "2"
+        report.schema_version not in {"2", "3"}
         or report.lineage != summary
         or contents["provenance.json"] != encoded(report.provenance)
         or contents["report.md"] != render_markdown(report).encode("utf-8")
         or contents["report.html"] != render_html(report).encode("utf-8")
     ):
         raise ValueError("report does not match its provenance summary or renderings")
+    if report.schema_version == "3":
+        from dvi_sentinel.report_package import verify_advanced_report
+
+        verify_advanced_report(contents)

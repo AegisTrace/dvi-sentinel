@@ -116,12 +116,17 @@ def report_command(
         Path | None, typer.Option(help="Optional verified prior run for regression.")
     ] = None,
     overwrite: Annotated[bool, typer.Option(help="Replace existing generated reports.")] = False,
+    advanced: Annotated[
+        bool, typer.Option(help="Render V2 sections and ZIP from a schema-2 bundle.")
+    ] = False,
     json_output: Annotated[bool, typer.Option("--json")] = False,
 ) -> None:
     try:
         directory = run_directory(run)
         previous = run_directory(baseline) if baseline is not None else None
-        verified = write_reports(directory, previous=previous, overwrite=overwrite)
+        verified = write_reports(
+            directory, previous=previous, overwrite=overwrite, advanced=advanced
+        )
     except (ValueError, OSError, RecursionError) as exc:
         fail(exc, json_output)
     if json_output:

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>{{ report.run.configuration.reporting.title }} · DVI Sentinel</title>
+  <link rel="stylesheet" href="report_assets/report.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to report</a>
+<header>
+  <div class="eyebrow">DVI Sentinel / semantic intelligence report</div>
+  <h1>{{ report.run.configuration.reporting.title }}</h1>
+  <p>{{ report.run.configuration.metadata.title }} · seed {{ report.run.seed }} · {{ report.run.tool_version }}</p>
+  <p>{{ report.run.run_id }}</p>
+</header>
+<div class="layout">
+  <nav aria-label="Report sections">{% for section in sections %}<a href="#{{ section.id }}">{{ section.title }}</a>{% endfor %}<a href="#inventory">Artifact inventory</a></nav>
+  <main id="main">
+    <div class="counts" aria-label="Variant outcomes; baseline excluded">
+      <div class="count"><strong>{{ report.frontier.metrics.detected }}</strong><span>Detected variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.missed }}</strong><span>Missed variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.unknown }}</strong><span>Unknown variants</span></div>
+      <div class="count"><strong>{{ report.frontier.metrics.invalid }}</strong><span>Invalid variants</span></div>
+    </div>
+    {% for section in sections %}
+    <section id="{{ section.id }}" aria-labelledby="title-{{ section.id }}">
+      <h2 id="title-{{ section.id }}">{{ section.title }}</h2>
+      {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+      {% if section.rows %}<div class="table-wrap" tabindex="0" role="region" aria-label="{{ section.title }} table"><table>
+        <caption>{{ section.title }} evidence</caption>
+        <thead><tr>{% for column in section.columns %}<th scope="col">{{ column }}</th>{% endfor %}</tr></thead>
+        <tbody>{% for row in section.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+      </table></div>{% endif %}
+      {% if section.references %}<p class="sources">Sources: {% for path in section.references %}<a href="{{ path }}">{{ path }}</a>{% endfor %}</p>{% endif %}
+    </section>
+    {% endfor %}
+    <section id="inventory" aria-labelledby="title-inventory">
+      <h2 id="title-inventory">Artifact inventory</h2>
+      <p>Relative links resolve inside this bundle. JSONL references in provenance.json use one-based lines and JSON Pointers within each record.</p>
+      <ul class="inventory">{% for artifact in report.provenance.artifacts %}<li><a href="{{ artifact.path }}">{{ artifact.path }}</a><code>SHA-256 {{ artifact.sha256 }} · {{ artifact.size_bytes }} bytes</code></li>{% endfor %}</ul>
+      <p><a href="report.json">Machine report</a> · <a href="provenance.json">Finding provenance</a> · <a href="manifest.json">Final manifest</a></p>
+    </section>
+    <footer>Report schema {{ report.schema_version }}. Local synthetic evidence; no network resources or executable report content.</footer>
+  </main>
+</div>
+</body>
+</html>
