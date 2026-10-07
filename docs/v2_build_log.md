@@ -1884,3 +1884,105 @@ doctor/legacy CLI, V1 and V2 benchmarks, advanced reports and all ten V2 command
 through the installed wheel.
 
 Next card: V2-19 CI/CD and Release Hardening.
+
+## V2-19 - CI/CD and Release Hardening
+
+Purpose: prevent silent V2 regressions with installed-package and offline container evidence.
+
+Acceptance criteria recorded before implementation: preserve both Python quality
+gates and the 90% combined coverage floor; build and install an isolated wheel;
+exercise doctor, all 32 expert cases, a dedicated robust V2 fixture, report regeneration
+and a declared strict gate; retain verifiable evidence and deliberate exit-1/exit-2
+controls; prove restricted Docker behavior; preserve read-only tokens, action pins,
+no required secrets and the only-main dependency maintenance policy.
+
+Files changed: CI workflow and Dependabot configuration; packaged-asset doctor
+checks; a dedicated synthetic scenario/events pair, bounded proof verifier and
+regression tests; CI, security, contributing, development-standard, architecture,
+roadmap, examples and changelog documentation; this completion record.
+
+Behavior implemented: both Python jobs install the built wheel from a downloaded
+wheelhouse using --no-index, run the full expert CLI benchmark and capture actual
+run/report/gate JSON. The robust control requires threshold 1 and maximum unknown
+rate 0. The fragile fixture must produce a measured miss and exit 1; attempting to
+replace a report without explicit overwrite must produce its specific refusal and
+exit 2. The verifier checks original manifest pins, run counts, independently
+rederived gate decisions, unchanged report evidence and every benchmark artifact's
+bytes/digest. Captured paths are compared without filesystem resolution. Doctor
+requires the legacy and advanced report templates plus the packaged stylesheet.
+
+A third CI job builds the pinned Docker image and runs doctor, benchmark, scenario,
+report, gate, all ten analysis commands and the advanced-report example with no
+network, non-root identity, read-only root filesystem, dropped capabilities and
+bounded temporary storage. All jobs have fifteen-minute limits and narrowly scoped
+seven-day evidence retention. Python jobs also retain pytest JUnit and coverage XML.
+Vulnerability alerts are enabled; automatic version/security update pull requests
+are disabled, with reviewed updates committed directly on main.
+
+Tests added: sixteen cases exercise real CLI evidence, manifest and metric tampering,
+wrong gate thresholds, changed report evidence, missing doctor assets, incorrect
+refusal reasons, benchmark digest/file corruption, bundle corruption, linked-root
+refusal, installed-origin enforcement and captured network paths rejected before
+filesystem resolution. Existing V1 and V2 tests remain active with socket denial.
+
+Docs/examples updated: [CI contract](ci.md), [contributor guidance](../CONTRIBUTING.md),
+[security policy](../SECURITY.md), [development standard](development_standard.md),
+[robust scenario](../examples/v2/ci/scenario.yaml) and
+[proof verifier](../examples/verify_ci_proof.py). Documentation distinguishes the
+established scenario workflow from standalone V2 analysis, and CI validation from
+a final release or rendered-report inspection.
+
+Artifacts generated: real source Python 3.13, isolated wheel Python 3.12 and restricted
+Docker executions each passed all 32 expert cases. The robust control detected all
+seven measured cases with zero misses/unknowns/invalids; the fragile control detected
+two and missed nine, with ten findings and no unknown/invalid outcomes. Each report
+regeneration preserved its original bundle manifest. Twenty-one native fixture and
+benchmark files matched across all three environments; all 62 ten-command example
+files matched between Windows wheel and Linux container. The shared full benchmark
+report SHA-256 is `9c51c7663be56d3a249d48ed98f2f76ef025107e4caf3b4160b775bcf75dc05d`.
+Complete manifests differ with run identity/provenance; native measurements match.
+
+Commands run: focused pytest; whole-repository Ruff lint/format and strict mypy;
+full coverage pytest/JUnit in hosted CI; wheel/sdist build with uv; isolated no-index installation,
+pip check and import inspection outside the checkout; source/wheel/container CLI
+proofs and final verifier; Docker build with restricted runtime checks; actionlint;
+package/source byte comparison, AST capability audit, local links, publication and
+Git whitespace checks; direct main push and exact-commit three-job CI verification.
+
+Results: 1,248 tests passed with no skips on each supported Python version.
+The Python 3.12/3.13 test runs took 328.335/471.348 seconds,
+with combined statement/branch coverage 94.90%/94.90%. The final focused verifier run passed sixteen cases.
+Ruff lint/format passed across 221 Python files, strict mypy across 103 runtime
+modules, and actionlint accepted the workflow. All 107 packaged source/assets
+matched; the source archive contained every implementation change and no private run files.
+All 360 local links across 56 Markdown files passed before this completion entry.
+Local full-suite attempts were interrupted and were not counted as completed proof.
+Complete tests and coverage were verified in hosted CI. Final
+source/wheel/container verifiers accepted the retained evidence after path handling
+was tightened. Full logs, JUnit, coverage, package hashes, parity comparisons and
+repository-setting checks are retained under ignored runs/v2/.
+
+Safety review: doctor is bounded package-resource inspection and console presentation
+(R/C); the verifier combines typed values, bounded local reading and pure evidence
+checks (D/R/A/C). It invokes no subprocess, network client, dynamic plugin or detector
+service. Fixed infrastructure commands are never sourced from scenario data. No
+runtime dependency was added. Existing fixture/provenance guards and test socket
+denial remain enforced. Publication contains no private workspace configuration.
+
+Known limitations: proof capture records its original absolute execution location;
+relocating captures requires an explicit review rather than silently reinterpreting
+paths. Hash consistency is not authenticated origin. Dependency download, build and
+hosting transport need network access; fixture execution does not. Alerts require
+manual maintenance and do not guarantee remediation. Signed release attestations,
+SBOMs and native analysis JUnit/SARIF exports remain separate work. V2 is unreleased;
+public presentation and the final release/visual gate remain outstanding.
+
+Commit: `b9eac240a62fc8ee60dc2a390aa42d6196d52e28` - `chore(ci): gate V2 semantic engine proof`.
+
+CI status: [GitHub Actions run 37585874934](https://github.com/AegisTrace/dvi-sentinel/actions/runs/37585874934)
+passed `core (3.12)`, `core (3.13)` and `container` for the exact implementation
+commit. All three retained nonempty evidence artifacts. Both Python jobs passed
+quality, coverage, build, installed-wheel and verified CLI/benchmark/report gates;
+the container job passed the restricted runtime checks.
+
+Next card: V2-20 README and Public Portfolio Polish.
