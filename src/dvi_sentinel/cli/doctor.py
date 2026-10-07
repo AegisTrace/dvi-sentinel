@@ -31,14 +31,19 @@ def doctor_command(json_output: Annotated[bool, typer.Option("--json")] = False)
             )
         except metadata.PackageNotFoundError:
             checks.append(DoctorCheck(name=package, status="fail", value="not installed"))
-    present = resources.files("dvi_sentinel").joinpath("templates/report.html.j2").is_file()
-    checks.append(
-        DoctorCheck(
-            name="report template",
-            status="pass" if present else "fail",
-            value="present" if present else "missing",
+    for name, path in (
+        ("report template", "templates/report.html.j2"),
+        ("advanced report template", "templates/advanced_report.html.j2"),
+        ("advanced report stylesheet", "templates/report.css"),
+    ):
+        present = resources.files("dvi_sentinel").joinpath(path).is_file()
+        checks.append(
+            DoctorCheck(
+                name=name,
+                status="pass" if present else "fail",
+                value="present" if present else "missing",
+            )
         )
-    )
     okay = all(check.status == "pass" for check in checks)
     result = DoctorReport(
         status="ready" if okay else "unavailable",

@@ -40,8 +40,10 @@ The [V2 expert benchmark suite](benchmarks.md#v2-expert-suite) now covers all si
 categories with 32 real diagnostic/control cases and independent acceptance checks.
 The [advanced report](report_v2.md) now presents all eighteen sections and a
 verifiable portable archive. The [V2 CLI](cli.md#v2-analysis-commands) exposes all ten
-analysis stages with typed results, native artifacts and benchmark regression gates. The items below
-remain unsupported until explicitly delivered.
+analysis stages with typed results, native artifacts and benchmark regression gates.
+The [V2 CI gate](ci.md) now verifies installed package and restricted container
+behavior, full benchmark evidence and declared run/report acceptance. The items
+below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 
@@ -50,7 +52,7 @@ remain unsupported until explicitly delivered.
 | Adaptive/greybox semantic search and broader coverage | A bounded local benchmark showing useful findings beyond the fixed catalog while preserving independently checked semantics and repeatability. |
 | Statistical confidence and drift memory | A defensible sampling model, recorded history/identity and explicit limits on uncertainty claims. |
 | Richer evidence relationships | A real reader/query need that existing provenance references cannot express; avoid adding a graph just to export one. |
-| JUnit/SARIF output | A tested consumer use case, faithful mapping of unknowns and local evidence references, and no implied code vulnerability finding where only fixture fragility was measured. |
+| Native analysis JUnit/SARIF output | A tested consumer use case, faithful mapping of unknowns and local evidence references, and no implied code vulnerability finding where only fixture fragility was measured. CI already retains pytest JUnit. |
 
 ## Further candidates and explicit nonclaims
 

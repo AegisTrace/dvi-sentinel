@@ -15,7 +15,9 @@ V2 is in development. This document records the scope lock from the owner's
 [V2-13 regression memory](regression_comparison.md) and
 [V2-14 detection knowledge graph](knowledge_graph.md) and
 [V2-15 artifact lineage](run_artifacts.md#v2-artifact-lineage-opt-in) and
-[V2-16 expert benchmarks](benchmarks.md#v2-expert-suite);
+[V2-16 expert benchmarks](benchmarks.md#v2-expert-suite),
+[V2-17 advanced reports](report_v2.md), [V2-18 CLI](cli.md#v2-analysis-commands) and
+[V2-19 CI/release hardening](ci.md);
 subsequent cards remain planned.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
@@ -103,9 +105,9 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-14 | Deterministic typed graph with findings connected to source evidence and recommendations to supported causes. **Implemented on main; see [graph contract](knowledge_graph.md).** | D, A, W |
 | V2-15 | Parent-child artifact DAG, tamper propagation, missing-parent decisions and bounded bundle verification. **Implemented on main; see [lineage contract](run_artifacts.md#v2-artifact-lineage-opt-in).** | D, R, A, W |
 | V2-16 | Real diagnostic/control fixtures across all 16 specified benchmark families, with independent acceptance oracles. **Implemented on main; see [benchmark contract](benchmarks.md#v2-expert-suite).** | D, R, A, W, C |
-| V2-17 | Verified-bundle JSON/Markdown/HTML reports, explicit absent sections and a self-contained report archive. | D, A, W |
+| V2-17 | Verified-bundle JSON/Markdown/HTML reports, explicit absent sections and a self-contained report archive. **Implemented on main; see [report contract](report_v2.md).** | D, A, W |
 | V2-18 | Integrated ontology, mapping, intent, temporal, oracle, exploration, explanation, confidence, graph and benchmark CLI. **Implemented on main; see [CLI contract](cli.md#v2-analysis-commands).** | D, C, R, W |
-| V2-19 | Python 3.12/3.13 CI, installed-wheel V2 proof, offline tests and bounded artifact retention. | CI/configuration |
+| V2-19 | Python 3.12/3.13 CI, installed-wheel V2 proof, offline tests/container and bounded artifact retention. **Implemented on main; see [CI contract](ci.md).** | CI/configuration, R, A, C |
 | V2-20 | Claims tied to executed examples, benchmarks, genuine report output and clear V1/V2 status. | Documentation |
 | V2-21 | Full release proof, visual inspection, claim/safety audits, verified artifacts and green published commit. | Release verification |
 
@@ -191,7 +193,7 @@ coverage; wheel/sdist build and isolated installation; existing and new CLI proo
 robust and fragile benchmark controls; compatible regression and unknown-state
 checks; Docker reproduction with networking disabled; manifest and DAG verification;
 actual rendered HTML inspection; and README/SECURITY/CHANGELOG/safety audits.
-Python 3.12 and 3.13 CI must pass for the release commit. No tag is allowed while
+Python 3.12, Python 3.13 and container CI must pass for the release commit. No tag is allowed while
 a required artifact, implementation, safety decision, example or visual check is
 unverified. Subjective portfolio scores in the source blueprint are aspirations,
 not measurements or release evidence.

@@ -1,0 +1,37 @@
+schema_version: "1"
+metadata:
+  id: v2-ci-control
+  title: Local V2 release control
+  description: A stable flow predicate under bounded fixture transformations.
+inputs:
+  - path: events.jsonl
+    format: jsonl
+    provenance: synthetic
+expected:
+  detector: fixture-lab
+  signature: synthetic-flow
+harness:
+  kind: rule_logic
+  rules:
+    - id: flow-rule
+      detector: fixture-lab
+      signature: synthetic-flow
+      title: Synthetic flow observation
+      conditions:
+        - field: category
+          operator: eq
+          value: flow
+variations:
+  families: [timing, ordering, metadata, volume]
+  max_variants: 8
+  max_jitter_ms: 25
+  max_duplicates: 2
+  optional_fields: [sensor, vendor]
+  order_independent: true
+scoring:
+  min_detection_rate: 1.0
+  max_unknown_rate: 0.0
+safety:
+  local_only: true
+  synthetic_only: true
+  no_execution: true

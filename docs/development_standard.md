@@ -27,7 +27,8 @@ the versioned record of published behavior.
 8. Review actual imports/calls and data flow against the fixed safety boundary.
    Name each module's allowed category and any residual limitations.
 9. Commit one coherent conventional-commit unit, push and verify both supported
-   Python CI jobs for that exact commit. Do not start the next card before green CI.
+   Python CI jobs and the container job for that exact commit. Do not start the
+   next card before green CI.
 10. Write the completion record, including actual commands, outcomes, commit and
     CI reference. A command attempt or queued preview is not completion evidence.
 
@@ -90,6 +91,21 @@ Behavioral cards also use `python -m coverage run -m pytest` and
 Use targeted tests during development; rerun broader checks after meaningful changes
 or failures, not to inflate an evidence list. Preserve seeds and failing fixtures.
 Every bug fix adds a behavioral regression test.
+
+The [CI contract](ci.md) adds isolated wheel installation from a downloaded wheelhouse
+with `--no-index`, packaged-asset checks, all 32 expert cases and retained run/report
+proof. The robust fixture gate declares detection threshold 1 and maximum unknown
+rate 0; the fragile control must fail with exit 1 and the overwrite refusal with
+exit 2. The bounded verifier compares command results with actual bundle manifests,
+derived gates and benchmark bytes. Keep the advanced-report and ten-command examples
+working from the installed package. The separate container job repeats runtime
+proof with networking disabled, a non-root user and a read-only root filesystem.
+
+All three jobs have bounded timeouts, read-only repository tokens, full action SHA
+pins and narrow seven-day artifact retention. Network access is needed for dependency
+download/build and hosting transport, not fixture analysis. Maintain dependency
+alerts without automatic update branches: review changes and commit tested updates
+directly on `main`. CI proof does not replace the final rendered-report inspection.
 
 Golden outputs and expected benchmark results are independent oracles. Do not update
 an expected result merely to accept what the engine currently emits. Check semantics,

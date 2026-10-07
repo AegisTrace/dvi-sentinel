@@ -4,6 +4,12 @@
 
 ### Added
 
+- V2 release regression gates on Python 3.12/3.13 and a restricted offline container:
+  isolated wheelhouse installation, all 32 expert cases, retained command/report
+  proof, strict detection/unknown thresholds and measured exit-1/exit-2 controls.
+  Doctor checks both packaged report templates and the V2 stylesheet. CI retains
+  JUnit and artifact evidence; dependency alerts use manual updates on `main`.
+
 - Ten V2 analysis commands with typed JSON results, native artifact exports,
   source/artifact hashes, optional input pins, deterministic seed overrides and
   bounded local I/O. Expert benchmark regressions retain evidence and exit 1;

@@ -134,3 +134,14 @@ Each command directory contains its native artifacts and a reproducible command
 result with input/output hashes. The [CLI contract](../docs/cli.md#v2-analysis-commands)
 lists direct commands, input formats, limits and the distinction between completed
 diagnostics and a release acceptance gate.
+
+The [V2 CI scenario](v2/ci/scenario.yaml) uses two synthetic flow events and a robust
+category predicate under timing, ordering, metadata and volume variations. Run
+`dvi run examples/v2/ci/scenario.yaml --out runs/ci-v2 --seed 42 --event-budget 256 --json`,
+regenerate with `dvi report runs/ci-v2 --overwrite --json`, then require
+`dvi ci-check runs/ci-v2 --threshold 1 --max-unknown 0 --json`.
+The [CI proof verifier](verify_ci_proof.py) checks captured command results against
+native bundles, unchanged reports and the full expert benchmark. The
+[CI guide](../docs/ci.md) documents the required capture layout, installed-package
+check and deliberate failure/refusal controls. It reads local evidence without
+executing commands or fetching data.

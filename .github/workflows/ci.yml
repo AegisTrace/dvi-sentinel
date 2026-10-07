@@ -16,7 +16,7 @@ env:
 jobs:
   core:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -32,14 +32,15 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
       - run: mypy src/dvi_sentinel
-      - run: python -m coverage run -m pytest
+      - run: python -m coverage run -m pytest --junitxml=runs/pytest.xml
       - run: python -m coverage report --fail-under=90
       - run: python -m coverage xml
       - run: python -m build
       - name: Install the built wheel in an isolated environment
         run: |
+          python -m pip download --only-binary=:all: --dest "$RUNNER_TEMP/wheelhouse" dist/*.whl
           python -m venv .venv-package
-          .venv-package/bin/python -m pip install dist/*.whl
+          .venv-package/bin/python -m pip install --no-index --find-links "$RUNNER_TEMP/wheelhouse" dist/*.whl
           .venv-package/bin/python -m pip check
       - name: Inspect the installed package outside the checkout
         working-directory: ${{ runner.temp }}
@@ -53,7 +54,23 @@ jobs:
       - name: Record the V1 fixture benchmarks through the installed package
         run: .venv-package/bin/python examples/run_benchmarks.py --out runs/benchmarks/benchmark_report.json
       - name: Verify all sixteen V2 expert categories through the installed package
-        run: .venv-package/bin/python examples/run_v2_benchmarks.py --out runs/benchmarks/v2
+        run: |
+          mkdir -p runs/ci-v2-evidence
+          .venv-package/bin/dvi benchmark benchmarks --out runs/benchmarks/v2 --json > runs/ci-v2-evidence/benchmark.json
+      - name: Gate retained V2 CLI run and report evidence
+        run: |
+          .venv-package/bin/dvi doctor --json > runs/ci-v2-evidence/doctor.json
+          .venv-package/bin/dvi run examples/v2/ci/scenario.yaml --out runs/ci-v2 --seed 42 --event-budget 256 --json > runs/ci-v2-evidence/run.json
+          .venv-package/bin/dvi report runs/ci-v2 --overwrite --json > runs/ci-v2-evidence/report.json
+          .venv-package/bin/dvi ci-check runs/ci-v2 --threshold 1 --max-unknown 0 --json > runs/ci-v2-evidence/gate.json
+          .venv-package/bin/dvi run examples/artifact_scenario.yaml --out runs/ci-v2-fragile --seed 42 --event-budget 256 --json > runs/ci-v2-evidence/fragile-run.json
+          status=0
+          .venv-package/bin/dvi ci-check runs/ci-v2-fragile --threshold 1 --max-unknown 0 --json > runs/ci-v2-evidence/fragile-gate.json || status=$?
+          test "$status" -eq 1
+          status=0
+          .venv-package/bin/dvi report runs/ci-v2 --json > runs/ci-v2-evidence/report-refusal.json || status=$?
+          test "$status" -eq 2
+          .venv-package/bin/python examples/verify_ci_proof.py --root runs --require-installed > runs/ci-v2-evidence/proof.json
       - name: Verify advanced reports through the installed package
         run: .venv-package/bin/python examples/advanced_report.py --out runs/reports/v2
       - name: Exercise all ten V2 commands through the installed package
@@ -65,10 +82,43 @@ jobs:
           name: dvi-evidence-py${{ matrix.python }}
           path: |
             runs/ci/
+            runs/ci-v2/
+            runs/ci-v2-fragile/
+            runs/ci-v2-evidence/
+            runs/pytest.xml
             runs/benchmarks/benchmark_report.json
             runs/benchmarks/v2/
             runs/reports/v2/
             runs/cli/v2/
             coverage.xml
+          retention-days: 7
+          if-no-files-found: warn
+  container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build the pinned local fixture image
+        run: docker build --tag dvi-sentinel:ci .
+      - name: Exercise the container without network or writeable root access
+        shell: bash
+        run: |
+          mkdir -p runs/container
+          image=(docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,noexec,nosuid,size=128m --mount "type=bind,source=$GITHUB_WORKSPACE/runs/container,target=/runs" dvi-sentinel:ci)
+          "${image[@]}" dvi doctor --json > runs/container/doctor.json
+          "${image[@]}" dvi benchmark benchmarks --out /runs/benchmarks --json > runs/container/benchmark.json
+          "${image[@]}" dvi run examples/v2/ci/scenario.yaml --out /runs/ci-v2 --seed 42 --event-budget 256 --json > runs/container/run.json
+          "${image[@]}" dvi report /runs/ci-v2 --overwrite --json > runs/container/report.json
+          "${image[@]}" dvi ci-check /runs/ci-v2 --threshold 1 --max-unknown 0 --json > runs/container/gate.json
+          "${image[@]}" python examples/v2_cli.py --out /runs/cli
+          "${image[@]}" python examples/advanced_report.py --out /runs/advanced-report
+      - name: Retain container evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dvi-evidence-container
+          path: runs/container/
           retention-days: 7
           if-no-files-found: warn

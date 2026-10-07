@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Updates are reviewed and committed directly on main. Do not create bot branches.
+  # Security-update PRs are controlled separately in repository settings.
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0

@@ -1,6 +1,6 @@
 # Contributing
 
-Start with a concrete bug, missing proof or documentation correction. Keep V1
+Start with a concrete bug, missing proof or documentation correction. Keep DVI
 local, synthetic and fixture-based. Changes that introduce live targets, attack
 traffic, credentials, executable scenario hooks or bypass recipes are outside
 scope. Research directions belong on the [roadmap](docs/roadmap.md).
@@ -18,6 +18,10 @@ python -m coverage run -m pytest
 python -m coverage report --fail-under=90
 python -m build
 python examples/run_benchmarks.py --out runs/contribution-benchmarks/benchmark_report.json
+dvi benchmark benchmarks --out runs/contribution-v2-benchmarks --json
+dvi run examples/v2/ci/scenario.yaml --out runs/contribution-v2 --seed 42 --event-budget 256 --json
+dvi report runs/contribution-v2 --overwrite --json
+dvi ci-check runs/contribution-v2 --threshold 1 --max-unknown 0 --json
 ```
 
 Use the executables inside your environment or activate it first. `uv sync
@@ -25,11 +29,21 @@ Use the executables inside your environment or activate it first. `uv sync
 that workflow. The [testing guide](docs/testing.md) explains generated cases,
 failure replay and the Windows symlink-permission skip.
 
+The [CI guide](docs/ci.md) records the isolated wheelhouse installation, captured
+command/artifact proof, expected exit-1/exit-2 controls and restricted container
+checks. Doctor must find both report templates and the V2 stylesheet in the installed
+package. Before declaring a card complete, verify both Python jobs and the container
+job for its exact pushed commit. V2 remains unreleased until the final release gate.
+
 ## Changes and review
 
 `main` is the repository's only maintained branch. Commit and publish updates
 directly on `main`; do not create additional repository branches. Release tags
 retain the published versions while development continues on `main`.
+
+Review dependency alerts manually. Keep automated dependency pull requests disabled;
+update lockfiles, Docker digests and full action SHA/version pairs on `main`, then
+verify the same CI gate. Do not create bot or maintenance branches for updates.
 
 - Inspect the existing contracts and relevant decision record before changing
   behavior. Keep parsing, experiments, matching, analysis and presentation separate.
