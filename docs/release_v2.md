@@ -15,6 +15,21 @@ checks its original size/digest and declares explicit provenance parents.
 Two regression tests check source capture, transitive tampering and source changes
 between execution and capture. All three CI jobs generate and verify this bundle.
 
+## Full quality gate
+
+Preparation commit `82f06708b61fd94bf4aaee749e2352de0140f801` passed
+[all three CI jobs](https://github.com/AegisTrace/dvi-sentinel/actions/runs/38063554982).
+Python 3.12 and 3.13 each passed 1,250 tests with no skips, failures or errors and
+94.90% combined statement/branch coverage. Test durations were 344.929 and 251.124
+seconds respectively. Local focused release-source/tampering tests passed both
+cases; the existing four foundation/version tests also passed.
+
+JUnit and coverage XML were downloaded and checked. Each CI job retained a
+nonempty evidence artifact; all three release bundles matched the inspected local
+97-file bundle byte for byte, including the same external manifest pin. The final
+documentation commit and publication assets require their own exact-commit CI
+verification; the release notes identify that final commit and run.
+
 ## Package and command proof
 
 Local Ruff lint/format, strict mypy, actionlint, lock validation and installed

@@ -183,8 +183,8 @@ From the same environment:
 .venv\Scripts\python.exe examples/v2_cli.py --out runs/cli-example
 ```
 
-The [V2-19 verification record](docs/v2_build_log.md#v2-19---cicd-and-release-hardening)
-records **1,248 tests passed on each of Python 3.12/3.13** and **94.90% combined
+The [V2 release verification record](docs/release_v2.md#full-quality-gate)
+records **1,250 tests passed on each of Python 3.12/3.13** and **94.90% combined
 statement/branch coverage**. These are recorded results, not a promise about later commits.
 [CI](docs/ci.md) also builds/installs the wheel, checks packaged assets, verifies actual
 benchmark/report evidence and expected failures, and runs a network-disabled container.

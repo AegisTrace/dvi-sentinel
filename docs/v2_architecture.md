@@ -109,7 +109,7 @@ Only the current card may create its modules; the table is a plan, not scaffoldi
 | V2-18 | Integrated ontology, mapping, intent, temporal, oracle, exploration, explanation, confidence, graph and benchmark CLI. **Implemented on main; see [CLI contract](cli.md#v2-analysis-commands).** | D, C, R, W |
 | V2-19 | Python 3.12/3.13 CI, installed-wheel V2 proof, offline tests/container and bounded artifact retention. **Implemented on main; see [CI contract](ci.md).** | CI/configuration, R, A, C |
 | V2-20 | Claims tied to executed examples, benchmarks, genuine report output and clear V1/V2 status. **Implemented on main; see [evidence index](readme_claims.md).** | Documentation |
-| V2-21 | Full release proof, visual inspection, claim/safety audits, verified artifacts and green published commit. | Release verification |
+| V2-21 | Full release proof, visual inspection, claim/safety audits, verified artifacts and green published commit. **Gate evidence recorded in [release verification](release_v2.md); publication remains conditional on the exact final commit.** | Release verification |
 
 ## Dependency decisions
 

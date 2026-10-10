@@ -2082,3 +2082,113 @@ commit. All three retained nonempty, unexpired evidence artifacts. Python JUnit
 and coverage records were downloaded and checked against the results above.
 
 Next card: V2-21 V2 Release Gate.
+
+## V2-21 - V2 Release Gate
+
+Purpose: publish version 2.0.0 only after its declared scope has package, command,
+benchmark, artifact, safety, visual and exact-commit CI evidence.
+
+Acceptance criteria recorded before implementation: preserve main as the only
+branch and the V1 tag; audit runtime capabilities and public claims; promote all
+version declarations without changing dependencies; run quality/coverage, build,
+isolated wheel, every example, strict robust/fragile gates and both benchmark
+suites; reproduce under restricted Docker; produce and verify the complete release
+report with benchmark sources and provenance; inspect actual HTML; commit, push
+and verify CI before recording completion and publishing final checked assets.
+
+Files changed: package metadata, runtime version and lockfile; release example,
+two regression tests and CI invocation/retention; README, security, changelog,
+release safety review, CI guide, claim index, roadmap, architecture and examples
+index; new release verification document and unmodified report capture; this record.
+
+Behavior implemented: version 2.0.0 retains the established runtime contracts.
+The release example composes the existing advanced report and full expert suite,
+captures digest-checked benchmark sources, rejects changes between execution and
+capture and declares explicit provenance parents. It produces a 97-file verified
+bundle and portable ZIP. Both Python CI jobs and restricted container CI execute
+the new example and retain its full evidence. No dependency or detector behavior
+was added.
+
+Tests added: two integration regressions verify every captured benchmark source
+against actual bytes and pins, exact source-parent inventory, transitive rejection
+after source tampering and rejection when source bytes change after execution.
+Both focused tests passed in 7.87 seconds. Existing version/distribution/CLI tests
+passed all four cases; the full suite remains active with socket/DNS denial.
+
+Docs/examples updated: [release verification](release_v2.md),
+[release example](../examples/release_v2.py), [V2 safety review](../RELEASE_SAFETY_REVIEW.md#v2-release-review)
+and the linked public claim/status documents distinguish implemented behavior,
+historical preview measurements, expected negative diagnostics and publication.
+The report retains the advanced fixture's fixed timestamp/original invocation;
+the documented release command reproduces the complete combined bundle.
+
+Artifacts generated: a fresh wheel and source archive, isolated runtime environment,
+all 25 earlier standalone example outputs plus the separate CI verifier, strict
+robust/fragile proofs, V1/V2 benchmark reports and the complete release bundle.
+The release report, manifest, DAG and benchmark are under ignored runs/release-v2/.
+The inspected 1265-by-712 screenshot is the sole reviewed new public binary asset.
+Overview, navigation, confidence table and provenance were visually inspected.
+
+Commands run: Ruff lint/format, strict mypy, actionlint and offline lock check;
+isolated uv build/install/dependency/version checks; doctor, benchmark, run,
+report/overwrite/refusal and declared ci-check gates; all standalone examples;
+python -m examples.release_v2 and advanced report regeneration; Docker build and
+restricted runtime proof; full hosted coverage pytest/JUnit, packaging and installed
+examples; AST capability inventory, boundary review, source/package comparison,
+local links/anchors, publication and secret-pattern checks; exact-commit CI and
+downloaded artifact verification.
+
+Results: 1,250 tests passed without skips, errors or failures on each supported
+Python version. Python 3.12/3.13 took 344.929/251.124 seconds, with 94.90% combined
+statement/branch coverage on each. Ruff lint/format passed across 226 Python files,
+strict mypy across 103 runtime modules, and actionlint passed. The lockfile changes
+only the project version. Seventeen runtime packages are compatible, all 107
+packaged source/assets match, and the source archive includes the release example,
+tests, documentation and screenshot without private run/configuration files.
+All 424 local links across 59 Markdown files passed before this completion entry.
+
+The robust control detected all seven planned variants with no unknown/invalid
+outcomes and passed threshold 1/max-unknown 0. The fragile control detected two
+of eleven and failed that gate with exit 1; unapproved overwrite returned exit 2.
+V1 passed twenty cases/275 checks and V2 passed 32 cases/224 checks. Regression
+memory recorded newly fragile/fail, still fragile/pass and recovered/pass, preserving
+the distinction between a new regression and unchanged historical weakness.
+All copied fixture inputs remained unchanged.
+
+All 97 release-bundle files matched between the native wheel, local restricted
+Docker and each of the three hosted CI jobs. Regeneration preserved every byte.
+The final manifest pin is
+`08056f72fca8300f31b4c444234e8eb0d52eb87959b73cb35712669bb7ee942f`;
+the version-2.0.0 expert report SHA-256 is
+`ed3ef1fa73d4148dd36e7ffd429b13348ca21cce2643a47e16282acec8358690`.
+The report evidence DAG has 87 artifacts and 110 parent links. Logs, command arrays,
+JUnit, coverage, inventories, comparisons and full bundles remain under ignored runs/.
+
+Safety review: all 103 runtime modules were inventoried; relevant imports, calls
+and public input/output paths were inspected against D/R/W/A/C categories. The
+release producer is orchestration over bounded local readers, analyzers and writers.
+No network client, subprocess, dynamic scenario code, external detector service,
+new dependency or prohibited capability was introduced. Unknown analysis evidence
+remains explicit. Existing exception/Protocol boundaries are not placeholder engines;
+invalid timestamp parsing retains unknown. Vulnerability alerts, private reporting
+and secret-scanning protections were verified enabled. This is a scoped engineering
+review, not formal verification or a claim of vulnerability-free dependencies.
+
+Known limitations: finite fixture scope, local minima, conditional statistics and
+documented schema subsets remain unchanged. Hashes prove consistency rather than
+authenticated origin. Trusted local roots and a single writer are assumed. Visual
+proof covers the inspected desktop viewport, not mobile/print or formal accessibility.
+No PyPI or container-registry publication, signed attestation or SBOM is claimed.
+
+Commit: `82f06708b61fd94bf4aaee749e2352de0140f801` -
+`chore(release): prepare V2 semantic engine release`.
+
+CI status: [GitHub Actions run 38063554982](https://github.com/AegisTrace/dvi-sentinel/actions/runs/38063554982)
+passed core (3.12), core (3.13) and container for the exact preparation commit.
+All three nonempty, unexpired artifacts were downloaded; both JUnit/coverage
+records and all release-bundle bytes were independently checked. Publication
+requires green CI on the final documentation/release commit and verified final
+wheel/source assets; the annotated tag and GitHub release record that exact commit.
+
+Next card: none. The ordered V2 implementation cards are complete. Future work
+requires a separately scoped change; the publication boundary above remains binding.
