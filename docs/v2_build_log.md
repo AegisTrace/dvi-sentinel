@@ -1986,3 +1986,99 @@ quality, coverage, build, installed-wheel and verified CLI/benchmark/report gate
 the container job passed the restricted runtime checks.
 
 Next card: V2-20 README and Public Portfolio Polish.
+
+## V2-20 - README and Public Portfolio Polish
+
+Purpose: make implemented behavior, reproducible evidence and release status clear
+from the public repository overview.
+
+Acceptance criteria recorded before implementation: present the purpose and local
+synthetic boundary first; include all twelve requested README sections, a runnable
+quickstart, architecture diagram, measured finding, report preview, benchmark
+summary and implemented/planned comparison; execute documented examples; map public
+claims to evidence; update security, contribution and changelog guidance; verify
+rendering, links, package metadata and exact-commit CI before completion.
+
+Files changed: README.md, SECURITY.md, CONTRIBUTING.md and CHANGELOG.md;
+docs/benchmarks.md, docs/report_v2.md, docs/roadmap.md, docs/v2_architecture.md and
+examples/README.md; new docs/example_report.md, docs/readme_claims.md and
+docs/assets/report-v2.jpg; this completion record.
+
+Behavior implemented: the README leads with released V1 versus unreleased V2,
+local execution boundaries and measured evidence. It provides a PowerShell
+quickstart with POSIX executable substitutions, a six-stage architecture diagram,
+grouped capabilities and direct proof links. The fragile correlation example
+distinguishes successful measurement from a failing detection gate. The benchmark
+section distinguishes expected diagnostic outcomes from deployment acceptance.
+Recorded test counts are anchored to their source verification record.
+
+Tests added: none. This card changes documentation and a reviewed screenshot;
+runtime code, dependencies, fixtures and acceptance thresholds are unchanged.
+Existing full quality, package, installed-wheel and container gates remain active.
+
+Docs/examples updated: [claim-to-evidence index](readme_claims.md) maps measured
+claims and eighteen feature groups to fixtures, contracts, examples and tests.
+[Report reproduction and provenance](example_report.md) explains the separate
+synthetic volume example, uncertainty labels, capture date, fixed fixture timestamp
+and native artifact hashes. Contribution guidance permits this reviewed preview
+while keeping complete run bundles private. Security and roadmap text preserve
+the unreleased status and final release requirements.
+
+Artifacts generated: a verified advanced report and its unmodified 1125-by-880
+browser capture, with SHA-256
+`cd1a6495398f48dfccc718c97969b0312ffc4b85cef9ce9184c73cc3400af512`.
+The preview shows two detected and nine missed planned variants, nine classified
+findings, unresolved oracle consensus and insufficient statistical sample.
+The report's overview, navigation, counts and uncertainty labels were inspected
+in a browser. The published GitHub README and rendered Mermaid diagram were also
+inspected; their captures remain under ignored runs/v2/.
+
+Commands run: standard pip editable installation in a fresh Python 3.12 environment;
+pip check; doctor, quickstart run/gate, fragile and control correlation run/gate,
+full expert benchmark, advanced-report example/regeneration and ten-command CLI
+example; whole-repository Ruff lint/format and strict mypy; wheel/sdist build;
+README rendering, local link/anchor checks, package/source comparison and publication
+audit; hosted full coverage tests, installed-wheel proofs and restricted container
+checks; main push and exact-commit CI/artifact verification.
+
+Results: all eleven documented execution paths returned their expected exits,
+including exit 1 for the fragile correlation gate. The quickstart detected all
+seven planned variants. The fragile/control correlation fixtures detected 0/1
+and 1/1 planned variants respectively; the reduced failure retained two events
+and removed one original optional key with no added events, time shift or
+reordering. All 32 expert cases across sixteen categories passed 224 declared
+checks. Their native report SHA-256 remains
+`9c51c7663be56d3a249d48ed98f2f76ef025107e4caf3b4160b775bcf75dc05d`.
+Fresh-install report HTML, JSON, CSS, manifest and DAG bytes matched the captured
+preview's source bundle. All seventeen runtime packages passed compatibility checks.
+
+Ruff lint/format and strict mypy passed. All 107 packaged runtime files/assets
+matched their source; wheel metadata contained the revised Markdown README and
+the source archive included the reviewed documentation and preview. All 407 local
+links across 58 Markdown files passed before this completion entry. Both supported
+Python versions passed 1,248 tests without skips, failures or errors in hosted CI;
+combined statement/branch coverage was 94.90% on each. Python 3.12/3.13 test runs
+took 473.751/329.930 seconds. Full logs, command exits, hashes, JUnit, coverage,
+package audits and screenshots are retained under ignored runs/v2/.
+
+Safety review: documentation and synthetic preview only; no executable runtime
+behavior or external detector integration was added. The screenshot contains the
+reviewed generated report, while complete local bundles and workspace configuration
+remain outside publication. Temporary loopback preview service and browser tab
+were closed after inspection.
+
+Known limitations: the preview verifies one browser viewport, not mobile or print
+layout. Hashes establish recorded consistency, not authenticated origin. The
+correlation reduction is a tested local minimum, and benchmark acceptance does not
+establish production effectiveness. This presentation card does not satisfy the
+separate final release gate. Version remains 2.0.0.dev0 and V2 is unreleased.
+
+Commit: `98fb5550467e2f6831c0c0dbf9e1d8cb643021e4` -
+`docs(readme): present V2 semantic engine clearly`.
+
+CI status: [GitHub Actions run 38043352932](https://github.com/AegisTrace/dvi-sentinel/actions/runs/38043352932)
+passed `core (3.12)`, `core (3.13)` and `container` for the exact implementation
+commit. All three retained nonempty, unexpired evidence artifacts. Python JUnit
+and coverage records were downloaded and checked against the results above.
+
+Next card: V2-21 V2 Release Gate.
