@@ -8,8 +8,8 @@ then explains the failures with reproducible evidence.
 **Local synthetic fixtures only.** No live targets, attack traffic, executable
 scenario hooks or external detector integrations.
 
-**Released:** [V1 `1.0.0`](docs/release_v1.md). **On `main`:** implemented V2 development
-(`2.0.0.dev0`), still unreleased. [Implemented vs planned](#v1-vs-v2).
+**Version:** `2.0.0`. [V2 release verification](docs/release_v2.md) ·
+[V1 `1.0.0` history](docs/release_v1.md) · [Implemented vs planned](#v1-vs-v2).
 
 **A concrete finding:** removing one optional correlation key can stop a local rule
 from detecting the same two events. The tested control still detects them.
@@ -40,7 +40,7 @@ files. JSON, Markdown, captured evidence and a SHA-256 manifest are in the same 
 On macOS/Linux, use `.venv/bin/python` and `.venv/bin/dvi` in place of the Windows
 executable paths. Use a fresh output directory on repetition. See the
 [CLI contract](docs/cli.md) for verified overwrite and exit-code behavior.
-This checkout runs V2 development; the published V1 remains at the `v1.0.0` tag.
+This checkout runs V2; the earlier V1 remains at the `v1.0.0` tag.
 
 ## Architecture
 
@@ -82,12 +82,12 @@ These measurements describe the declared local model, not a production detector.
 | State | Delivered behavior | Evidence |
 | --- | --- | --- |
 | Released V1 | Fixture parsing, safe variations/probes, local rules, matching, shrinking, reports and regression gates | [Release proof](docs/release_v1.md), [V1 benchmarks](docs/benchmarks.md) |
-| Implemented V2, unreleased | Ontology, seven semantic relations, seven schema subsets and bounded intent parsing | [Ontology](docs/semantic_ontology.md), [algebra](docs/semantic_algebra.md), [profiles](docs/schema_profiles.md), [intent](docs/detection_intent.md) |
-| Implemented V2, unreleased | Ten temporal predicates and nine evidence oracles with explicit disagreement/unknowns | [Temporal engine](docs/temporal_correlation.md), [oracle consensus](docs/oracle_consensus.md) |
-| Implemented V2, unreleased | Bounded exploration, semantic coverage, representation comparison, counterfactuals and oracle-aware shrinking | [Exploration](docs/constraint_exploration.md), [coverage](docs/semantic_coverage.md), [comparison](docs/cross_representation_testing.md), [counterfactuals](docs/counterfactual_causality.md), [shrinking](docs/failure_shrinking.md) |
-| Implemented V2, unreleased | Conditional confidence, compatible regression history and evidence-linked knowledge graphs | [Statistics](docs/statistical_confidence.md), [history](docs/regression_comparison.md), [graph](docs/knowledge_graph.md) |
-| Implemented V2, unreleased | Provenance DAGs, eighteen-section reports, ten analysis commands and installed-package/container CI | [Artifacts](docs/run_artifacts.md#v2-artifact-lineage-opt-in), [reports](docs/report_v2.md), [CLI](docs/cli.md#v2-analysis-commands), [CI](docs/ci.md) |
-| Planned | Final V2 release gate and publication | [Ordered release criteria](docs/v2_architecture.md#artifacts-presentation-and-release) |
+| V2 2.0.0 | Ontology, seven semantic relations, seven schema subsets and bounded intent parsing | [Ontology](docs/semantic_ontology.md), [algebra](docs/semantic_algebra.md), [profiles](docs/schema_profiles.md), [intent](docs/detection_intent.md) |
+| V2 2.0.0 | Ten temporal predicates and nine evidence oracles with explicit disagreement/unknowns | [Temporal engine](docs/temporal_correlation.md), [oracle consensus](docs/oracle_consensus.md) |
+| V2 2.0.0 | Bounded exploration, semantic coverage, representation comparison, counterfactuals and oracle-aware shrinking | [Exploration](docs/constraint_exploration.md), [coverage](docs/semantic_coverage.md), [comparison](docs/cross_representation_testing.md), [counterfactuals](docs/counterfactual_causality.md), [shrinking](docs/failure_shrinking.md) |
+| V2 2.0.0 | Conditional confidence, compatible regression history and evidence-linked knowledge graphs | [Statistics](docs/statistical_confidence.md), [history](docs/regression_comparison.md), [graph](docs/knowledge_graph.md) |
+| V2 2.0.0 | Provenance DAGs, eighteen-section reports, ten analysis commands and installed-package/container CI | [Artifacts](docs/run_artifacts.md#v2-artifact-lineage-opt-in), [reports](docs/report_v2.md), [CLI](docs/cli.md#v2-analysis-commands), [CI](docs/ci.md) |
+| Planned | Broader schema support, signed attestations and native analysis exports | [Research criteria](docs/roadmap.md) |
 
 The [claim-to-evidence index](docs/readme_claims.md) links these groups to executable
 examples and tests. Research candidates are kept in the [roadmap](docs/roadmap.md).
@@ -125,7 +125,9 @@ The report and `minimal_case.json` retain the finding and reduction trace.
 
 [![Actual advanced report showing two detected and nine missed variants, with unresolved oracle consensus and insufficient statistical sample](docs/assets/report-v2.jpg)](docs/example_report.md)
 
-This is the separate synthetic volume example, captured from a verified report.
+This development preview is the separate synthetic volume example, captured from a
+verified report. The [2.0.0 release capture](docs/release_v2.md#visual-inspection)
+records the final version and its benchmark-linked bundle.
 It preserves **not enough evidence** for oracle consensus and **insufficient sample**
 for confidence. A measured miss does not turn missing evidence into a confirmed cause.
 
@@ -200,10 +202,9 @@ benchmark/report evidence and expected failures, and runs a network-disabled con
 
 ## Roadmap
 
-V2's implemented engines remain unreleased until the final package, Docker, artifact,
-claim, safety and rendered-report release checks pass. See the
-[release criteria](docs/v2_architecture.md#artifacts-presentation-and-release) and
-[card records](docs/v2_build_log.md). Broader schema compliance, solver dependencies,
+The [V2 release record](docs/release_v2.md) documents package, Docker, artifact,
+claim, safety and rendered-report checks. The [card records](docs/v2_build_log.md)
+preserve implementation evidence. Broader schema compliance, solver dependencies,
 signed attestations and an SBOM remain [research candidates](docs/roadmap.md), not
 current features.
 

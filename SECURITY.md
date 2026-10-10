@@ -19,7 +19,7 @@ There is no guaranteed response or remediation time.
 
 ## Supported state and limits
 
-The current release is `1.0.0`; `main` contains unreleased V2 development. Reports
+The current version is `2.0.0`; V1 remains available at its historical tag. Reports
 should identify the affected version or commit and reproduce against current main
 when practical. No separate maintenance branch or production-support guarantee
 is offered.

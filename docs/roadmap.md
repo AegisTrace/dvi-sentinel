@@ -6,7 +6,7 @@ blueprint on 2026-09-15. Its [architecture contract](v2_architecture.md) now def
 the active development sequence; the earlier V1.5/V2 labels below are historical
 research groupings, not separate promised releases.
 
-V2 is in development. The [semantic ontology library](semantic_ontology.md) has
+V2 implements the following local analysis capabilities. The [semantic ontology library](semantic_ontology.md) has
 working extraction, binding, loss and export behavior. The [semantic algebra](semantic_algebra.md)
 evaluates seven bounded relations with explicit unknowns and evidence-support traces.
 The [schema profile library](schema_profiles.md) adds seven explicit local subsets
@@ -44,8 +44,8 @@ analysis stages with typed results, native artifacts and benchmark regression ga
 The [V2 CI gate](ci.md) now verifies installed package and restricted container
 behavior, full benchmark evidence and declared run/report acceptance. The
 [public overview](../README.md) links delivered claims to [executable evidence](readme_claims.md)
-and a [verified report preview](example_report.md). The final V2 release gate remains
-outstanding. The items below remain unsupported until explicitly delivered.
+and a [verified report preview](example_report.md). The [V2 release record](release_v2.md)
+documents final verification and publication requirements. The items below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 

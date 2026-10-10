@@ -1,7 +1,7 @@
 # V2 architecture contract
 
-V2 is in development. This document records the scope lock from the owner's
-2026-09-15 blueprint. Development on `main` now includes the
+This document records the V2 scope lock from the owner's 2026-09-15 blueprint.
+Version 2.0.0 includes the
 [V2-01 semantic ontology](semantic_ontology.md), [V2-02 semantic algebra](semantic_algebra.md),
 [V2-03 schema profiles](schema_profiles.md), [V2-04 detection intent](detection_intent.md),
 [V2-05 temporal correlation](temporal_correlation.md) and
@@ -18,7 +18,7 @@ V2 is in development. This document records the scope lock from the owner's
 [V2-16 expert benchmarks](benchmarks.md#v2-expert-suite),
 [V2-17 advanced reports](report_v2.md), [V2-18 CLI](cli.md#v2-analysis-commands) and
 [V2-19 CI/release hardening](ci.md) and [V2-20 public evidence](readme_claims.md).
-The final V2 release gate remains planned.
+The [V2 release record](release_v2.md) documents final gate evidence.
 V1 was released as `v1.0.0` at `cf353e03474da32ddb59029d1b33759e44fbd900`;
 its release and both CI runs were verified before V2 work began. The
 [V1 architecture](architecture.md) remains the implemented foundation.

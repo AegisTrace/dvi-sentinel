@@ -1,13 +1,18 @@
 # Changelog
 
-## Unreleased - V2 development
+## 2.0.0 - 2026-10-10
 
 ### Added
+
+- Version 2.0.0 release proof: an executable report example binds all expert
+  benchmark results to captured source bytes and explicit provenance parents.
+  Installed-wheel and restricted-container CI verify the complete bundle.
+  Release records include package, example, visual, claim and safety evidence.
 
 - Public V2 overview with a reproducible correlation-key finding, explicit released
   versus implemented/planned status, benchmark and claim evidence links, and an
   unmodified advanced-report preview with capture provenance. Runtime behavior is
-  unchanged; V2 remains unreleased pending the final release gate.
+  unchanged by the presentation work. Release verification is in `docs/release_v2.md`.
 
 - V2 release regression gates on Python 3.12/3.13 and a restricted offline container:
   isolated wheelhouse installation, all 32 expert cases, retained command/report
@@ -91,7 +96,7 @@
 - Semantic ontology above canonical events: strict immutable signal/evidence models,
   loss-aware equivalence, profile requirements and deterministic exports with a real
   local example. Source provenance stays separate from semantic identity; unresolved
-  evidence cannot prove equivalence. Package development version is `2.0.0.dev0`.
+  evidence cannot prove equivalence.
 
 ### Fixed
 

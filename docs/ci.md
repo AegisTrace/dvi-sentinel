@@ -66,8 +66,8 @@ external telemetry, hidden files or arbitrary workspace directories are selected
 A coverage floor does not prove every behavior correct. Independent expectations,
 negative controls and artifact verification supply behavioral evidence. Hashes do
 not authenticate authorship; there is no signed attestation or SBOM. CI does not
-establish visual readability. The final V2 release still requires a rendered report
-inspection and the remaining release gates. V1's inspection is recorded in
+establish visual readability. Release publication also requires a rendered report inspection and the remaining
+release gates, recorded for V2 in [release verification](release_v2.md). V1's inspection is recorded in
 [release verification](release_v1.md).
 
 ## Action and dependency maintenance
@@ -118,6 +118,7 @@ python -m venv .venv-package
 .venv-package/bin/dvi ci-check runs/ci-v2 --threshold 1 --max-unknown 0 --json
 .venv-package/bin/python examples/advanced_report.py --out runs/reports/v2
 .venv-package/bin/python examples/v2_cli.py --out runs/cli/v2
+.venv-package/bin/python -m examples.release_v2 --out runs/release-v2
 ```
 
 The workflow contains the exact capture paths and exit-code checks needed before

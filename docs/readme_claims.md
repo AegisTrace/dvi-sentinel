@@ -1,8 +1,9 @@
 # README claims and executable evidence
 
-The README presents released V1 and implemented, unreleased V2 separately. This
-index records the evidence behind its current claims; future behavior belongs in
-the [roadmap](roadmap.md). The V2-20 review changes documentation, not runtime behavior.
+The README distinguishes V1 history, implemented V2 behavior and future work. This
+index records the evidence behind its claims; future behavior belongs in the
+[roadmap](roadmap.md). The original V2-20 measurements below are retained as dated
+evidence; version 2.0.0 verification is in the [release record](release_v2.md).
 
 ## Measured examples
 

@@ -1,5 +1,43 @@
 # Release safety review
 
+## V2 release review
+
+Reviewed 2026-10-10 for version 2.0.0. The runtime review covers all 103 modules,
+the shipped examples and fixtures, CLI and artifact boundaries, CI/Docker and
+public capability claims. V2 retains the local synthetic/documentation-fixture
+boundary. The final release changes only the runtime version, adds a release
+example over existing engines and extends CI to verify its combined bundle.
+No runtime dependency or detector behavior is added by the release change.
+
+AST import/call inventory and targeted control-flow review found no runtime network
+client, socket, subprocess, dynamic code evaluation, scenario plugin, unsafe object
+deserialization or native-code execution entry point. `urllib.parse` parses inert
+strings; `importlib` reads installed metadata/resources. Regular-expression compile
+calls and string replacement are not code execution or filesystem mutation.
+
+| Category | Reviewed boundary |
+| --- | --- |
+| Data models and pure analyzers (D/A) | Strict values, explicit missing evidence, finite combinations and budgets; no external detector execution. Empty exception subclasses and the exercised two-implementation harness Protocol are type boundaries, not placeholder engines. The timestamp parser's caught ValueError retains an unknown decision. |
+| Local readers (R) | Fixture byte limits, strict YAML/JSON decoding, schema allowlists, portable paths, link/junction rejection at public roots, bounded benchmark inventories and externally pinned regression history. Trusted local roots remain required. |
+| Artifact writers (W) | New-directory refusal for analysis output; bounded bundle inventory and bytes; staged validation, verified overwrite, backup rollback and cleanup confined to owned stage/backup paths. Report archives are built from confined bytes, never extracted from arbitrary input. |
+| CLI and orchestration (C) | Explicit internal commands, typed results, preserved exit 0/1/2 meanings and source rechecks. New release orchestration captures actual benchmark sources and rejects changed bytes before publication. |
+| Reports | Autoescaped local HTML with strict template values and CSP, escaped Markdown, explicit uncertainty, verified source references and reproducible archives. The 2.0.0 overview, confidence table and provenance section were visually inspected. |
+| CI and Docker | Read-only hosting token, pinned actions/image, no required secrets, bounded jobs and retained proof. Runtime container checks disable networking, use a non-root user, read-only root, dropped capabilities and bounded temporary storage. Dependency installation/build are separate network-enabled steps. |
+
+Runtime guards and existing negative tests continue to reject prohibited input;
+new release tests cover changed benchmark sources and transitive artifact tampering.
+Unknown diagnostic evidence remains visible and cannot override a safety/provenance
+failure or supply a passing strict detection gate. No prohibited capability or
+unresolved unsafe behavior was identified within this reviewed scope.
+
+The [V2 release record](docs/release_v2.md) supplies command, package, benchmark,
+artifact and visual evidence; its completion record and GitHub release identify
+the exact verified commits. This is a scoped engineering review, not a vulnerability
+scan, penetration test or formal verification. The residual limits below continue
+to apply. Historical V1 details are retained separately below.
+
+## V1 historical review
+
 Reviewed 2026-09-14 against `8d10c6667bcb62c74e48cfa230383f68082b4c6c`
 (development candidate `0.1.0.dev0`). Scope: all 148 tracked files, with control-flow
 review of input/output boundaries and runtime capabilities, plus examples, test

@@ -18,7 +18,7 @@ The standalone Python scripts illustrate individual engine APIs. They write
 documented proof files beneath `runs/` and some replace those files on repetition.
 Use the CLI for controlled bundle replacement and provenance verification.
 
-The V2 development [semantic ontology example](semantic_ontology.py) emits known and
+The V2 [semantic ontology example](semantic_ontology.py) emits known and
 incomplete signals with real bindings and loss findings. Run
 `python examples/semantic_ontology.py --out runs/v2/ontology-proof` using a new output
 directory. See [the ontology contract](../docs/semantic_ontology.md); these standalone
@@ -149,3 +149,11 @@ native bundles, unchanged reports and the full expert benchmark. The
 [CI guide](../docs/ci.md) documents the required capture layout, installed-package
 check and deliberate failure/refusal controls. It reads local evidence without
 executing commands or fetching data.
+
+The [release example](release_v2.py) combines the advanced volume report and all
+32 expert cases into a verified bundle with captured benchmark sources and explicit
+parent hashes. From the repository root, run
+`python -m examples.release_v2 --out runs/release-v2` with a new destination.
+This report contains intentional measured misses and unknown analysis evidence;
+use the separate robust scenario above for the strict passing detection gate.
+See [V2 release verification](../docs/release_v2.md) for exact scope and provenance.
