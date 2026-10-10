@@ -1,10 +1,14 @@
 # Examples
 
-Start with the [main quickstart](../README.md#run-a-finding) and the
+Start with the [main quickstart](../README.md#quickstart) and the
 [fresh-checkout proof](../docs/reproduction.md). `dvi run` produces a complete
 verified bundle and reports; `benchmarks/` pairs known fragility with controls.
 
 Inspect the CLI with `dvi --help` and `dvi --version`.
+The [brittle correlation-key example](../README.md#example-brittle-correlation-key)
+contrasts a measured miss with a control. The [report preview](../docs/example_report.md)
+shows genuine advanced-report output with its own reproduction commands and hashes.
+
 `canonical_event.json` is a validated synthetic flow event using documentation
 addresses. Load it with `TelemetryEvent.model_validate_json` to inspect its UTC
 timestamp and retained source timestamp. It is an event-model example, not a

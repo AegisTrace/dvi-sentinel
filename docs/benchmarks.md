@@ -119,8 +119,11 @@ Use a new output directory. Exit **0** means all selected expectations matched;
 input or an output error. `--root` selects another local benchmark root containing
 `v2/suite.json` and its declared sources. A selected case is explicitly marked
 `selected_case`; it cannot claim complete suite coverage. Commands in the manifest
-are inert proof instructions and are never executed by the runner. The combined
-`dvi` CLI integration remains V2-18.
+are inert proof instructions and are never executed by the runner. The implemented
+CLI also runs the full suite with `dvi benchmark benchmarks --out runs/benchmarks/v2 --json`.
+The [README correlation example](../README.md#example-brittle-correlation-key) shows
+one diagnostic/control pair; the [evidence index](readme_claims.md) records the full
+32-case, 224-check result without treating expected diagnostic failures as robust detections.
 
 | Category | Diagnostic fixture and independent control | Measured score |
 | --- | --- | --- |

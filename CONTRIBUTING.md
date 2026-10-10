@@ -60,6 +60,15 @@ verify the same CI gate. Do not create bot or maintenance branches for updates.
   a concrete implemented use case.
 
 For a documentation-only change, check links and claims against the implementation.
+Use the [README evidence index](docs/readme_claims.md) when changing public feature
+or benchmark claims. Keep release status explicit, record denominators and expected
+failure exits, and distinguish diagnostic acceptance from a passing detection gate.
+An intentionally published report preview must come from a verified synthetic run,
+preserve uncertainty labels, omit private paths, and include reproduction commands
+and source hashes. Keep full generated bundles under ignored `runs/` or CI artifacts;
+reviewed documentation screenshots such as [this preview](docs/example_report.md)
+are the explicit exception to the run-output exclusion above.
+
 CI still runs the full suite. Keep commits coherent and do not rewrite history to
 manufacture a development narrative. Follow the [code of conduct](CODE_OF_CONDUCT.md);
 report vulnerabilities through [SECURITY.md](SECURITY.md).

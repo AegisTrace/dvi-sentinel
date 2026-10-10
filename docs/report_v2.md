@@ -5,6 +5,9 @@ the V2-15 provenance contract. [V2 analysis commands](cli.md#v2-analysis-command
 schema-1 support. [Artifact lineage](run_artifacts.md#v2-artifact-lineage-opt-in)
 defines the DAG, bounded local reads and integrity decisions.
 
+See the [captured example report](example_report.md) for an unmodified browser
+preview, observed uncertainty labels, reproduction commands and source hashes.
+
 
 ## Generate an advanced report
 

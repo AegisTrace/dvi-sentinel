@@ -42,8 +42,10 @@ The [advanced report](report_v2.md) now presents all eighteen sections and a
 verifiable portable archive. The [V2 CLI](cli.md#v2-analysis-commands) exposes all ten
 analysis stages with typed results, native artifacts and benchmark regression gates.
 The [V2 CI gate](ci.md) now verifies installed package and restricted container
-behavior, full benchmark evidence and declared run/report acceptance. The items
-below remain unsupported until explicitly delivered.
+behavior, full benchmark evidence and declared run/report acceptance. The
+[public overview](../README.md) links delivered claims to [executable evidence](readme_claims.md)
+and a [verified report preview](example_report.md). The final V2 release gate remains
+outstanding. The items below remain unsupported until explicitly delivered.
 
 ## Earlier V1.5 research group
 

@@ -24,6 +24,12 @@ should identify the affected version or commit and reproduce against current mai
 when practical. No separate maintenance branch or production-support guarantee
 is offered.
 
+Public report previews use reviewed synthetic fixtures and retain reproduction
+commands and source hashes. They show local measurements and unresolved evidence,
+not production validation or a security-product certification. The
+[example report](docs/example_report.md) documents its capture and scope; a preview
+does not replace the complete verified artifact bundle.
+
 Use a trusted local filesystem and validated public APIs. Policy is not an OS
 sandbox, provenance declarations are not content classification, and unkeyed
 manifests do not prove authorship. The documented Docker runtime disables

@@ -4,6 +4,11 @@
 
 ### Added
 
+- Public V2 overview with a reproducible correlation-key finding, explicit released
+  versus implemented/planned status, benchmark and claim evidence links, and an
+  unmodified advanced-report preview with capture provenance. Runtime behavior is
+  unchanged; V2 remains unreleased pending the final release gate.
+
 - V2 release regression gates on Python 3.12/3.13 and a restricted offline container:
   isolated wheelhouse installation, all 32 expert cases, retained command/report
   proof, strict detection/unknown thresholds and measured exit-1/exit-2 controls.
